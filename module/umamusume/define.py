@@ -4,7 +4,7 @@ from enum import Enum
 class ScenarioType(Enum):
     SCENARIO_TYPE_UNKNOWN = 0
     SCENARIO_TYPE_URA = 1
-
+    SCENARIO_TYPE_AOHARUHAI = 2
 
 class SupportCardType(Enum):
     SUPPORT_CARD_TYPE_UNKNOWN = 0

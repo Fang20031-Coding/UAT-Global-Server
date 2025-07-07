@@ -1,7 +1,7 @@
 <template>
-  <div id="create-task-list-modal" class="modal fade">
+  <div id="create-task-list-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div  class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
+      <div class="modal-content" :class="{ 'dimmed': showAoharuConfigModal }">
         <h5 class="modal-header">
           新建任务
         </h5>
@@ -22,9 +22,10 @@
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label for="selectSernaio">⭐ 剧本选择</label>
-                  <select class="form-control" id="selectSernaio">
-                    <option value=1>URA</option>
+                  <label for="selectScenario">⭐ 剧本选择</label>
+                  <select v-model="selectedScenario" class="form-control" id="selectScenario">
+                    <option :value="1">URA</option>
+                    <option :value="2">青春杯</option>
                   </select>
                 </div>
               </div>
@@ -43,6 +44,14 @@
                     <option :value=true>是</option>
                     <option :value=false>否</option>
                   </select>
+                </div>
+              </div>
+            </div>
+            <!-- 青春杯额外配置 -->
+            <div class="row" v-if="selectedScenario === 2">
+              <div class="col-4">
+                <div class="form-group">
+                  <span class="btn auto-btn" style="width: 100%; background-color:#6c757d;" v-on:click="openAoharuConfigModal">青春杯配置</span>
                 </div>
               </div>
             </div>
@@ -360,9 +369,19 @@
           </div> -->
         </div>
         <div class="modal-footer">
+          <span class="btn cancel-btn" v-on:click="cancelTask">取消</span>
           <span class="btn auto-btn" v-on:click="addTask">确定</span>
         </div>
       </div>
+      <!-- 青春杯配置弹窗 -->
+      <AoharuConfigModal
+        v-model:show="showAoharuConfigModal"
+        :preliminaryRoundSelections="preliminaryRoundSelections"
+        :aoharuTeamNameSelection="aoharuTeamNameSelection"
+        @confirm="handleAoharuConfigConfirm"
+      ></AoharuConfigModal>
+      <!-- 遮罩层 -->
+      <div v-if="showAoharuConfigModal" class="modal-backdrop-overlay" @click.stop></div>
       <!-- 通知 -->
       <div class="position-fixed" style="z-index: 5; right: 40%; width: 300px;">
         <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
@@ -376,8 +395,15 @@
 </template>
 
 <script>
+import SkillIcon from './SkillIcon.vue';
+import AoharuConfigModal from './AoharuConfigModal.vue';
+
 export default {
   name: "TaskEditModal",
+  components: {
+    SkillIcon,
+    AoharuConfigModal
+  },
   data:function () {
     return{
       showAdvanceOption:false,
@@ -504,7 +530,7 @@ export default {
         {id:3608, name:'函馆短途锦标赛', date: '6月后', type: 'GIII'},
         {id:3601, name:'独角兽锦标赛', date: '6月后', type: 'GIII'},
         {id:3607, name:'宝冢纪念', date: '6月后', type: 'GI'},
-        {id:3701, name:'南河三锦标赛', date: '7月前', type: 'GIII'},		
+        {id:3701, name:'南河三锦标赛', date: '7月前', type: 'GIII'},
         {id:3708, name:'函馆纪念', date: '7月前', type: 'GIII'},
         {id:3706, name:'中部广播奖', date: '7月前', type: 'GIII'},
         {id:3707, name:'七夕奖', date: '7月前', type: 'GIII'},
@@ -745,6 +771,7 @@ export default {
       expectTimes: 0,
       cron: "* * * * *",
       
+      selectedScenario: 1,
       selectedUmamusumeTaskType: undefined,
       selectedSupportCard: undefined,
       extraRace: [],
@@ -769,6 +796,11 @@ export default {
       extraWeight1: [0, 0, 0, 0, 0],
       extraWeight2: [0, 0, 0, 0, 0],
       extraWeight3: [0, 0, 0, 0, 0],
+
+      // 青春杯配置
+      preliminaryRoundSelections: [2, 1, 1, 1],
+      aoharuTeamNameSelection: 5,
+      showAoharuConfigModal: false,
     }
   },
   mounted() {
@@ -810,6 +842,20 @@ export default {
     switchAdvanceOption: function(){
       this.showAdvanceOption = !this.showAdvanceOption
     },
+    openAoharuConfigModal: function(){
+      this.showAoharuConfigModal = true;
+    },
+    closeAoharuConfigModal: function(){
+      this.showAoharuConfigModal = false;
+    },
+    handleAoharuConfigConfirm: function(data) {
+      this.preliminaryRoundSelections = [...data.preliminaryRoundSelections];
+      this.aoharuTeamNameSelection = data.aoharuTeamNameSelection;
+      this.showAoharuConfigModal = false;
+    },
+    cancelTask: function(){
+      $('#create-task-list-modal').modal('hide');
+    },
     addTask: function (){
       var learn_skill_list = []
       for (let i = 0; i < this.skillPriorityNum; i++)
@@ -827,6 +873,7 @@ export default {
         task_type: this.selectedUmamusumeTaskType.id,
         task_desc: this.selectedUmamusumeTaskType.name,
         attachment_data: {
+          "scenario": this.selectedScenario,
           "expect_attribute": [this.expectSpeedValue, this.expectStaminaValue, this.expectPowerValue, this.expectWillValue, this.expectIntelligenceValue],
           "follow_support_card_name": this.selectedSupportCard.name,
           "follow_support_card_level": this.supportCardLevel,
@@ -841,7 +888,12 @@ export default {
           "extra_weight": [this.extraWeight1, this.extraWeight2, this.extraWeight3],
           // 限时: 富士奇石的表演秀
           "fujikiseki_show_mode": this.fujikisekiShowMode,
-          "fujikiseki_show_difficulty": this.fujikisekiShowDifficulty
+          "fujikiseki_show_difficulty": this.fujikisekiShowDifficulty,
+          // 青春杯配置
+          "aoharu_config": this.selectedScenario === 2 ? {
+            "preliminaryRoundSelections": [...this.preliminaryRoundSelections],
+            "aoharuTeamNameSelection": this.aoharuTeamNameSelection
+          } : null
         },
         cron_job_info:{},
       }
@@ -858,6 +910,7 @@ export default {
       )
     },
     applyPresetRace: function(){
+      this.selectedScenario = this.presetsUse.scenario || 1
       this.extraRace = this.presetsUse.race_list
       this.expectSpeedValue = this.presetsUse.expect_attribute[0]
       this.expectStaminaValue = this.presetsUse.expect_attribute[1]
@@ -910,6 +963,12 @@ export default {
         }
       }
       
+      // 读取青春杯配置（如果存在）
+      if ('auharuhai_config' in this.presetsUse) {
+        this.preliminaryRoundSelections = [...this.presetsUse.auharuhai_config.preliminaryRoundSelections];
+        this.aoharuTeamNameSelection = this.presetsUse.auharuhai_config.aoharuTeamNameSelection;
+      }
+      
     },
     getPresets: function(){
       this.axios.post("/umamusume/get-presets", "").then(
@@ -924,6 +983,7 @@ export default {
     addPresets: function(){
       let preset = {
         name: this.presetNameEdit,
+        scenario: this.selectedScenario,
         race_list: this.extraRace,
         skill_priority_list: [],
         skill_blacklist: this.skillLearnBlacklist,
@@ -936,6 +996,14 @@ export default {
         race_tactic_2: this.selectedRaceTactic2,
         race_tactic_3: this.selectedRaceTactic3,
         extraWeight: [this.extraWeight1,this.extraWeight2,this.extraWeight3]
+      }
+      
+      // 仅当选择青春杯剧本时，才保存青春杯配置
+      if (this.selectedScenario === 2) {
+        preset.auharuhai_config = {
+          preliminaryRoundSelections: [...this.preliminaryRoundSelections],
+          aoharuTeamNameSelection: this.aoharuTeamNameSelection
+        };
       }
       for(let i = 0; i < this.skillPriorityNum; i++)
       {
@@ -974,6 +1042,49 @@ export default {
   padding: 0.4rem 0.8rem !important;
   font-size: 1rem !important;
   border-radius: 0.25rem;
+}
+
+/* 取消按钮样式 */
+.cancel-btn {
+  background-color: #dc3545 !important; /* Bootstrap的danger红色 */
+  color: white !important;
+  padding: 0.4rem 0.8rem !important;
+  font-size: 1rem !important;
+  border-radius: 0.25rem;
+  margin-right: 10px; /* 与确认按钮间距 */
+  border: none;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333 !important; /* 悬停时更深的红色 */
+  color: white !important;
+}
+
+/* 确保modal body可以正确滚动 */
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* 遮罩层样式 - 让TaskEditModal背景变暗并阻止交互 */
+.modal-backdrop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1055; /* 确保在TaskEditModal之上，但在AoharuConfigModal之下 */
+  pointer-events: auto; /* 阻止与背景元素的交互 */
+}
+
+/* 当显示青春杯配置时，让TaskEditModal的内容稍微变暗 */
+#create-task-list-modal.modal.show .modal-content {
+  transition: opacity 0.3s ease;
+}
+
+#create-task-list-modal.modal.show .modal-content.dimmed {
+  opacity: 0.6;
 }
 
 </style>

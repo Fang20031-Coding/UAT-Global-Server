@@ -461,35 +461,66 @@
                 </div>
               </div>
             </div>
-            <div v-for="(item,index) in skillLearnPriorityList" :key="item.priority">
-              <div class="form-group row">
-                <label class="col-sm-3" for="'skill-learn-' + item.id">❗ Learning Priority {{ item.priority+1 }}</label>
-                <div class="col-sm-6">
-                  <textarea type="text"  v-model="item.skills" class="form-control" id="skill-learn-priority" placeholder="Corner Acceleration ◯, Slipstream, Hydrate, Speed Star, ... (use commas)"></textarea>
-                </div>
-                <div class="col-sm-3">
-                  <span class="red-button auto-btn ml-2" v-on:click="deleteBox(item,index)">Delete Current Priority</span>
-                </div>
-              </div>
-            </div>
-            <span class="btn auto-btn ml-2" v-on:click="addBox(item)">Add Priority</span>
-            <div class="form-group mb-0">
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-                    <br>
-                    <label for="skill-learn-default">✅ (All other unlisted skills fall under this priority)</label>
+            
+            <!-- Priority 0 Skills (Best) -->
+            <div class="form-group">
+              <label class="form-label">🏆 Priority 0 - SS Tier Skills (Best)</label>
+              <div class="skill-grid">
+                <div v-for="skill in skillPriority0" :key="skill" 
+                     class="skill-toggle" 
+                     :class="{ 'selected': selectedSkills.includes(skill) }"
+                     @click="toggleSkill(skill)">
+                  <div class="skill-content">
+                    <div class="skill-name">{{skill}}</div>
+                    <div class="skill-priority">SS Tier</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="form-group mb-0">
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-                    <label for="skill-learn-blacklist">⛔ Blacklist (Never learn these skills under any circumstances)</label>
-                    <textarea type="text"  v-model="skillLearnBlacklist" class="form-control" id="skill-learn-blacklist" placeholder="Inner Post Proficiency ◯, Outer Post Proficiency ◯, Wet Conditions ◯, ... (skills to avoid)"></textarea>
+            <!-- Priority 1 Skills (Good) -->
+            <div class="form-group">
+              <label class="form-label">🥇 Priority 1 - S/A Tier Skills (Good)</label>
+              <div class="skill-grid">
+                <div v-for="skill in skillPriority1" :key="skill" 
+                     class="skill-toggle" 
+                     :class="{ 'selected': selectedSkills.includes(skill) }"
+                     @click="toggleSkill(skill)">
+                  <div class="skill-content">
+                    <div class="skill-name">{{skill}}</div>
+                    <div class="skill-priority">S/A Tier</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Priority 2 Skills (Situational) -->
+            <div class="form-group">
+              <label class="form-label">🥈 Priority 2 - B Tier Skills (Situational)</label>
+              <div class="skill-grid">
+                <div v-for="skill in skillPriority2" :key="skill" 
+                     class="skill-toggle" 
+                     :class="{ 'selected': selectedSkills.includes(skill) }"
+                     @click="toggleSkill(skill)">
+                  <div class="skill-content">
+                    <div class="skill-name">{{skill}}</div>
+                    <div class="skill-priority">B Tier</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blacklist Section -->
+            <div class="form-group">
+              <label class="form-label">⛔ Blacklist (Never learn these skills)</label>
+              <div class="skill-grid">
+                <div v-for="skill in skillPriority2" :key="skill" 
+                     class="skill-toggle blacklist-toggle" 
+                     :class="{ 'selected': blacklistedSkills.includes(skill) }"
+                     @click="toggleBlacklistSkill(skill)">
+                  <div class="skill-content">
+                    <div class="skill-name">{{skill}}</div>
+                    <div class="skill-priority">Blacklisted</div>
                   </div>
                 </div>
               </div>
@@ -1177,7 +1208,31 @@ export default {
       aoharuTeamNameSelection: 4,
       showAoharuConfigModal: false,
       showUraConfigModal: false,
-      showSupportCardSelectModal: false,      
+      showSupportCardSelectModal: false,
+      
+      // Skill data from const.py
+      skillPriority0: [
+        'Corner Acceleration ◯', 'Corner Adept ◯', 'Slipstream', 'Tail Held High', 
+        'Straightaway Spurt', 'Ramp Up', 'Inside Scoop', 'Passing Pro', 'Homestretch Haste',
+        'Fast-Paced', 'Outer Swell', 'Sprinting Gear', 'Slick Surge', 'Corner Recovery ◯',
+        'Hydrate', 'After-School Stroll', 'Clean Heart', 'Dominator', 'All-Seeing Eyes', 'Mystifying Murmur'
+      ],
+      skillPriority1: [
+        'Acceleration', 'Focus', 'Go with the Flow', 'I Can See Right Through You', 
+        'Nimble Navigator', 'Straightaway Recovery', 'Deep Breaths', 'Preferred Position',
+        'Groundwork', 'Up-Tempo', 'Unyielding Spirit', 'Pressure', 'Strategist', 'Triple 7s',
+        'Shake It Out', 'Intimidate', 'Stamina Eater', 'Intense Gaze', 'Speed Star',
+        'Staggering Lead', 'Blinding Flash', 'Restless', 'Trackblazer', 'Meticulous Measures',
+        'Keeping the Lead', 'Leader\'s Pride', 'Wait-and-See', 'A Small Breather'
+      ],
+      skillPriority2: [
+        'Levelheaded', 'Stop Right There!', 'Super Lucky Seven', 'Maverick ◯', 'Sympathy',
+        'Long Shot ◯', 'Inner Post Proficiency ◯', 'Outer Post Proficiency ◯', 'Right-Handed ◯',
+        'Left-Handed ◯', 'Firm Conditions ◯', 'Wet Conditions ◯', 'Standard Distance ◯', 
+        'Non-Standard Distance ◯', 'Competitive Spirit ◯', 'Target in Sight ◯', 'Lone Wolf'
+      ],
+      selectedSkills: [],
+      blacklistedSkills: [],
     }
   },
   computed: {
@@ -1330,6 +1385,22 @@ export default {
         this.extraRace.splice(index, 1);
       } else {
         this.extraRace.push(raceId);
+      }
+    },
+    toggleSkill: function(skillName) {
+      const index = this.selectedSkills.indexOf(skillName);
+      if (index > -1) {
+        this.selectedSkills.splice(index, 1);
+      } else {
+        this.selectedSkills.push(skillName);
+      }
+    },
+    toggleBlacklistSkill: function(skillName) {
+      const index = this.blacklistedSkills.indexOf(skillName);
+      if (index > -1) {
+        this.blacklistedSkills.splice(index, 1);
+      } else {
+        this.blacklistedSkills.push(skillName);
       }
     },
     switchAdvanceOption: function(){
@@ -1770,5 +1841,88 @@ export default {
 
 .race-toggle.selected .race-details {
   opacity: 0.9;
+}
+
+/* Skill Toggle Styles */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+
+.skill-toggle {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-toggle:hover {
+  background: #e9ecef;
+  border-color: #007bff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+}
+
+.skill-toggle.selected {
+  background: #007bff;
+  border-color: #0056b3;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.skill-toggle.selected:hover {
+  background: #0056b3;
+  border-color: #004085;
+}
+
+.skill-toggle.blacklist-toggle {
+  border-color: #dc3545;
+}
+
+.skill-toggle.blacklist-toggle:hover {
+  border-color: #c82333;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15);
+}
+
+.skill-toggle.blacklist-toggle.selected {
+  background: #dc3545;
+  border-color: #c82333;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.skill-toggle.blacklist-toggle.selected:hover {
+  background: #c82333;
+  border-color: #a71e2a;
+}
+
+.skill-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-name {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.skill-priority {
+  font-size: 10px;
+  opacity: 0.8;
+  line-height: 1.1;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #495057;
 }
 </style>

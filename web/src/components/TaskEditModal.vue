@@ -175,11 +175,19 @@
             </div>
             <div>
               <div class="form-group">
-              <span v-if="!showAdvanceOption" class="btn auto-btn" style="width: 100%; background-color:#6c757d;" v-on:click="switchAdvanceOption">Show Advanced Options</span>
-              <span v-if="showAdvanceOption" class="btn auto-btn" style="width: 100%; background-color:#6c757d;" v-on:click="switchAdvanceOption">Hide Advanced Options</span>
+                <div class="advanced-options-header" @click="switchAdvanceOption">
+                  <div class="advanced-options-title">
+                    <i class="fas fa-cogs"></i>
+                    Advanced Options
+              </div>
+                  <div class="advanced-options-toggle">
+                    <span class="toggle-text">{{ showAdvanceOption ? 'Hide' : 'Show' }}</span>
+                    <i class="fas" :class="showAdvanceOption ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </div>
+                </div>
               </div>
             </div>
-            <div v-if ="showAdvanceOption">
+            <div v-if="showAdvanceOption" class="advanced-options-content">
               <div class="form-group">
                 <div>⭐ Extra Weight</div>
               </div>
@@ -273,10 +281,18 @@
                 </div>
               </div>
               <div class="form-group">
-              <span v-if="!showRaceList" class="btn auto-btn" style="width: 100%; background-color:#6c757d;" v-on:click="switchRaceList">Show Race Options</span>
-              <span v-if="showRaceList" class="btn auto-btn" style="width: 100%; background-color:#6c757d;" v-on:click="switchRaceList">Hide Race Options</span>
+                <div class="race-options-header" @click="switchRaceList">
+                  <div class="race-options-title">
+                    <i class="fas fa-flag-checkered"></i>
+                    Race Options
               </div>
-              <div v-if="showRaceList">
+                  <div class="race-options-toggle">
+                    <span class="toggle-text">{{ showRaceList ? 'Hide' : 'Show' }}</span>
+                    <i class="fas" :class="showRaceList ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                  </div>
+                </div>
+              </div>
+              <div v-if="showRaceList" class="race-options-content">
                 <!-- Race Filter Controls -->
                 <div class="row mb-3">
                   <div class="col-md-4">
@@ -466,74 +482,193 @@
                     <label for="skill-learn">⭐ Skill Learning</label>
                   </div>
                 </div>
+                <div class="col-auto">
+                  <div class="form-group">
+                    <div class="skill-notes-alert">
+                      <i class="fas fa-info-circle"></i>
+                      <span><strong>Notes:</strong> Left Click to Select - Right Click to Blacklist</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <!-- Priority 0 Skills (Best) -->
+            <!-- Skill Learning Section -->
             <div class="form-group">
-              <label class="form-label">🏆 Priority 0 - SS Tier Skills (Best)</label>
-              <div class="skill-grid">
-                <div v-for="skill in skillPriority0" :key="skill" 
-                     class="skill-toggle" 
-                     :class="{ 'selected': selectedSkills.includes(skill) }"
-                     @click="toggleSkill(skill)">
-                  <div class="skill-content">
-                    <div class="skill-name">{{skill}}</div>
-                    <div class="skill-priority">SS Tier</div>
+              
+              <!-- Priority 0 Section -->
+              <div class="priority-section">
+                <label class="form-label section-heading">
+                  <i class="fas fa-trophy"></i>
+                  Priority 0
+                </label>
+                <div class="selected-skills-box">
+                  <div v-if="getSelectedSkillsForPriority(0).length === 0" class="empty-state">
+                    The skill that user already select listed in here
+                  </div>
+                  <div v-else class="selected-skills-list">
+                    <div v-for="skillName in getSelectedSkillsForPriority(0)" :key="skillName" 
+                         class="selected-skill-item">
+                      {{ skillName }}
                 </div>
                 </div>
               </div>
             </div>
 
-            <!-- Priority 1 Skills (Good) -->
-                  <div class="form-group">
-              <label class="form-label">🥇 Priority 1 - S/A Tier Skills (Good)</label>
-              <div class="skill-grid">
-                <div v-for="skill in skillPriority1" :key="skill" 
-                     class="skill-toggle" 
-                     :class="{ 'selected': selectedSkills.includes(skill) }"
-                     @click="toggleSkill(skill)">
-                  <div class="skill-content">
-                    <div class="skill-name">{{skill}}</div>
-                    <div class="skill-priority">S/A Tier</div>
+              <!-- Dynamic Priority Sections -->
+              <div v-for="priority in getActivePriorities().slice(1)" :key="priority" class="priority-section">
+                <label class="form-label section-heading">
+                  <i class="fas fa-medal"></i>
+                  Priority {{ priority }}
+                </label>
+                <div class="selected-skills-box">
+                  <div v-if="getSelectedSkillsForPriority(priority).length === 0" class="empty-state">
+                    The skill that user already select listed in here
+                  </div>
+                  <div v-else class="selected-skills-list">
+                    <div v-for="skillName in getSelectedSkillsForPriority(priority)" :key="skillName" 
+                         class="selected-skill-item">
+                      {{ skillName }}
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Priority 2 Skills (Situational) -->
-                  <div class="form-group">
-              <label class="form-label">🥈 Priority 2 - B Tier Skills (Situational)</label>
-              <div class="skill-grid">
-                <div v-for="skill in skillPriority2" :key="skill" 
-                     class="skill-toggle" 
-                     :class="{ 'selected': selectedSkills.includes(skill) }"
-                     @click="toggleSkill(skill)">
-                  <div class="skill-content">
-                    <div class="skill-name">{{skill}}</div>
-                    <div class="skill-priority">B Tier</div>
-                  </div>
+              <!-- Add/Remove Priority Buttons -->
+              <div class="form-group mt-3">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-primary btn-sm" @click="addPriority">
+                    Add Priority
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" @click="removeLastPriority" 
+                          :disabled="activePriorities.length <= 1">
+                    Undo
+                  </button>
                 </div>
               </div>
             </div>
 
             <!-- Blacklist Section -->
-            <div class="form-group">
-              <label class="form-label">⛔ Blacklist (Never learn these skills)</label>
-              <div class="skill-grid">
-                <div v-for="skill in skillPriority2" :key="skill" 
-                     class="skill-toggle blacklist-toggle" 
-                     :class="{ 'selected': blacklistedSkills.includes(skill) }"
-                     @click="toggleBlacklistSkill(skill)">
-                  <div class="skill-content">
-                    <div class="skill-name">{{skill}}</div>
-                    <div class="skill-priority">Blacklisted</div>
+                  <div class="form-group">
+              <label class="form-label section-heading">
+                <i class="fas fa-ban"></i>
+                Blacklist
+              </label>
+              <div class="blacklist-box">
+                <div v-if="blacklistedSkills.length === 0" class="empty-state">
+                  The skill that user already select blacklisted in here
+                </div>
+                <div v-else class="blacklisted-skills-list">
+                  <div v-for="skillName in blacklistedSkills" :key="skillName" 
+                       class="blacklisted-skill-item">
+                    {{ skillName }}
                   </div>
                 </div>
               </div>
             </div>
-            
 
+            <!-- Skill List Section -->
+            <div class="form-group">
+              <div class="skill-list-header" @click="toggleSkillList">
+                <div class="skill-list-title">
+                  <i class="fas fa-list"></i>
+                  Skill List
+                  </div>
+                <div class="skill-list-toggle">
+                  <span class="toggle-text">{{ showSkillList ? 'Hide' : 'Show' }}</span>
+                  <i class="fas" :class="showSkillList ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                </div>
+              </div>
+              
+              <div v-if="showSkillList" class="skill-list-content">
+                <!-- Skill Filter System -->
+                <div class="skill-filter-section">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="filter-label">Strategy</label>
+                      <select v-model="skillFilter.strategy" class="form-control form-control-sm">
+                        <option value="">All Strategies</option>
+                        <option v-for="strategy in availableStrategies" :key="strategy" :value="strategy">
+                          {{ strategy }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="filter-label">Distance</label>
+                      <select v-model="skillFilter.distance" class="form-control form-control-sm">
+                        <option value="">All Distances</option>
+                        <option v-for="distance in availableDistances" :key="distance" :value="distance">
+                          {{ distance }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="filter-label">Tier</label>
+                      <select v-model="skillFilter.tier" class="form-control form-control-sm">
+                        <option value="">All Tiers</option>
+                        <option v-for="tier in availableTiers" :key="tier" :value="tier">
+                          {{ tier }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="filter-label">Rarity</label>
+                      <select v-model="skillFilter.rarity" class="form-control form-control-sm">
+                        <option value="">All Rarities</option>
+                        <option v-for="rarity in availableRarities" :key="rarity" :value="rarity">
+                          {{ rarity }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col">
+                      <button type="button" class="btn btn-outline-secondary btn-sm" @click="clearSkillFilters">
+                        <i class="fas fa-times"></i> Clear Filters
+                      </button>
+                </div>
+              </div>
+            </div>
+            
+                <div class="skill-list-container">
+                  <div class="skill-type-grid">
+                    <div v-for="(skills, skillType) in filteredSkillsByType" :key="skillType" class="skill-type-card">
+                      <div class="skill-type-header">
+                        <h6 class="skill-type-title">{{ skillType }}</h6>
+                        <span class="skill-count">{{ skills.length }} skills</span>
+                      </div>
+                      <div class="skill-type-content">
+                        <div v-for="skill in skills" :key="skill.name" 
+                             class="skill-item"
+                             :class="{ 
+                               'selected': selectedSkills.includes(skill.name), 
+                               'blacklisted': blacklistedSkills.includes(skill.name) 
+                             }"
+                             @click="toggleSkill(skill.name)"
+                             @contextmenu.prevent="toggleBlacklistSkill(skill.name)">
+                          <div class="skill-header">
+                            <div class="skill-name">{{ skill.name }}</div>
+                            <div class="skill-cost">Cost: {{ skill.base_cost }}</div>
+                          </div>
+                          <div class="skill-details">
+                            <div class="skill-type">{{ skill.skill_type }}</div>
+                            <div class="skill-description">{{ skill.description }}</div>
+                            <div class="skill-tags">
+                              <span v-if="skill.strategy" class="skill-tag strategy-tag">{{ skill.strategy }}</span>
+                              <span v-if="skill.distance" class="skill-tag distance-tag">{{ skill.distance }}</span>
+                              <span v-if="skill.tier" class="skill-tag tier-tag" :data-tier="skill.tier">{{ skill.tier }}</span>
+                              <span v-if="skill.rarity" class="skill-tag rarity-tag">{{ skill.rarity }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Learning Settings -->
             <div class="form-group">
               <div class="row">
                 <div class="col-3">
@@ -627,6 +762,9 @@ import SkillIcon from './SkillIcon.vue';
 import AoharuConfigModal from './AoharuConfigModal.vue';
 import UraConfigModal from './UraConfigModal.vue';
 import SupportCardSelectModal from './SupportCardSelectModal.vue';
+import characterData from '../assets/uma_character_data.json';
+import raceData from '../assets/uma_race_data.json';
+import skillsData from '../assets/umamusume_final_skills_fixed.json';
 
 export default {
   name: "TaskEditModal",
@@ -696,572 +834,17 @@ export default {
         {id:23, name:'Haru Urara'},
         {id:24, name:'Matikanefukukitaru'},
         {id:25, name:'Nice Nature'},
-        {id:26, name:'King Halo'},
-      ],
-      // Character data from aptitude_output.csv and character_objective_ranges.csv
-      characterList: [
-        {name: 'Agnes Tachyon', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Air Groove', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Biwa Hayahide', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Curren Chan', terrain: 'Turf', distance: 'Sprint'},
-        {name: 'Daiwa Scarlet', terrain: 'Turf', distance: 'Mile'},
-        {name: 'El Condor Pasa', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Gold Ship', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Grass Wonder', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Haru Urara', terrain: 'Dirt', distance: 'Sprint'},
-        {name: 'King Halo', terrain: 'Turf', distance: 'Sprint'},
-        {name: 'Maruzensky', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Matikanefukukitaru', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Mayano Top Gun', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Mejiro McQueen', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Mejiro Ryan', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Mihono Bourbon', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Nice Nature', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Oguri Cap', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Rice Shower', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Sakura Bakushin O', terrain: 'Turf', distance: 'Sprint'},
-        {name: 'Silence Suzuka', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Special Week', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Super Creek', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Symboli Rudolf', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Taiki Shuttle', terrain: 'Turf', distance: 'Sprint'},
-        {name: 'TM Opera O', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Tokai Teio', terrain: 'Turf', distance: 'Medium'},
-        {name: 'Vodka', terrain: 'Turf', distance: 'Mile'},
-        {name: 'Winning Ticket', terrain: 'Turf', distance: 'Medium'}
-      ],
-      // Character training periods from character_objective_ranges.csv
+        {id:26, name:'King Halo'}],
+      // Character data from JSON file
+      characterList: [],
+      // Character training periods from JSON file
       characterTrainingPeriods: {
-        'Agnes Tachyon': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'King Halo': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Early Oct']
-        },
-        'Curren Chan': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep']
-        },
-        'Daiwa Scarlet': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'El Condor Pasa': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        },
-        'Gold Ship': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Grass Wonder': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Haru Urara': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Early Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Maruzensky': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct']
-        },
-        'Matikanefukukitaru': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Mayano Top Gun': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Super Creek': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Air Groove': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct']
-        },
-        'Biwa Hayahide': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Symboli Rudolf': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        },
-        'Taiki Shuttle': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov']
-        },
-        'TM Opera O': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        },
-        'Tokai Teio': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        },
-        'Vodka': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Late May', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct']
-        },
-        'Winning Ticket': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Mejiro McQueen': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct']
-        },
-        'Mejiro Ryan': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Mihono Bourbon': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        },
-        'Nice Nature': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov']
-        },
-        'Oguri Cap': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Early Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Rice Shower': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Late Nov', 'Senior Year Early Dec']
-        },
-        'Sakura Bakushin O': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Early Feb', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov']
-        },
-        'Silence Suzuka': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Late Feb', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Late May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Early Oct', 'Classic Year Late Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Late Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep']
-        },
-        'Special Week': {
-          'Junior Year': ['Junior Year Early Jul', 'Junior Year Late Jul', 'Junior Year Early Aug', 'Junior Year Late Aug', 'Junior Year Early Sep', 'Junior Year Late Sep', 'Junior Year Early Oct', 'Junior Year Late Oct', 'Junior Year Early Nov', 'Junior Year Late Nov', 'Junior Year Early Dec', 'Junior Year Late Dec'],
-          'Classic Year': ['Classic Year Pre-Debut', 'Classic Year Early Jan', 'Classic Year Late Jan', 'Classic Year Late Feb', 'Classic Year Early Mar', 'Classic Year Late Mar', 'Classic Year Early Apr', 'Classic Year Late Apr', 'Classic Year Early May', 'Classic Year Early Jun', 'Classic Year Late Jun', 'Classic Year Early Jul', 'Classic Year Late Jul', 'Classic Year Early Aug', 'Classic Year Late Aug', 'Classic Year Early Sep', 'Classic Year Late Sep', 'Classic Year Early Oct', 'Classic Year Early Nov', 'Classic Year Late Nov', 'Classic Year Early Dec', 'Classic Year Late Dec'],
-          'Senior Year': ['Senior Year Pre-Debut', 'Senior Year Early Jan', 'Senior Year Late Jan', 'Senior Year Early Feb', 'Senior Year Late Feb', 'Senior Year Early Mar', 'Senior Year Late Mar', 'Senior Year Early Apr', 'Senior Year Early May', 'Senior Year Late May', 'Senior Year Early Jun', 'Senior Year Late Jun', 'Senior Year Early Jul', 'Senior Year Late Jul', 'Senior Year Early Aug', 'Senior Year Late Aug', 'Senior Year Early Sep', 'Senior Year Late Sep', 'Senior Year Early Oct', 'Senior Year Late Oct', 'Senior Year Early Nov', 'Senior Year Early Dec']
-        }
+
       },
-              umamusumeRaceList_1:[
-              {id:2003, name:'Chukyo Junior Stakes',date: 'Junior Year Late Jul', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Chukyo'},
-              {id:2004, name:'Hakodate Junior Stakes',date: 'Junior Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Hakodate'},
-              {id:2005, name:'Cosmos Sho',date: 'Junior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Sapporo'},
-              {id:2006, name:'Dahlia Sho',date: 'Junior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-              {id:2007, name:'Phoenix Sho',date: 'Junior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kokura'},
-              {id:2008, name:'Clover Sho',date: 'Junior Year Late Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Sapporo'},
-              {id:2009, name:'Niigata Junior Stakes',date: 'Junior Year Late Aug', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-              {id:2010, name:'Aster Sho',date: 'Junior Year Early Sep', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-              {id:2011, name:'Kokura Junior Stakes',date: 'Junior Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kokura'},
-              {id:2012, name:'Nojigiku Stakes',date: 'Junior Year Early Sep', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-              {id:2013, name:'Sapporo Junior Stakes',date: 'Junior Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Sapporo'},
-              {id:2014, name:'Suzuran Sho',date: 'Junior Year Early Sep', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Sapporo'},
-              {id:2015, name:'Canna Stakes',date: 'Junior Year Late Sep', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-              {id:2016, name:'Fuyo Stakes',date: 'Junior Year Late Sep', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-              {id:2017, name:'Kikyo Stakes',date: 'Junior Year Late Sep', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-              {id:2018, name:'Saffron Sho',date: 'Junior Year Late Sep', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-              {id:2019, name:'Momiji Stakes',date: 'Junior Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-              {id:2020, name:'Platanus Sho',date: 'Junior Year Early Oct', type: 'PRE-OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-              {id:2021, name:'Rindo Sho',date: 'Junior Year Early Oct', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-              {id:2022, name:'Saudi Arabia Royal Cup',date: 'Junior Year Early Oct', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2023, name:'Shigiku Sho',date: 'Junior Year Early Oct', type: 'PRE-OP', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-              {id:2024, name:'Artemis Stakes',date: 'Junior Year Late Oct', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2025, name:'Hagi Stakes',date: 'Junior Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-              {id:2026, name:'Ivy Stakes',date: 'Junior Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2027, name:'Nadeshiko Sho',date: 'Junior Year Late Oct', type: 'PRE-OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-              {id:2028, name:'Daily Hai Junior Stakes',date: 'Junior Year Early Nov', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-              {id:2029, name:'Fantasy Stakes',date: 'Junior Year Early Nov', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-              {id:2030, name:'Fukushima Junior Stakes',date: 'Junior Year Early Nov', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Fukushima'},
-              {id:2031, name:'Hyakunichiso Tokubetsu',date: 'Junior Year Early Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-              {id:2032, name:'Keio Hai Junior Stakes',date: 'Junior Year Early Nov', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-              {id:2033, name:'Kigiku Sho',date: 'Junior Year Early Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-              {id:2034, name:'Kimmokusei Tokubetsu',date: 'Junior Year Early Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Fukushima'},
-              {id:2035, name:'Oxalis Sho',date: 'Junior Year Early Nov', type: 'PRE-OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-              {id:2036, name:'Akamatsu Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2037, name:'Begonia Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2038, name:'Cattleya Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-              {id:2039, name:'Habotan Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-              {id:2040, name:'Koyamaki Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Chukyo'},
-              {id:2041, name:'Kyoto Junior Stakes',date: 'Junior Year Late Nov', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-              {id:2042, name:'Mochinoki Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-              {id:2043, name:'Shiragiku Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-              {id:2044, name:'Shumeigiku Sho',date: 'Junior Year Late Nov', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-              {id:2045, name:'Tokyo Sports Hai Junior Stakes',date: 'Junior Year Late Nov', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-              {id:2046, name:'Asahi Hai Futurity Stakes',date: 'Junior Year Early Dec', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-              {id:2047, name:'Erica Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-              {id:2048, name:'Hanshin Juvenile Fillies',date: 'Junior Year Early Dec', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-              {id:2049, name:'Hiiragi Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-              {id:2050, name:'Kantsubaki Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Chukyo'},
-              {id:2051, name:'Kuromatsu Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-              {id:2052, name:'Manryo Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-              {id:2053, name:'Sazanka Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-              {id:2054, name:'Tsuwabuki Sho',date: 'Junior Year Early Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Sprint', venue: 'Chukyo'},
-              {id:2055, name:'Christmas Rose Stakes',date: 'Junior Year Late Dec', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-              {id:2056, name:'Hopeful Stakes',date: 'Junior Year Late Dec', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-              {id:2057, name:'Senryo Sho',date: 'Junior Year Late Dec', type: 'PRE-OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-        ],
-      umamusumeRaceList_2:[
-      {id:2058, name:'Fairy Stakes',date: 'Classic Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2059, name:'Junior Cup',date: 'Classic Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2060, name:'Keisei Hai',date: 'Classic Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2061, name:'Kobai Stakes',date: 'Classic Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2062, name:'Shinzan Kinen',date: 'Classic Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2063, name:'Crocus Stakes',date: 'Classic Year Late Jan', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2064, name:'Wakagoma Stakes',date: 'Classic Year Late Jan', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2065, name:'Elfin Stakes',date: 'Classic Year Early Feb', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2066, name:'Kisaragi Sho',date: 'Classic Year Early Feb', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2067, name:'Kyodo News Hai',date: 'Classic Year Early Feb', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2068, name:'Queen Cup',date: 'Classic Year Early Feb', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2069, name:'Hyacinth Stakes',date: 'Classic Year Late Feb', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2070, name:'Marguerite Stakes',date: 'Classic Year Late Feb', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2071, name:'Sumire Stakes',date: 'Classic Year Late Feb', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2072, name:'Anemone Stakes',date: 'Classic Year Early Mar', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2073, name:'Fillies/Revue',date: 'Classic Year Early Mar', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2074, name:'Shoryu Stakes',date: 'Classic Year Early Mar', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2075, name:'Tulip Sho',date: 'Classic Year Early Mar', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2076, name:'Yayoi Sho',date: 'Classic Year Early Mar', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2077, name:'Falcon Stakes',date: 'Classic Year Late Mar', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2078, name:'Flower Cup',date: 'Classic Year Late Mar', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2079, name:'Mainichi Hai',date: 'Classic Year Late Mar', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2080, name:'Spring Stakes',date: 'Classic Year Late Mar', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2081, name:'Wakaba Stakes',date: 'Classic Year Late Mar', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2082, name:'Arlington Cup',date: 'Classic Year Early Apr', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2083, name:'Fukuryu Stakes',date: 'Classic Year Early Apr', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2084, name:'New Zealand Trophy',date: 'Classic Year Early Apr', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2085, name:'Oka Sho',date: 'Classic Year Early Apr', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2086, name:'Satsuki Sho',date: 'Classic Year Early Apr', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2087, name:'Wasurenagusa Sho',date: 'Classic Year Early Apr', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2088, name:'Aoba Sho',date: 'Classic Year Late Apr', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2089, name:'Flora Stakes',date: 'Classic Year Late Apr', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2090, name:'Sweetpea Stakes',date: 'Classic Year Late Apr', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2091, name:'Tachibana Stakes',date: 'Classic Year Late Apr', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2092, name:'Tango Stakes',date: 'Classic Year Late Apr', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2093, name:'Kyoto Shimbun Hai',date: 'Classic Year Early May', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2094, name:'NHK Mile Cup',date: 'Classic Year Early May', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2095, name:'Principal Stakes',date: 'Classic Year Early May', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2096, name:'Seiryu Stakes',date: 'Classic Year Early May', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2097, name:'Aoi Stakes',date: 'Classic Year Late May', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2098, name:'Hosu Stakes',date: 'Classic Year Late May', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-      {id:2099, name:'Japanese Oaks',date: 'Classic Year Late May', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2100, name:'Shirayuri Stakes',date: 'Classic Year Late May', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2101, name:'Tokyo Yushun (Japanese Derby)',date: 'Classic Year Late May', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2102, name:'Epsom Cup',date: 'Classic Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2103, name:'Mermaid Stakes',date: 'Classic Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2104, name:'Naruo Kinen',date: 'Classic Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2105, name:'Sleipnir Stakes',date: 'Classic Year Early Jun', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Tokyo'},
-      {id:2106, name:'Tempozan Stakes',date: 'Classic Year Early Jun', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2107, name:'Yasuda Kinen',date: 'Classic Year Early Jun', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2108, name:'Akhalteke Stakes',date: 'Classic Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2109, name:'Hakodate Sprint Stakes',date: 'Classic Year Late Jun', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Hakodate'},
-      {id:2110, name:'Onuma Stakes',date: 'Classic Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hakodate'},
-      {id:2111, name:'Paradise Stakes',date: 'Classic Year Late Jun', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2112, name:'Sannomiya Stakes',date: 'Classic Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hanshin'},
-      {id:2113, name:'Takarazuka Kinen',date: 'Classic Year Late Jun', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2114, name:'Unicorn Stakes',date: 'Classic Year Late Jun', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2115, name:'Yonago Stakes',date: 'Classic Year Late Jun', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2116, name:'CBC Sho',date: 'Classic Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2117, name:'Hakodate Kinen',date: 'Classic Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hakodate'},
-      {id:2118, name:'Japan Dirt Derby',date: 'Classic Year Early Jul', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-      {id:2119, name:'Marine Stakes',date: 'Classic Year Early Jul', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hakodate'},
-      {id:2120, name:'Meitetsu Hai',date: 'Classic Year Early Jul', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Chukyo'},
-      {id:2121, name:'Procyon Stakes',date: 'Classic Year Early Jul', type: 'G3', terrain: 'Dirt', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2122, name:'Radio Nikkei Sho',date: 'Classic Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Fukushima'},
-      {id:2123, name:'Tanabata Sho',date: 'Classic Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Fukushima'},
-      {id:2124, name:'Tomoe Sho',date: 'Classic Year Early Jul', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hakodate'},
-      {id:2125, name:'Chukyo Kinen',date: 'Classic Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Chukyo'},
-      {id:2126, name:'Fukushima TV Open',date: 'Classic Year Late Jul', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Fukushima'},
-      {id:2127, name:'Ibis Summer Dash',date: 'Classic Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2128, name:'Queen Stakes',date: 'Classic Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Sapporo'},
-      {id:2129, name:'Aso Stakes',date: 'Classic Year Early Aug', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kokura'},
-      {id:2130, name:'Elm Stakes',date: 'Classic Year Early Aug', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Sapporo'},
-      {id:2131, name:'Kanetsu Stakes',date: 'Classic Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-      {id:2132, name:'Kokura Kinen',date: 'Classic Year Early Aug', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Kokura'},
-      {id:2133, name:'Leopard Stakes',date: 'Classic Year Early Aug', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Niigata'},
-      {id:2134, name:'Sapporo Nikkei Open',date: 'Classic Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Long', venue: 'Sapporo'},
-      {id:2135, name:'Sekiya Kinen',date: 'Classic Year Early Aug', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-      {id:2136, name:'UHB Sho',date: 'Classic Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Sapporo'},
-      {id:2137, name:'BSN Sho',date: 'Classic Year Late Aug', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Niigata'},
-      {id:2138, name:'Keeneland Cup',date: 'Classic Year Late Aug', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Sapporo'},
-      {id:2139, name:'Kitakyushu Kinen',date: 'Classic Year Late Aug', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kokura'},
-      {id:2140, name:'Kokura Nikkei Open',date: 'Classic Year Late Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kokura'},
-      {id:2141, name:'NST Sho',date: 'Classic Year Late Aug', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Niigata'},
-      {id:2142, name:'Sapporo Kinen',date: 'Classic Year Late Aug', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Sapporo'},
-      {id:2143, name:'Toki Stakes',date: 'Classic Year Late Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2144, name:'Centaur Stakes',date: 'Classic Year Early Sep', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2145, name:'Enif Stakes',date: 'Classic Year Early Sep', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2146, name:'Keisei Hai Autumn Handicap',date: 'Classic Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2147, name:'Niigata Kinen',date: 'Classic Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Niigata'},
-      {id:2148, name:'Prix Niel',date: 'Classic Year Early Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Longchamp'},
-      {id:2149, name:'Radio Nippon Sho',date: 'Classic Year Early Sep', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2150, name:'Rose Stakes',date: 'Classic Year Early Sep', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2151, name:'Shion Stakes',date: 'Classic Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2152, name:'Tancho Stakes',date: 'Classic Year Early Sep', type: 'OP', terrain: 'Turf', distance: 'Long', venue: 'Sapporo'},
-      {id:2153, name:'All Comers',date: 'Classic Year Late Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2154, name:'Kobe Shimbun Hai',date: 'Classic Year Late Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2155, name:'Nagatsuki Stakes',date: 'Classic Year Late Sep', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2156, name:'Port Island Stakes',date: 'Classic Year Late Sep', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2157, name:'Sirius Stakes',date: 'Classic Year Late Sep', type: 'G3', terrain: 'Dirt', distance: 'Medium', venue: 'Hanshin'},
-      {id:2158, name:'Sprinters Stakes',date: 'Classic Year Late Sep', type: 'G1', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2159, name:'St. Lite Kinen',date: 'Classic Year Late Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2160, name:'Fuchu Umamusume Stakes',date: 'Classic Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2161, name:'Green Channel Cup',date: 'Classic Year Early Oct', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2162, name:'Kyoto Daishoten',date: 'Classic Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2163, name:'Mainichi Okan',date: 'Classic Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2164, name:'October Stakes',date: 'Classic Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2165, name:'Opal Stakes',date: 'Classic Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2166, name:'Shinetsu Stakes',date: 'Classic Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2167, name:'Uzumasa Stakes',date: 'Classic Year Early Oct', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-      {id:2168, name:'Brazil Cup',date: 'Classic Year Late Oct', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Tokyo'},
-      {id:2169, name:'Cassiopeia Stakes',date: 'Classic Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2170, name:'Fuji Stakes',date: 'Classic Year Late Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2171, name:'Kikuka Sho',date: 'Classic Year Late Oct', type: 'G1', terrain: 'Turf', distance: 'Long', venue: 'Kyoto'},
-      {id:2172, name:'Lumiere Autumn Dash',date: 'Classic Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2173, name:'Muromachi Stakes',date: 'Classic Year Late Oct', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2174, name:'Shuka Sho',date: 'Classic Year Late Oct', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2175, name:'Swan Stakes',date: 'Classic Year Late Oct', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2176, name:'Tenno Sho (Autumn)',date: 'Classic Year Late Oct', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2177, name:'Copa Republica Argentina',date: 'Classic Year Early Nov', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Tokyo'},
-      {id:2178, name:'Fukushima Kinen',date: 'Classic Year Early Nov', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Fukushima'},
-      {id:2179, name:'JBC Classic',date: 'Classic Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-      {id:2180, name:'JBC Ladies’ Classic',date: 'Classic Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Mile', venue: 'Ooi'},
-      {id:2181, name:'JBC Sprint',date: 'Classic Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Sprint', venue: 'Ooi'},
-      {id:2182, name:'Miyako Stakes',date: 'Classic Year Early Nov', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-      {id:2183, name:'Musashino Stakes',date: 'Classic Year Early Nov', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2184, name:'Oro Cup',date: 'Classic Year Early Nov', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2185, name:'Queen Elizabeth II Cup',date: 'Classic Year Early Nov', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2186, name:'Andromeda Stakes',date: 'Classic Year Late Nov', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2187, name:'Autumn Leaf Stakes',date: 'Classic Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2188, name:'Capital Stakes',date: 'Classic Year Late Nov', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2189, name:'Fukushima Minyu Cup',date: 'Classic Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Fukushima'},
-      {id:2190, name:'Japan Cup',date: 'Classic Year Late Nov', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2191, name:'Keihan Hai',date: 'Classic Year Late Nov', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2192, name:'Mile Championship',date: 'Classic Year Late Nov', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2193, name:'Shimotsuki Stakes',date: 'Classic Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2194, name:'Capella Stakes',date: 'Classic Year Early Dec', type: 'G3', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2195, name:'Challenge Cup',date: 'Classic Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2196, name:'Champions Cup',date: 'Classic Year Early Dec', type: 'G1', terrain: 'Dirt', distance: 'Mile', venue: 'Chukyo'},
-      {id:2197, name:'Chunichi Shimbun Hai',date: 'Classic Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Chukyo'},
-      {id:2198, name:'December Stakes',date: 'Classic Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2199, name:'Lapis Lazuli Stakes',date: 'Classic Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2200, name:'Rigel Stakes',date: 'Classic Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2201, name:'Shiwasu Stakes',date: 'Classic Year Early Dec', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2202, name:'Stayers Stakes',date: 'Classic Year Early Dec', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Nakayama'},
-      {id:2203, name:'Tanzanite Stakes',date: 'Classic Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2204, name:'Turquoise Stakes',date: 'Classic Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2205, name:'Arima Kinen',date: 'Classic Year Late Dec', type: 'G1', terrain: 'Turf', distance: 'Long', venue: 'Nakayama'},
-      {id:2206, name:'Betelgeuse Stakes',date: 'Classic Year Late Dec', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hanshin'},
-      {id:2207, name:'Galaxy Stakes',date: 'Classic Year Late Dec', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2208, name:'Hanshin Cup',date: 'Classic Year Late Dec', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2209, name:'Tokyo Daishoten',date: 'Classic Year Late Dec', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-      ],
-      umamusumeRaceList_3:[
-      {id:2210, name:'Aichi Hai',date: 'Senior Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Chukyo'},
-      {id:2211, name:'Carbuncle Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2212, name:'January Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2213, name:'Kyoto Kimpai',date: 'Senior Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2214, name:'Manyo Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Long', venue: 'Kyoto'},
-      {id:2215, name:'Nakayama Kimpai',date: 'Senior Year Early Jan', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2216, name:'New Year Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2217, name:'Nikkei Shinshun Hai',date: 'Senior Year Early Jan', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2218, name:'Pollux Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2219, name:'Yodo Tankyori Stakes',date: 'Senior Year Early Jan', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2220, name:'American JCC',date: 'Senior Year Late Jan', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2221, name:'Negishi Stakes',date: 'Senior Year Late Jan', type: 'G3', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2222, name:'Shirafuji Stakes',date: 'Senior Year Late Jan', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2223, name:'Silk Road Stakes',date: 'Senior Year Late Jan', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2224, name:'Subaru Stakes',date: 'Senior Year Late Jan', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2225, name:'Tokai Stakes',date: 'Senior Year Late Jan', type: 'G2', terrain: 'Dirt', distance: 'Mile', venue: 'Chukyo'},
-      {id:2226, name:'Aldebaran Stakes',date: 'Senior Year Early Feb', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Kyoto'},
-      {id:2227, name:'Kyoto Kinen',date: 'Senior Year Early Feb', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2228, name:'Rakuyo Stakes',date: 'Senior Year Early Feb', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2229, name:'Tokyo Shimbun Hai',date: 'Senior Year Early Feb', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2230, name:'Valentine Stakes',date: 'Senior Year Early Feb', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2231, name:'Yamato Stakes',date: 'Senior Year Early Feb', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2232, name:'Diamond Stakes',date: 'Senior Year Late Feb', type: 'G3', terrain: 'Turf', distance: 'Long', venue: 'Tokyo'},
-      {id:2233, name:'February Stakes',date: 'Senior Year Late Feb', type: 'G1', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2234, name:'Hankyu Hai',date: 'Senior Year Late Feb', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2235, name:'Kitakyushu Tankyori Stakes',date: 'Senior Year Late Feb', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kokura'},
-      {id:2236, name:'Kokura Daishoten',date: 'Senior Year Late Feb', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Kokura'},
-      {id:2237, name:'Kyoto Umamusume Stakes',date: 'Senior Year Late Feb', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2238, name:'Nakayama Kinen',date: 'Senior Year Late Feb', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2239, name:'Sobu Stakes',date: 'Senior Year Late Feb', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2240, name:'Kinko Sho',date: 'Senior Year Early Mar', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Chukyo'},
-      {id:2241, name:'Kochi Stakes',date: 'Senior Year Early Mar', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2242, name:'Nakayama Umamusume Stakes',date: 'Senior Year Early Mar', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2243, name:'Nigawa Stakes',date: 'Senior Year Early Mar', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Hanshin'},
-      {id:2244, name:'Ocean Stakes',date: 'Senior Year Early Mar', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2245, name:'Osakajo Stakes',date: 'Senior Year Early Mar', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2246, name:'Polaris Stakes',date: 'Senior Year Early Mar', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2247, name:'Chiba Stakes',date: 'Senior Year Late Mar', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2248, name:'Hanshin Daishoten',date: 'Senior Year Late Mar', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Hanshin'},
-      {id:2249, name:'March Stakes',date: 'Senior Year Late Mar', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2250, name:'Nikkei Sho',date: 'Senior Year Late Mar', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Nakayama'},
-      {id:2251, name:'Osaka Hai',date: 'Senior Year Late Mar', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2252, name:'Rokko Stakes',date: 'Senior Year Late Mar', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2253, name:'Takamatsunomiya Kinen',date: 'Senior Year Late Mar', type: 'G1', terrain: 'Turf', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2254, name:'Antares Stakes',date: 'Senior Year Early Apr', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Hanshin'},
-      {id:2255, name:'Azumakofuji Stakes',date: 'Senior Year Early Apr', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Fukushima'},
-      {id:2256, name:'Coral Stakes',date: 'Senior Year Early Apr', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2257, name:'Fukushima Mimpo Hai',date: 'Senior Year Early Apr', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Fukushima'},
-      {id:2258, name:'Hanshin Umamusume Stakes',date: 'Senior Year Early Apr', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2259, name:'Keiyo Stakes',date: 'Senior Year Early Apr', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2260, name:'Lord Derby Challenge Trophy',date: 'Senior Year Early Apr', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2261, name:'Shunrai Stakes',date: 'Senior Year Early Apr', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2262, name:'Fukushima Umamusume Stakes',date: 'Senior Year Late Apr', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Fukushima'},
-      {id:2263, name:'Milers Cup',date: 'Senior Year Late Apr', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2264, name:'Oasis Stakes',date: 'Senior Year Late Apr', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2265, name:'Tenno Sho (Spring)',date: 'Senior Year Late Apr', type: 'G1', terrain: 'Turf', distance: 'Long', venue: 'Kyoto'},
-      {id:2266, name:'Tennozan Stakes',date: 'Senior Year Late Apr', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2267, name:'Brilliant Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Tokyo'},
-      {id:2268, name:'Keio Hai Spring Cup',date: 'Senior Year Early May', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2269, name:'Kurama Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2270, name:'Metropolitan Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2271, name:'Miyakooji Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2272, name:'Niigata Daishoten',date: 'Senior Year Early May', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Niigata'},
-      {id:2273, name:'Ritto Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2274, name:'Tanigawadake Stakes',date: 'Senior Year Early May', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-      {id:2275, name:'Victoria Mile',date: 'Senior Year Early May', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2276, name:'Azuchijo Stakes',date: 'Senior Year Late May', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2277, name:'Heian Stakes',date: 'Senior Year Late May', type: 'G3', terrain: 'Dirt', distance: 'Medium', venue: 'Kyoto'},
-      {id:2278, name:'Idaten Stakes',date: 'Senior Year Late May', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2279, name:'Keyaki Stakes',date: 'Senior Year Late May', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2280, name:'May Stakes',date: 'Senior Year Late May', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2281, name:'Meguro Kinen',date: 'Senior Year Late May', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Tokyo'},
-      {id:2282, name:'Epsom Cup',date: 'Senior Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2283, name:'Mermaid Stakes',date: 'Senior Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2284, name:'Naruo Kinen',date: 'Senior Year Early Jun', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2285, name:'Sleipnir Stakes',date: 'Senior Year Early Jun', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Tokyo'},
-      {id:2286, name:'Tempozan Stakes',date: 'Senior Year Early Jun', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2287, name:'Yasuda Kinen',date: 'Senior Year Early Jun', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2288, name:'Akhalteke Stakes',date: 'Senior Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2289, name:'Hakodate Sprint Stakes',date: 'Senior Year Late Jun', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Hakodate'},
-      {id:2290, name:'Onuma Stakes',date: 'Senior Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hakodate'},
-      {id:2291, name:'Paradise Stakes',date: 'Senior Year Late Jun', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2292, name:'Sannomiya Stakes',date: 'Senior Year Late Jun', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hanshin'},
-      {id:2293, name:'Takarazuka Kinen',date: 'Senior Year Late Jun', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2294, name:'Teio Sho',date: 'Senior Year Late Jun', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-      {id:2295, name:'Yonago Stakes',date: 'Senior Year Late Jun', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2296, name:'CBC Sho',date: 'Senior Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2297, name:'Hakodate Kinen',date: 'Senior Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hakodate'},
-      {id:2298, name:'Marine Stakes',date: 'Senior Year Early Jul', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hakodate'},
-      {id:2299, name:'Meitetsu Hai',date: 'Senior Year Early Jul', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Chukyo'},
-      {id:2300, name:'Procyon Stakes',date: 'Senior Year Early Jul', type: 'G3', terrain: 'Dirt', distance: 'Sprint', venue: 'Chukyo'},
-      {id:2301, name:'Tanabata Sho',date: 'Senior Year Early Jul', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Fukushima'},
-      {id:2302, name:'Tomoe Sho',date: 'Senior Year Early Jul', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hakodate'},
-      {id:2303, name:'Chukyo Kinen',date: 'Senior Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Chukyo'},
-      {id:2304, name:'Fukushima TV Open',date: 'Senior Year Late Jul', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Fukushima'},
-      {id:2305, name:'Ibis Summer Dash',date: 'Senior Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2306, name:'Queen Stakes',date: 'Senior Year Late Jul', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Sapporo'},
-      {id:2307, name:'Aso Stakes',date: 'Senior Year Early Aug', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kokura'},
-      {id:2308, name:'Elm Stakes',date: 'Senior Year Early Aug', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Sapporo'},
-      {id:2309, name:'Kanetsu Stakes',date: 'Senior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-      {id:2310, name:'Kokura Kinen',date: 'Senior Year Early Aug', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Kokura'},
-      {id:2311, name:'Sapporo Nikkei Open',date: 'Senior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Long', venue: 'Sapporo'},
-      {id:2312, name:'Sekiya Kinen',date: 'Senior Year Early Aug', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Niigata'},
-      {id:2313, name:'UHB Sho',date: 'Senior Year Early Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Sapporo'},
-      {id:2314, name:'BSN Sho',date: 'Senior Year Late Aug', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Niigata'},
-      {id:2315, name:'Keeneland Cup',date: 'Senior Year Late Aug', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Sapporo'},
-      {id:2316, name:'Kitakyushu Kinen',date: 'Senior Year Late Aug', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kokura'},
-      {id:2317, name:'Kokura Nikkei Open',date: 'Senior Year Late Aug', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kokura'},
-      {id:2318, name:'NST Sho',date: 'Senior Year Late Aug', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Niigata'},
-      {id:2319, name:'Sapporo Kinen',date: 'Senior Year Late Aug', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Sapporo'},
-      {id:2320, name:'Toki Stakes',date: 'Senior Year Late Aug', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2321, name:'Centaur Stakes',date: 'Senior Year Early Sep', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2322, name:'Enif Stakes',date: 'Senior Year Early Sep', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2323, name:'Keisei Hai Autumn Handicap',date: 'Senior Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2324, name:'Niigata Kinen',date: 'Senior Year Early Sep', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Niigata'},
-      {id:2325, name:'Prix Foy',date: 'Senior Year Early Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Longchamp'},
-      {id:2326, name:'Radio Nippon Sho',date: 'Senior Year Early Sep', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2327, name:'Tancho Stakes',date: 'Senior Year Early Sep', type: 'OP', terrain: 'Turf', distance: 'Long', venue: 'Sapporo'},
-      {id:2328, name:'All Comers',date: 'Senior Year Late Sep', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Nakayama'},
-      {id:2329, name:'Nagatsuki Stakes',date: 'Senior Year Late Sep', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2330, name:'Port Island Stakes',date: 'Senior Year Late Sep', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2331, name:'Sirius Stakes',date: 'Senior Year Late Sep', type: 'G3', terrain: 'Dirt', distance: 'Medium', venue: 'Hanshin'},
-      {id:2332, name:'Sprinters Stakes',date: 'Senior Year Late Sep', type: 'G1', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2333, name:'Fuchu Umamusume Stakes',date: 'Senior Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2334, name:'Green Channel Cup',date: 'Senior Year Early Oct', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2335, name:'Kyoto Daishoten',date: 'Senior Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2336, name:'Mainichi Okan',date: 'Senior Year Early Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2337, name:'October Stakes',date: 'Senior Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2338, name:'Opal Stakes',date: 'Senior Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2339, name:'Shinetsu Stakes',date: 'Senior Year Early Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2340, name:'Uzumasa Stakes',date: 'Senior Year Early Oct', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-      {id:2341, name:'Brazil Cup',date: 'Senior Year Late Oct', type: 'OP', terrain: 'Dirt', distance: 'Medium', venue: 'Tokyo'},
-      {id:2342, name:'Cassiopeia Stakes',date: 'Senior Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2343, name:'Fuji Stakes',date: 'Senior Year Late Oct', type: 'G2', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2344, name:'Lumiere Autumn Dash',date: 'Senior Year Late Oct', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Niigata'},
-      {id:2345, name:'Muromachi Stakes',date: 'Senior Year Late Oct', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2346, name:'Swan Stakes',date: 'Senior Year Late Oct', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2347, name:'Tenno Sho (Autumn)',date: 'Senior Year Late Oct', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2348, name:'Copa Republica Argentina',date: 'Senior Year Early Nov', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Tokyo'},
-      {id:2349, name:'Fukushima Kinen',date: 'Senior Year Early Nov', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Fukushima'},
-      {id:2350, name:'JBC Classic',date: 'Senior Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-      {id:2351, name:'JBC Ladies’ Classic',date: 'Senior Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Mile', venue: 'Ooi'},
-      {id:2352, name:'JBC Sprint',date: 'Senior Year Early Nov', type: 'G1', terrain: 'Dirt', distance: 'Sprint', venue: 'Ooi'},
-      {id:2353, name:'Miyako Stakes',date: 'Senior Year Early Nov', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Kyoto'},
-      {id:2354, name:'Musashino Stakes',date: 'Senior Year Early Nov', type: 'G3', terrain: 'Dirt', distance: 'Mile', venue: 'Tokyo'},
-      {id:2355, name:'Oro Cup',date: 'Senior Year Early Nov', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2356, name:'Queen Elizabeth II Cup',date: 'Senior Year Early Nov', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2357, name:'Andromeda Stakes',date: 'Senior Year Late Nov', type: 'OP', terrain: 'Turf', distance: 'Medium', venue: 'Kyoto'},
-      {id:2358, name:'Autumn Leaf Stakes',date: 'Senior Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2359, name:'Capital Stakes',date: 'Senior Year Late Nov', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Tokyo'},
-      {id:2360, name:'Fukushima Minyu Cup',date: 'Senior Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Fukushima'},
-      {id:2361, name:'Japan Cup',date: 'Senior Year Late Nov', type: 'G1', terrain: 'Turf', distance: 'Medium', venue: 'Tokyo'},
-      {id:2362, name:'Keihan Hai',date: 'Senior Year Late Nov', type: 'G3', terrain: 'Turf', distance: 'Sprint', venue: 'Kyoto'},
-      {id:2363, name:'Mile Championship',date: 'Senior Year Late Nov', type: 'G1', terrain: 'Turf', distance: 'Mile', venue: 'Kyoto'},
-      {id:2364, name:'Shimotsuki Stakes',date: 'Senior Year Late Nov', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Tokyo'},
-      {id:2365, name:'Capella Stakes',date: 'Senior Year Early Dec', type: 'G3', terrain: 'Dirt', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2366, name:'Challenge Cup',date: 'Senior Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Hanshin'},
-      {id:2367, name:'Champions Cup',date: 'Senior Year Early Dec', type: 'G1', terrain: 'Dirt', distance: 'Mile', venue: 'Chukyo'},
-      {id:2368, name:'Chunichi Shimbun Hai',date: 'Senior Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Medium', venue: 'Chukyo'},
-      {id:2369, name:'December Stakes',date: 'Senior Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2370, name:'Lapis Lazuli Stakes',date: 'Senior Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Nakayama'},
-      {id:2371, name:'Rigel Stakes',date: 'Senior Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Mile', venue: 'Hanshin'},
-      {id:2372, name:'Shiwasu Stakes',date: 'Senior Year Early Dec', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Nakayama'},
-      {id:2373, name:'Stayers Stakes',date: 'Senior Year Early Dec', type: 'G2', terrain: 'Turf', distance: 'Long', venue: 'Nakayama'},
-      {id:2374, name:'Tanzanite Stakes',date: 'Senior Year Early Dec', type: 'OP', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2375, name:'Turquoise Stakes',date: 'Senior Year Early Dec', type: 'G3', terrain: 'Turf', distance: 'Mile', venue: 'Nakayama'},
-      {id:2376, name:'Arima Kinen',date: 'Senior Year Late Dec', type: 'G1', terrain: 'Turf', distance: 'Long', venue: 'Nakayama'},
-      {id:2377, name:'Betelgeuse Stakes',date: 'Senior Year Late Dec', type: 'OP', terrain: 'Dirt', distance: 'Mile', venue: 'Hanshin'},
-      {id:2378, name:'Galaxy Stakes',date: 'Senior Year Late Dec', type: 'OP', terrain: 'Dirt', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2379, name:'Hanshin Cup',date: 'Senior Year Late Dec', type: 'G2', terrain: 'Turf', distance: 'Sprint', venue: 'Hanshin'},
-      {id:2380, name:'Tokyo Daishoten',date: 'Senior Year Late Dec', type: 'G1', terrain: 'Dirt', distance: 'Medium', venue: 'Ooi'},
-    ],
+      // Race data from JSON file
+      umamusumeRaceList_1: [],
+      umamusumeRaceList_2: [],
+      umamusumeRaceList_3: [],
       cultivatePresets:[],
       cultivateDefaultPresets:[
       {
@@ -1402,29 +985,30 @@ export default {
       showUraConfigModal: false,
       showSupportCardSelectModal: false,      
       
-      // Skill data from const.py
-      skillPriority0: [
-        'Corner Acceleration ◯', 'Corner Adept ◯', 'Slipstream', 'Tail Held High', 
-        'Straightaway Spurt', 'Ramp Up', 'Inside Scoop', 'Passing Pro', 'Homestretch Haste',
-        'Fast-Paced', 'Outer Swell', 'Sprinting Gear', 'Slick Surge', 'Corner Recovery ◯',
-        'Hydrate', 'After-School Stroll', 'Clean Heart', 'Dominator', 'All-Seeing Eyes', 'Mystifying Murmur'
-      ],
-      skillPriority1: [
-        'Acceleration', 'Focus', 'Go with the Flow', 'I Can See Right Through You', 
-        'Nimble Navigator', 'Straightaway Recovery', 'Deep Breaths', 'Preferred Position',
-        'Groundwork', 'Up-Tempo', 'Unyielding Spirit', 'Pressure', 'Strategist', 'Triple 7s',
-        'Shake It Out', 'Intimidate', 'Stamina Eater', 'Intense Gaze', 'Speed Star',
-        'Staggering Lead', 'Blinding Flash', 'Restless', 'Trackblazer', 'Meticulous Measures',
-        'Keeping the Lead', 'Leader\'s Pride', 'Wait-and-See', 'A Small Breather'
-      ],
-      skillPriority2: [
-        'Levelheaded', 'Stop Right There!', 'Super Lucky Seven', 'Maverick ◯', 'Sympathy',
-        'Long Shot ◯', 'Inner Post Proficiency ◯', 'Outer Post Proficiency ◯', 'Right-Handed ◯',
-        'Left-Handed ◯', 'Firm Conditions ◯', 'Wet Conditions ◯', 'Standard Distance ◯', 
-        'Non-Standard Distance ◯', 'Competitive Spirit ◯', 'Target in Sight ◯', 'Lone Wolf'
-      ],
+      // Skill data from JSON file
+      skillPriority0: [],
+      skillPriority1: [],
+      skillPriority2: [],
       selectedSkills: [],
       blacklistedSkills: [],
+      // Spoiler states for each priority section
+      showPriority0: true,
+      showPriority1: true,
+      showPriority2: true,
+      // New properties for dynamic priority system
+      activePriorities: [0], // Start with Priority 0
+      skillAssignments: {}, // Track which skills are assigned to which priority
+      skillFilter: {
+        strategy: '',
+        distance: '',
+        tier: '',
+        rarity: ''
+      },
+      availableStrategies: ['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer'],
+      availableDistances: ['', 'Sprint', 'Mile', 'Medium', 'Long'],
+      availableTiers: ['', 'SS', 'S', 'A', 'B', 'C', 'D'],
+      availableRarities: ['', 'Unique', 'Rare', 'Normal'],
+      showSkillList: false
     }
   },
   computed: {
@@ -1550,14 +1134,118 @@ export default {
         
         return matchesSearch && matchesType && matchesTerrain && matchesDistance && matchesCharacter;
       });
+    },
+    // Group skills by skill_type within each priority
+    skillsByTypePriority0() {
+      const grouped = {};
+      this.skillPriority0.forEach(skill => {
+        if (!grouped[skill.skill_type]) {
+          grouped[skill.skill_type] = [];
+        }
+        grouped[skill.skill_type].push(skill);
+      });
+      return grouped;
+    },
+    skillsByTypePriority1() {
+      const grouped = {};
+      this.skillPriority1.forEach(skill => {
+        if (!grouped[skill.skill_type]) {
+          grouped[skill.skill_type] = [];
+        }
+        grouped[skill.skill_type].push(skill);
+      });
+      return grouped;
+    },
+    skillsByTypePriority2() {
+      const grouped = {};
+      this.skillPriority2.forEach(skill => {
+        if (!grouped[skill.skill_type]) {
+          grouped[skill.skill_type] = [];
+        }
+        grouped[skill.skill_type].push(skill);
+      });
+      return grouped;
+    },
+    // New computed property for all skills grouped by type
+    allSkillsByType() {
+      const allSkills = skillsData;
+      const grouped = {};
+      allSkills.forEach(skill => {
+        if (!grouped[skill.skill_type]) {
+          grouped[skill.skill_type] = [];
+        }
+        grouped[skill.skill_type].push(skill);
+      });
+      return grouped;
+    },
+    filteredSkillsByType() {
+      const { strategy, distance, tier, rarity } = this.skillFilter;
+      const allSkills = skillsData;
+      
+      // Filter skills based on selected criteria
+      const filteredSkills = allSkills.filter(skill => {
+        const matchesStrategy = !strategy || (skill.strategy && skill.strategy === strategy);
+        const matchesDistance = !distance || (skill.distance && skill.distance === distance);
+        const matchesTier = !tier || (skill.tier && skill.tier === tier);
+        const matchesRarity = !rarity || (skill.rarity && skill.rarity === rarity);
+        return matchesStrategy && matchesDistance && matchesTier && matchesRarity;
+      });
+      
+      // Group filtered skills by type
+      const grouped = {};
+      filteredSkills.forEach(skill => {
+        if (!grouped[skill.skill_type]) {
+          grouped[skill.skill_type] = [];
+        }
+        grouped[skill.skill_type].push(skill);
+      });
+      
+      return grouped;
     }
   },
   mounted() {
+    this.loadCharacterData()
+    this.loadRaceData()
+    this.loadSkillData()
     this.initSelect()
     this.getPresets()
     this.successToast = $('#liveToast').toast({})
   },
   methods:{
+    loadCharacterData: function() {
+      this.characterList = characterData.map(char => ({
+        name: char.character_name,
+        terrain: char.aptitude.terrain,
+        distance: char.aptitude.distance
+      }));
+      this.characterTrainingPeriods = {};
+      characterData.forEach(char => {
+        this.characterTrainingPeriods[char.character_name] = {
+          'Junior Year': char.objectives.junior_year.dates.map(date => `Junior Year ${date.replace('Junior ', '')}`),
+          'Classic Year': char.objectives.classic_year.dates.map(date => `Classic Year ${date.replace('Classic ', '')}`),
+          'Senior Year': char.objectives.senior_year.dates.map(date => `Senior Year ${date.replace('Senior ', '')}`)
+        };
+      });
+    },
+    loadRaceData: function() {
+      // Split races by year based on date
+      const juniorRaces = raceData.races.filter(race => race.date.includes('Junior Year'));
+      const classicRaces = raceData.races.filter(race => race.date.includes('Classic Year'));
+      const seniorRaces = raceData.races.filter(race => race.date.includes('Senior Year'));
+      
+      this.umamusumeRaceList_1 = juniorRaces;
+      this.umamusumeRaceList_2 = classicRaces;
+      this.umamusumeRaceList_3 = seniorRaces;
+    },
+    loadSkillData: function() {
+      // Load all skills from JSON and organize by priority/tier
+      const allSkills = skillsData;
+      
+      // Organize skills by tier/priority - store full skill objects
+      this.skillPriority0 = allSkills.filter(skill => skill.tier === 'SS');
+      this.skillPriority1 = allSkills.filter(skill => skill.tier === 'S');
+      this.skillPriority2 = allSkills.filter(skill => skill.tier === 'A');
+    },
     deleteBox(item,index){
         if(this.skillLearnPriorityList.length<=1){
           return false
@@ -1643,9 +1331,14 @@ export default {
     toggleSkill: function(skillName) {
       const index = this.selectedSkills.indexOf(skillName);
       if (index > -1) {
+        // Remove from selected skills
         this.selectedSkills.splice(index, 1);
+        delete this.skillAssignments[skillName];
       } else {
+        // Add to selected skills and assign to highest priority
         this.selectedSkills.push(skillName);
+        const highestPriority = Math.max(...this.activePriorities);
+        this.skillAssignments[skillName] = highestPriority;
       }
     },
     toggleBlacklistSkill: function(skillName) {
@@ -1654,7 +1347,23 @@ export default {
         this.blacklistedSkills.splice(index, 1);
       } else {
         this.blacklistedSkills.push(skillName);
+        // Remove from selected skills if it was selected
+        const selectedIndex = this.selectedSkills.indexOf(skillName);
+        if (selectedIndex > -1) {
+          this.selectedSkills.splice(selectedIndex, 1);
+          delete this.skillAssignments[skillName];
+        }
       }
+    },
+    // Spoiler toggle methods
+    togglePriority0: function() {
+      this.showPriority0 = !this.showPriority0;
+    },
+    togglePriority1: function() {
+      this.showPriority1 = !this.showPriority1;
+    },
+    togglePriority2: function() {
+      this.showPriority2 = !this.showPriority2;
     },
     switchAdvanceOption: function(){
       this.showAdvanceOption = !this.showAdvanceOption
@@ -1685,16 +1394,32 @@ export default {
       $('#create-task-list-modal').modal('hide');
     },
     addTask: function (){
+      // Convert new skill system to bot-expected format
       var learn_skill_list = []
-      for (let i = 0; i < this.skillPriorityNum; i++)
-      {
-        if(String(this.skillLearnPriorityList[i].skills) != "")
-        {
-          learn_skill_list.push(String(this.skillLearnPriorityList[i].skills).split(",").map(item => item.trim()))
+      
+      // Group selected skills by priority
+      const skillsByPriority = {};
+      this.selectedSkills.forEach(skillName => {
+        const priority = this.skillAssignments[skillName] || 0;
+        if (!skillsByPriority[priority]) {
+          skillsByPriority[priority] = [];
+        }
+        skillsByPriority[priority].push(skillName);
+      });
+      
+      // Convert to bot-expected format (list of lists)
+      for (let priority = 0; priority <= Math.max(...this.activePriorities); priority++) {
+        if (skillsByPriority[priority] && skillsByPriority[priority].length > 0) {
+          learn_skill_list.push(skillsByPriority[priority]);
+        } else {
+          learn_skill_list.push([]);
         }
       }
+      
+      // Convert blacklisted skills to bot-expected format
+      var learn_skill_blacklist = [...this.blacklistedSkills];
+      
       console.log(learn_skill_list)
-      var learn_skill_blacklist = this.skillLearnBlacklist ? this.skillLearnBlacklist.split(",").map(item => item.trim()) : []
       var ura_reset_skill_event_weight_list = this.resetSkillEventWeightList ? this.resetSkillEventWeightList.split(",").map(item => item.trim()) : []
       let payload = {
         app_name: "umamusume",
@@ -1772,6 +1497,73 @@ export default {
         this.extraWeight2 = [0,0,0,0,0]
         this.extraWeight3 = [0,0,0,0,0]
       }
+
+      // Load new skill system data if available
+      if ('selectedSkills' in this.presetsUse && 'blacklistedSkills' in this.presetsUse && 'skillAssignments' in this.presetsUse && 'activePriorities' in this.presetsUse) {
+        // New format - load directly
+        this.selectedSkills = [...this.presetsUse.selectedSkills];
+        this.blacklistedSkills = [...this.presetsUse.blacklistedSkills];
+        this.skillAssignments = {...this.presetsUse.skillAssignments};
+        this.activePriorities = [...this.presetsUse.activePriorities];
+        
+        // Also populate old system for UI compatibility
+        this.skillLearnBlacklist = this.blacklistedSkills.join(", ");
+        
+        // Convert new system back to old format for UI display
+        const skillsByPriority = {};
+        this.selectedSkills.forEach(skillName => {
+          const priority = this.skillAssignments[skillName] || 0;
+          if (!skillsByPriority[priority]) {
+            skillsByPriority[priority] = [];
+          }
+          skillsByPriority[priority].push(skillName);
+        });
+        
+        // Reset old system
+        this.skillLearnPriorityList = [{priority: 0, skills: ""}];
+        this.skillPriorityNum = 1;
+        
+        // Populate old system from new system
+        for (let priority = 0; priority <= Math.max(...this.activePriorities); priority++) {
+          if (skillsByPriority[priority] && skillsByPriority[priority].length > 0) {
+            if (priority > 0) {
+              this.addBox();
+            }
+            this.skillLearnPriorityList[priority].skills = skillsByPriority[priority].join(", ");
+          }
+        }
+      } else {
+        // Old format - convert from skill_priority_list and skill_blacklist
+        this.selectedSkills = [];
+        this.blacklistedSkills = [];
+        this.skillAssignments = {};
+        this.activePriorities = [0];
+
+        // Load blacklisted skills
+        if (this.presetsUse.skill_blacklist && this.presetsUse.skill_blacklist !== "") {
+          this.blacklistedSkills = this.presetsUse.skill_blacklist.split(",").map(skill => skill.trim());
+        }
+
+        // Load selected skills from priority list
+        if (this.presetsUse.skill_priority_list && this.presetsUse.skill_priority_list.length > 0) {
+          this.presetsUse.skill_priority_list.forEach((prioritySkills, priorityIndex) => {
+            if (prioritySkills && prioritySkills.length > 0) {
+              const skills = prioritySkills[0].split(",").map(skill => skill.trim());
+              skills.forEach(skill => {
+                if (skill && !this.blacklistedSkills.includes(skill)) {
+                  this.selectedSkills.push(skill);
+                  this.skillAssignments[skill] = priorityIndex;
+                }
+              });
+              if (priorityIndex > 0) {
+                this.activePriorities.push(priorityIndex);
+              }
+            }
+          });
+        }
+      }
+      
+      // Legacy skill loading for backward compatibility
       if ('skill' in this.presetsUse && this.presetsUse.skill != "")
       {
         this.skillLearnPriorityList[0].skills = this.presetsUse.skill
@@ -1825,12 +1617,35 @@ export default {
       )
     },
     addPresets: function(){
+      // Convert new skill system to old format for backward compatibility
+      var skill_priority_list = [];
+      var skill_blacklist = this.blacklistedSkills.join(", ");
+      
+      // Group selected skills by priority
+      const skillsByPriority = {};
+      this.selectedSkills.forEach(skillName => {
+        const priority = this.skillAssignments[skillName] || 0;
+        if (!skillsByPriority[priority]) {
+          skillsByPriority[priority] = [];
+        }
+        skillsByPriority[priority].push(skillName);
+      });
+      
+      // Convert to old format (skill_priority_list)
+      for (let priority = 0; priority <= Math.max(...this.activePriorities); priority++) {
+        if (skillsByPriority[priority] && skillsByPriority[priority].length > 0) {
+          skill_priority_list.push([skillsByPriority[priority].join(", ")]);
+        } else {
+          skill_priority_list.push([""]);
+        }
+      }
+      
       let preset = {
         name: this.presetNameEdit,
         scenario: this.selectedScenario,
         race_list: this.extraRace,
-        skill_priority_list: [],
-        skill_blacklist: this.skillLearnBlacklist,
+        skill_priority_list: skill_priority_list,
+        skill_blacklist: skill_blacklist,
         expect_attribute:[this.expectSpeedValue, this.expectStaminaValue, this.expectPowerValue, this.expectWillValue, this.expectIntelligenceValue],
         follow_support_card: this.selectedSupportCard,
         follow_support_card_level: this.supportCardLevel,
@@ -1843,7 +1658,12 @@ export default {
           this.extraWeight1.map(v => Math.max(-1, Math.min(1, v))),
           this.extraWeight2.map(v => Math.max(-1, Math.min(1, v))),
           this.extraWeight3.map(v => Math.max(-1, Math.min(1, v)))
-        ]
+        ],
+        // New skill system data
+        selectedSkills: [...this.selectedSkills],
+        blacklistedSkills: [...this.blacklistedSkills],
+        skillAssignments: {...this.skillAssignments},
+        activePriorities: [...this.activePriorities]
       }
       // 仅当剧本对应时, 添加URA或青春杯配置
       if (this.selectedScenario === 1) {
@@ -1856,13 +1676,6 @@ export default {
           preliminaryRoundSelections: [...this.preliminaryRoundSelections],
           aoharuTeamNameSelection: this.aoharuTeamNameSelection
         };
-      }
-      for(let i = 0; i < this.skillPriorityNum; i++)
-      {
-        if(this.skillLearnPriorityList[i].skills != "")
-        {
-          preset.skill_priority_list.push([this.skillLearnPriorityList[i].skills])
-        }
       }
       let payload = {
         "preset": JSON.stringify(preset)
@@ -1921,6 +1734,42 @@ export default {
         return `【${card.name}】${card.desc}`;
       }
     },
+    // New methods for dynamic priority system
+    getActivePriorities: function() {
+      return this.activePriorities;
+    },
+    getSelectedSkillsForPriority: function(priority) {
+      return this.selectedSkills.filter(skillName => {
+        return this.skillAssignments[skillName] === priority;
+      });
+    },
+    addPriority: function() {
+      const maxPriority = Math.max(...this.activePriorities);
+      this.activePriorities.push(maxPriority + 1);
+    },
+    removeLastPriority: function() {
+      if (this.activePriorities.length > 1) {
+        const removedPriority = this.activePriorities.pop();
+        // Move skills from removed priority to the highest remaining priority
+        Object.keys(this.skillAssignments).forEach(skillName => {
+          if (this.skillAssignments[skillName] === removedPriority) {
+            const newHighestPriority = Math.max(...this.activePriorities);
+            this.skillAssignments[skillName] = newHighestPriority;
+          }
+        });
+      }
+    },
+    clearSkillFilters() {
+      this.skillFilter = {
+        strategy: '',
+        distance: '',
+        tier: '',
+        rarity: ''
+      };
+    },
+    toggleSkillList() {
+      this.showSkillList = !this.showSkillList;
+    }
   },
   watch:{
 
@@ -2173,9 +2022,588 @@ export default {
   line-height: 1.1;
 }
 
+.skill-type {
+  font-size: 10px;
+  opacity: 0.7;
+  line-height: 1.1;
+  font-style: italic;
+}
+
+.skill-description {
+  font-size: 9px;
+  opacity: 0.8;
+  line-height: 1.2;
+  margin-top: 4px;
+  word-wrap: break-word;
+}
+
+.skill-cost {
+  font-size: 9px;
+  opacity: 0.9;
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+.skill-type-group {
+  margin-bottom: 16px;
+}
+
+.skill-type-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  border-left: 3px solid #007bff;
+}
+
 .form-label {
   font-weight: 600;
   margin-bottom: 8px;
   color: #495057;
+}
+
+/* New styles for the redesigned skill learning interface */
+.priority-section {
+  margin-bottom: 16px;
+}
+
+.selected-skills-box, .blacklist-box {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 80px;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.selected-skills-box:hover, .blacklist-box:hover {
+  border-color: #007bff;
+  background: #f0f8ff;
+}
+
+.empty-state {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.selected-skills-list, .blacklisted-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.selected-skill-item, .blacklisted-skill-item {
+  background: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.blacklisted-skill-item {
+  background: #dc3545;
+}
+
+.skill-list-container {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.skill-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.skill-type-card {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: #f8f9fa;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.skill-type-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+.skill-type-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skill-type-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.skill-count {
+  font-size: 11px;
+  opacity: 0.9;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.skill-type-content {
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skill-item {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+}
+
+.skill-item:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.skill-item.selected {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-color: #0056b3;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.skill-item.blacklisted {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  border-color: #c82333;
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.skill-name {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.skill-cost {
+  font-size: 10px;
+  opacity: 0.9;
+  font-weight: 500;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.skill-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-type {
+  font-size: 10px;
+  opacity: 0.8;
+  line-height: 1.1;
+  font-style: italic;
+}
+
+.skill-description {
+  font-size: 9px;
+  opacity: 0.8;
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+.skill-item.selected .skill-type,
+.skill-item.selected .skill-description {
+  opacity: 0.9;
+}
+
+.skill-item.blacklisted .skill-type,
+.skill-item.blacklisted .skill-description {
+  opacity: 0.9;
+}
+
+/* Button group styling */
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-group .btn {
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.btn-group .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skill-notes-alert {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.skill-notes-alert i {
+  margin-right: 5px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.section-heading i {
+  margin-right: 10px;
+}
+
+.filter-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.skill-filter-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.skill-notes-alert {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #856404;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(255, 193, 7, 0.1);
+}
+
+.skill-notes-alert i {
+  margin-right: 8px;
+  color: #ffc107;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #495057;
+  padding: 8px 0;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.section-heading i {
+  margin-right: 10px;
+  color: #007bff;
+}
+
+.filter-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #495057;
+  font-size: 12px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.skill-tag {
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strategy-tag {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.distance-tag {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border: 1px solid #e1bee7;
+}
+
+.tier-tag {
+  background: #fff3e0;
+  color: #f57c00;
+  border: 1px solid #ffcc02;
+}
+
+.tier-tag[data-tier="SS"] {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+  border: 1px solid #c44569;
+}
+
+.tier-tag[data-tier="S"] {
+  background: linear-gradient(135deg, #ffa726, #ff9800);
+  color: white;
+  border: 1px solid #f57c00;
+}
+
+.tier-tag[data-tier="A"] {
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  color: white;
+  border: 1px solid #388e3c;
+}
+
+.tier-tag[data-tier="B"] {
+  background: linear-gradient(135deg, #42a5f5, #2196f3);
+  color: white;
+  border: 1px solid #1976d2;
+}
+
+.tier-tag[data-tier="C"] {
+  background: linear-gradient(135deg, #ab47bc, #9c27b0);
+  color: white;
+  border: 1px solid #7b1fa2;
+}
+
+.tier-tag[data-tier="D"] {
+  background: linear-gradient(135deg, #78909c, #607d8b);
+  color: white;
+  border: 1px solid #455a64;
+}
+
+.rarity-tag {
+  background: #e8f5e8;
+  color: #388e3c;
+  border: 1px solid #c8e6c9;
+}
+
+.skill-item.selected .skill-tag {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.skill-item.blacklisted .skill-tag {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.skill-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.skill-list-header:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.skill-list-title {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.skill-list-title i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.skill-list-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.skill-list-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-text {
+  margin-right: 8px;
+}
+
+.skill-list-content {
+  margin-top: 15px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.advanced-options-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.advanced-options-header:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.advanced-options-title {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.advanced-options-title i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.advanced-options-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.advanced-options-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.advanced-options-content {
+  margin-top: 15px;
+  animation: fadeIn 0.3s ease;
+}
+
+.race-options-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.race-options-header:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.race-options-title {
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.race-options-title i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.race-options-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.race-options-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.race-options-content {
+  margin-top: 15px;
+  animation: fadeIn 0.3s ease;
 }
 </style>

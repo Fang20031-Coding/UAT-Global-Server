@@ -75,6 +75,7 @@ CULTIVATE_RECEIVE_CUP_CLOSE = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDIN
 CULTIVATE_FINISH_LEARN_SKILL = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDINATE, None, Coordinate(215, 1050), "Cultivation Complete - Learn Skills", None)
 CULTIVATE_FINISH_CONFIRM = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDINATE,None, Coordinate(512,1050), "Cultivation Complete - Confirm", None)
 CULTIVATE_FINISH_CONFIRM_AGAIN = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDINATE,None, Coordinate(520,924), "Cultivation Complete - Confirm Again (Abandon remaining skill points)", None)
+RACE_FAIL_CONFIRM = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDINATE, None, Coordinate(513, 919), "Race Fail - Try Again Confirmation", None)
 
 
 GET_TITLE_CONFIRM = ClickPoint(ClickPointType.CLICK_POINT_TYPE_COORDINATE,None, Coordinate(350,1195), "Get Title - Confirm", None)

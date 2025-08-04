@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <!-- URA额外配置 -->
+            <!-- URA Additional Configuration -->
             <div class="row" v-if="selectedScenario === 1">
               <div class="col-4">
                 <div class="form-group">
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <!-- 青春杯额外配置 -->
+            <!-- Youth Cup Additional Configuration -->
             <div class="row" v-if="selectedScenario === 2">
               <div class="col-4">
                 <div class="form-group">
@@ -66,20 +66,20 @@
                 </div>
               </div>
             </div>
-            <!-- 限时模块: 富士奇石的表演秀模式 -->
+            <!-- Limited Time Module: Fujikiseki Show Mode -->
             <!-- <div class="row">
               <div class="col-3">
                 <div class="form-group">
-                  <label>⏰ 富士奇石的表演秀模式</label>
+                  <label>⏰ Fujikiseki Show Mode</label>
                   <select v-model="fujikisekiShowMode" class="form-control">
-                    <option :value=true>是</option>
-                    <option :value=false>否</option>
+                    <option :value=true>Yes</option>
+                    <option :value=false>No</option>
                   </select>
                 </div>
               </div>
               <div class="col-2">
                 <div class="form-group">
-                  <label :style="{ color: fujikisekiShowMode ? '' : 'lightgrey' }">选择难度</label>
+                  <label :style="{ color: fujikisekiShowMode ? '' : 'lightgrey' }">Select Difficulty</label>
                   <select v-model="fujikisekiShowDifficulty" class="form-control" :disabled="!fujikisekiShowMode">
                     <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
                   </select>
@@ -735,9 +735,9 @@
         @cancel="closeSupportCardSelectModal"
         @confirm="handleSupportCardConfirm"
       ></SupportCardSelectModal>
-      <!-- 遮罩层，支持两种弹窗 -->
+      <!-- Overlay layer, supports two types of modals -->
       <div v-if="showAoharuConfigModal || showSupportCardSelectModal || showUraConfigModal" class="modal-backdrop-overlay" @click.stop></div>
-      <!-- 通知 -->
+      <!-- Notification -->
       <div class="position-fixed" style="z-index: 5; right: 40%; width: 300px;">
         <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
           <div class="toast-body">
@@ -745,7 +745,7 @@
           </div>
         </div>
       </div>
-      <!-- 权重警告通知 -->
+      <!-- Weight Warning Notification -->
       <div class="position-fixed" style="z-index: 5; right: 40%; width: 300px;">
         <div id="weightWarningToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
           <div class="toast-body" style="color: #856404;">

@@ -697,15 +697,37 @@ def script_not_found_ui(ctx: UmamusumeContext):
     if ctx.current_screen is not None:
         log.debug(f"🔍 NOT_FOUND_UI - Screen shape: {ctx.current_screen.shape}")
         
-        # Try to detect if this might be a cultivation result screen
+        # Try direct template matching for cultivate_result_1.png first
         try:
             import cv2
+            from bot.recog.image_matcher import image_match
+            from module.umamusume.asset.template import UI_CULTIVATE_RESULT_1
+            
+            img = ctx.current_screen
+            img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            result = image_match(img_gray, UI_CULTIVATE_RESULT_1)
+            
+            if result.find_match:
+                log.info("🏆 Cultivate Result 1 template matched! Clicking confirm button")
+                ctx.ctrl.click_by_point(CULTIVATE_RESULT_CONFIRM)
+                return
+            else:
+                log.debug("🔍 Cultivate Result 1 template not found")
+                
+        except Exception as e:
+            log.debug(f"Template matching failed: {str(e)}")
+        
+        # Try to detect if this might be a cultivation result screen via OCR
+        try:
             from bot.recog.ocr import ocr_line
             
             img = ctx.current_screen
             # Sample areas where cultivation result text might appear
             title_area = img[200:400, 100:620]
             title_text = ocr_line(title_area).lower()
+            
+            # Debug: Log what text was detected
+            log.debug(f"🔍 OCR detected text: '{title_text[:100]}...'")
             
             # Check for cultivation result keywords - specifically "REWARDS" screen
             result_keywords = ['rewards', 'result', 'cultivation', '完成', '结果', '培育', '奖励']
@@ -718,6 +740,7 @@ def script_not_found_ui(ctx: UmamusumeContext):
             # Also check for "Bond Level" and "Total Fans" which are specific to this rewards screen
             bond_area = img[400:600, 100:620]
             bond_text = ocr_line(bond_area).lower()
+            log.debug(f"🔍 Bond area OCR: '{bond_text[:100]}...'")
             if 'bond level' in bond_text or 'total fans' in bond_text:
                 log.info(f"🏆 Rewards screen detected via bond/fans text: '{bond_text[:50]}...'")
                 log.info("🏆 Attempting to click cultivation result confirm button")

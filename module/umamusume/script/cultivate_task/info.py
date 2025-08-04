@@ -20,7 +20,7 @@ TITLE = [
     "Rest & Outing Confirmation",
     "Rest & Recreation",
     "Network Error",
-    "Retry Challenge",
+    "Try Again",
     "Earned Title",
     "Training Complete",
     "Event Skip Settings",
@@ -54,7 +54,6 @@ TITLE = [
     # Aoharu Cup
     "Auto Formation",
     "Battle Confirmation",
-    "Try Again",
     "Skills Learned",
     "Complete Career",
 ]
@@ -85,6 +84,8 @@ def script_info(ctx: UmamusumeContext):
                 log.info(f"✅ Found match with lower threshold: '{original_text}' -> '{title_text}'")
         else:
             log.info(f"✅ Found match: '{original_text}' -> '{title_text}'")
+        
+
         if title_text == TITLE[0]:
             ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_3)
             time.sleep(1)
@@ -96,16 +97,28 @@ def script_info(ctx: UmamusumeContext):
             ctx.ctrl.click_by_point(INFO_SUMMER_REST_CONFIRM)
         if title_text == TITLE[3]:
             ctx.ctrl.click_by_point(NETWORK_ERROR_CONFIRM)
-        if title_text == TITLE[4]:
-            if ctx.prev_ui is INFO:
-                ctx.cultivate_detail.clock_used -= 1
-            if ctx.cultivate_detail.clock_use_limit > ctx.cultivate_detail.clock_used:
-                ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_USE_CLOCK)
-                ctx.cultivate_detail.clock_used += 1
+        if title_text == TITLE[4]:  # Try Again
+            # Check if this is actually a race fail screen using image detection
+            img = ctx.current_screen
+            img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            from module.umamusume.asset.template import UI_RACE_FAIL
+            result = image_match(img_gray, UI_RACE_FAIL)
+            
+            if result.find_match:
+                log.info("🏁 Race fail screen detected via image matching")
+                ctx.ctrl.click_by_point(RACE_FAIL_CONFIRM)
+                log.info("✅ Clicked race fail confirmation at (513, 919)")
             else:
-                ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_CANCEL)
-            log.debug("Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit),
-                      str(ctx.cultivate_detail.clock_used))
+                # Fallback to original logic
+                if ctx.prev_ui is INFO:
+                    ctx.cultivate_detail.clock_used -= 1
+                if ctx.cultivate_detail.clock_use_limit > ctx.cultivate_detail.clock_used:
+                    ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_USE_CLOCK)
+                    ctx.cultivate_detail.clock_used += 1
+                else:
+                    ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_CANCEL)
+                log.debug("Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit),
+                          str(ctx.cultivate_detail.clock_used))
         if title_text == TITLE[5]:
             ctx.ctrl.click_by_point(GET_TITLE_CONFIRM)
         if title_text == TITLE[6]:
@@ -274,11 +287,6 @@ def script_info(ctx: UmamusumeContext):
         if title_text == TITLE[34]:  # New Difficulty Unlocked
             # Limited time: Fuji Kiseki Show
             ctx.ctrl.click(360, 850, "Confirm unlock new difficulty")
-        if title_text == TITLE[35]:  # Try Again
-            # Handle retry/retry challenge screens with proven coordinates
-            log.info("🔄 Handling 'Try Again' screen")
-            ctx.ctrl.click(515, 921, "Try Again confirmation")
-            log.info("✅ Clicked Try Again confirmation at (515, 921)")
         if title_text == TITLE[36]:  # Skills Learned
             # Handle skills learned confirmation with user-provided coordinates
             log.info("🎓 Handling 'Skills Learned' screen")

@@ -4,7 +4,6 @@ import re
 from urllib.parse import quote
 import time
 import json
-import pandas as pd
 import os
 
 
@@ -41,48 +40,25 @@ event_name_list: list[str] = [*event_map]
 _events_database = None
 
 def load_events_database():
-    """Load the events database from the Excel file"""
+    """Load the events database from the JSON file"""
     global _events_database
     
     if _events_database is not None:
         return _events_database
     
     try:
-        # Try to load from the Excel file in resource/umamusume/data folder
-        excel_path = "resource/umamusume/data/event_data.xlsx"
-        if os.path.exists(excel_path):
-            log.info("📊 Loading events database from Excel file...")
-            df = pd.read_excel(excel_path)
-            
-            # Group by event name and create a lookup structure
-            events_dict = {}
-            for _, row in df.iterrows():
-                event_name = row['event_name']
-                choice_num = row['choice_number']
-                choice_text = row['choice_text']
-                
-                if event_name not in events_dict:
-                    events_dict[event_name] = {
-                        'choices': {},
-                        'stats': {}
-                    }
-                
-                # Store choice text
-                events_dict[event_name]['choices'][choice_num] = choice_text
-                
-                # Store stat effects
-                stats = {}
-                for stat in ['Power', 'Speed', 'Guts', 'Stamina', 'Wisdom', 'Friendship', 'Mood', 'Max Energy', 'HP', 'Skill', 'Skill Hint', 'Skill Pts']:
-                    if stat in row and pd.notna(row[stat]):
-                        stats[stat] = int(row[stat])
-                
-                events_dict[event_name]['stats'][choice_num] = stats
+        # Try to load from the JSON file in resource/umamusume/data folder
+        json_path = "resource/umamusume/data/event_data.json"
+        if os.path.exists(json_path):
+            log.info("📊 Loading events database from event_data.json...")
+            with open(json_path, 'r', encoding='utf-8') as f:
+                events_dict = json.load(f)
             
             _events_database = events_dict
             log.info(f"✅ Loaded {len(events_dict)} events from local database")
             return events_dict
         else:
-            log.warning("⚠️ Events Excel file not found, will use web scraping fallback")
+            log.warning("⚠️ Events JSON file not found, will use web scraping fallback")
             return {}
             
     except Exception as e:
@@ -120,6 +96,8 @@ def calculate_optimal_choice_from_db(event_data: dict) -> int:
     best_score = -1
     
     for choice_num, choice_stats in stats.items():
+        # Convert choice_num to int (JSON keys are strings)
+        choice_num_int = int(choice_num)
         score = 0
         
         # Weight different stats (adjust weights as needed)
@@ -144,7 +122,7 @@ def calculate_optimal_choice_from_db(event_data: dict) -> int:
         
         if score > best_score:
             best_score = score
-            best_choice = choice_num
+            best_choice = choice_num_int
     
     if best_choice:
         log.info(f"🎯 Optimal choice: {best_choice} (Score: {best_score})")
@@ -152,7 +130,7 @@ def calculate_optimal_choice_from_db(event_data: dict) -> int:
     
     # Fallback: return first choice if no scoring possible
     if choices:
-        first_choice = min(choices.keys())
+        first_choice = min(int(k) for k in choices.keys())
         log.info(f"🔄 Fallback choice: {first_choice}")
         return first_choice
     

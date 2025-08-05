@@ -2,9 +2,11 @@
 
 **Uma Musume Pretty Derby Global Server Automatic Career Tool**
 
-> **From China Server automation to Global Server excellence** - A complete transformation with enhanced features, improved UI, and robust automation capabilities.
+> **From China server automation to global server compatibility** - A complete transformation with enhanced features, improved UI, and robust automation capabilities.
+>
+> ***This project is for educational purpose only, [use it at your own risk](https://umamusume.com/news/100029/)***
 
----
+
 ## 📄 **License & Credits**
 
 This project is a **Global Server adaptation** of the original China Server version by [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer).
@@ -20,7 +22,9 @@ This project is a **Global Server adaptation** of the original China Server vers
 
 **Please respect the original author's work while contributing improvements.**
 
+
 ---
+
 
 ## 🌟 **What's New in Global Server Edition**
 

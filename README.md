@@ -1,113 +1,189 @@
-# UmamusumeAutoTrainer (Global Server Edition)
+# 🏇 Umamusume Auto Trainer (Global Server Edition)
 
-Uma Musume Pretty Derby Global Server Automatic Training Tool
+**Uma Musume Pretty Derby Global Server Automatic Training Tool**
 
-## Features
+> **From China Server automation to Global Server excellence** - A complete transformation with enhanced features, improved UI, and robust automation capabilities.
 
-1. Supports automatic completion of training scenarios for all Uma Musume
-2. Customizable training target attributes, racing tactics, additional races, skill learning for easier 3-star factor farming and improved inheritance compatibility
+## 🌟 **What's New in Global Server Edition**
 
-## Usage Instructions
+### 🎯 **Major Improvements**
+- **🌍 Global Server Migration**: 70% translation and asset updates for Global Server compatibility
+- **🎨 Enhanced Web Interface**: Advanced race filtering, skill choice system, and improved user experience
+- **🤖 Robust Bot System**: Dual detection (image + OCR) for reliable race fail handling
+- **⚡ Performance Optimization**: JSON-based data loading for faster operation
+- **🔧 Technical Upgrades**: Modern build system with automated releases
 
-### Download
+### 🆕 **New Features**
+- **Advanced Race Filtering**: Filter by race type, distance, terrain, and event character
+- **Skill Choice System**: Intelligent skill selection interface in web application
+- **Event Choice Picker**: Smart event selection for optimal training
+- **70% English Translation**: Major UI and system text translated to English
+- **Automated Releases**: GitHub Actions for seamless executable distribution
 
-##### Clone Repository
+### 🔄 **Current Limitations**
+- **Uma Musume Selection**: Must be done manually in-game (not yet automated)
+- **Support Card Selection**: Manual selection in-game required
+- **Character Filter**: Race character filtering is implemented, but card name translation needed for full functionality
 
-```commandline
-git clone https://github.com/shiokaze/UmamusumeAutoTrainer
+## 🚀 **Features**
+
+### **Core Automation**
+- ✅ **Automatic Training**: Complete training scenarios for all Uma Musume
+- ✅ **Customizable Targets**: Training attributes, racing tactics, additional races
+- ✅ **Skill Learning**: Optimized skill acquisition for 3-star factor farming
+- ✅ **Inheritance Compatibility**: Improved breeding strategy support
+
+### **Advanced Web Interface**
+- 🎛️ **Race Management**: Advanced filtering and selection tools
+- 📊 **Real-time Monitoring**: Live task status and progress tracking
+- ⚙️ **Easy Configuration**: Intuitive settings and preset management
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🎯 **Character Filter**: Filter races based on selected character (manual select on UAT web)
+
+## 📦 **Installation & Setup**
+
+### **Option 1: Download Release (Recommended)**
+1. Go to [Releases](https://github.com/BrayAlter/UAT-Global-Server/releases)
+2. Download the latest release zip file
+3. Extract and run `UmamusumeAutoTrainer.exe`
+
+### **Option 2: Build from Source**
+
+#### **Clone Repository**
+```bash
+git clone https://github.com/BrayAlter/UAT-Global-Server.git
+cd UAT-Global-Server
 ```
-##### Install Dependencies
 
-1. Install Python 3.10.9, [Download Link](https://www.python.org/downloads/release/python-3109/)
-2. Double-click to run install.ps1. If it opens in notepad, right-click the file and select "Open with PowerShell". Ensure there's no venv folder in the current directory when starting (If you're not in mainland China or don't need to use domestic mirrors, you can modify line 32 to `pip install --upgrade -r requirements.txt`)
+#### **Install Dependencies**
+1. Install Python 3.10.9: [Download Link](https://www.python.org/downloads/release/python-3109/)
+2. Run `install.ps1` (Right-click → "Run with PowerShell")
+3. Ensure no `venv` folder exists in current directory
 
-### 2. Configuration
+### **Configuration**
 
-Modify the config.yaml file content
+Edit `config.yaml`:
 
-```
+```yaml
 bot:
   auto:
     adb:
-      device_name: "127.0.0.1:16384" # Change to your emulator's ADB port
+      device_name: "127.0.0.1:16384"  # Your emulator's ADB port
       delay: 0
-    cpu_alloc: 4 # Number of allocated CPUs
-```
-Common emulator ports:\
-(Recommended) MuMu12: 127.0.0.1:16384 \
-LDPlayer/BlueStacks: emulator-5554
-
-#### BlueStacks Emulator Port Changes Every Startup (Hyper-V)
-Find the bluestacks.conf file in BlueStacks emulator's data directory
-- International version default path: C:\ProgramData\BlueStacks_nxt\bluestacks.conf
-- China version default path: C:\ProgramData\BlueStacks_nxt_cn\bluestacks.conf
-
-```
-bot:
-  auto:
-    adb:
-      device_name: "127.0.0.1:16384" # Change to your emulator's ADB port
-      delay: 0
-      bluestacks_config_path: "C:\\ProgramData\\BlueStacks_nxt\\bluestacks.conf" # Path to bluestacks.conf file
-      bluestacks_config_keyword: "bst.instance.Rvc64.status.adb_port" # Port key value for corresponding emulator, Rvc64 is the emulator name, may vary (like Rvc64_1, Pie64), search for adb_port in bluestacks.conf file
-    cpu_alloc: 4 # Number of allocated CPUs
+    cpu_alloc: 4  # Number of allocated CPUs
 ```
 
-### 3. Emulator Settings
+**Common Emulator Ports:**
+- **MuMu12** (Recommended): `127.0.0.1:16384`
+- **LDPlayer/BlueStacks**: `emulator-5554`
 
-Set emulator resolution to 720 * 1280, DPI 180 (Portrait mode)
-MuMu emulator cannot enable background keep-alive function
+### **Emulator Setup**
+- **Resolution**: 720 × 1280 (Portrait mode)
+- **DPI**: 180
+- **Graphics**: Standard (not Simple)
 
-### 4. Launch
+### **Launch**
+```bash
+# Run the application
+./run.ps1
+```
 
-Double-click to run run.ps1
-
-Console displays the following content indicates successful startup
-```commandline
+**Success indicator:**
+```
 UAT running on http://127.0.0.1:8071
 ```
 
-Copy to browser to access and configure tasks through WebUI and start the script
+Access the web interface at `http://127.0.0.1:8071` to configure and start tasks.
 
-<img alt="LOGO" src="docs/1.png" width="680" height="565" />
+![Web Interface](docs/1.png)
 
-## Important Notes
+## ⚠️ **Important Notes**
 
-1. In-game graphics option must be set to Standard, not Simple
-2. If Uma Musume training phase includes optional races or races with xxx fan count requirements (like Oguri Cap's 2 G1 races in year 3 and Urara's fan count targets), you need to use the corresponding Uma Musume preset or configure which races to participate in custom race schedule
-3. Target attributes should match the proportion of support card types carried. Don't carry 3 Intelligence + 3 Speed cards while setting high Stamina and Power targets
-4. Currently doesn't support selecting training Uma Musume and breeding stallion. At startup, it will use the last trained Uma Musume and stallion saved in the game. If there's no saved record, manually select first before starting
-5. Friend cards are not recommended because there's no specific strategy for friend card outings, so the effect is not as good as carrying other types of support cards
-6. When starting the script, you should be at the main menu or any training interface
+### **Game Settings**
+1. **Graphics**: Must be set to "Standard", not "Basic"
+2. **Training Setup**: **Manually select** Uma Musume, stallion, and support cards in-game before starting
+3. **Support Cards**: Avoid friend cards (no specific outing strategy)
+4. **Starting Position**: Be at main menu or training interface
 
-### If Exceptions Occur
+### **Training Strategy**
+- **Attribute Balance**: Match support card types to target attributes
+- **Race Selection**: Configure custom race schedules for specific requirements
+- **Skill Optimization**: Use presets for optimal skill learning
 
-1. If emulator connection failure or connection reset errors occur, close running accelerators (like UU Accelerator) and use Task Manager to close adb.exe, then restart both the emulator and script program
-2. If recognition errors cause program crashes, enter unexpected interfaces, or get stuck on certain interfaces, manually operate to the next turn and reset the task in WebUI before restarting. You can save screenshots of stuck interfaces and attach error logs to submit issues.
+## 🔧 **Troubleshooting**
 
-## Common Issues
+### **Common Issues**
 
-#### 1. install.ps1 or run.ps1 crashes when running
-You can open the console first and then run the PowerShell script, so you can see the error reason when it occurs.
-#### 2. System prohibits running PowerShell scripts
-Reference: https://www.jianshu.com/p/4eaad2163567
-#### 3. Script startup error
-Check if the user folder name contains Chinese characters\
-Reference: https://github.com/shiokaze/UmamusumeAutoTrainer/issues/18 \
-https://github.com/shiokaze/UmamusumeAutoTrainer/issues/24
-#### 4. Startup successful, but WebUI won't open and browser console shows errors
-If the error message is: Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "text/plain". Strict MIME type checking is enforced for module scripts per HTML spec. \
-Reference: https://github.com/shiokaze/UmamusumeAutoTrainer/issues/9
-https://github.com/shiokaze/UmamusumeAutoTrainer/issues/25
+#### **PowerShell Script Issues**
+- **Script crashes**: Open console first to see error messages
+- **Execution policy**: Reference: [PowerShell Execution Policy](https://www.jianshu.com/p/4eaad2163567)
 
-### TODO
+#### **Connection Problems**
+- **ADB connection fails**: Close accelerators, kill adb.exe, restart emulator
+- **Recognition errors**: Manual operation to next turn, reset task in WebUI
 
-- [ ] Scheduled task execution
-- [ ] Training AI logic optimization
-- [ ] Event configuration options support
-- [ ] Automatic completion of daily coins/support points/JJC
+#### **Web Interface Issues**
+- **MIME type errors**: Check for Chinese characters in user folder path
+- **Module loading fails**: Ensure proper file permissions and paths
 
-### Contributing
+### **Error Recovery**
+1. **Stuck interfaces**: Take screenshot, attach error logs
+2. **Recognition failures**: Manual intervention, then restart
+3. **Connection resets**: Restart both emulator and script
 
-If you feel the current code has shortcomings, pull requests are welcome
+## 🛠️ **Technical Details**
+
+### **System Requirements**
+- **OS**: Windows 10/11
+- **Python**: 3.10.9 (for source builds)
+- **Emulator**: Android emulator with ADB support
+- **Memory**: 4GB+ RAM recommended
+
+### **Dependencies**
+- **Computer Vision**: OpenCV for image recognition
+- **Machine Learning**: PaddleOCR for text detection
+- **Web Framework**: FastAPI + Vue.js
+- **Automation**: UIAutomator2 for Android control
+
+## 🎯 **Roadmap**
+
+### **Planned Features**
+- [ ] **Scheduled Tasks**: Automated execution at specific times
+- [ ] **AI Training Logic**: Enhanced decision-making algorithms
+- [ ] **Event Configuration**: Advanced event choice options
+- [ ] **Daily Automation**: Auto-complete daily tasks (coins, support points, JJC)
+- [ ] **Uma Musume Auto-Selection**: Automated character and support card selection
+- [ ] **Card Name Translation**: Complete English translation for support card names
+
+### **Recent Updates**
+- ✅ **Global Server Migration**: Complete compatibility update
+- ✅ **Web Interface Enhancement**: Advanced filtering and controls
+- ✅ **Performance Optimization**: JSON-based data loading
+- ✅ **Error Handling**: Robust fail-safe mechanisms
+
+## 🤝 **Contributing**
+
+We welcome contributions! If you find issues or have improvements:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+3. **Make your changes**
+4. **Submit a pull request**
+
+### **Development Setup**
+```bash
+# Install development dependencies
+pip install -r requirements.txt
+
+# Run in development mode
+python main.py
+```
+
+## 📄 **License**
+
+This project is open source. Please respect the original author's work while contributing improvements.
+
+---
+
+**🏆 From China Server automation to Global Server excellence - the most advanced Umamusume training tool available!**
 

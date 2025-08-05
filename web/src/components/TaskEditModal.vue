@@ -168,7 +168,7 @@
               </div>
               <div class="col">
                 <div class="form-group">
-                  <label for="intelligence-value-input">Wisdom</label>
+                  <label for="intelligence-value-input">Wit</label>
                   <input type="number" v-model="expectIntelligenceValue" class="form-control" id="intelligence-value-input">
                 </div>
               </div>
@@ -241,10 +241,10 @@
                 <div class="form-group">
                   <label for="selectTactic1">Year 1</label>
                   <select v-model="selectedRaceTactic1" class="form-control" id="selectTactic1">
-                    <option :value=1>Stalker</option>
-                    <option :value=2>Midfield</option>
-                    <option :value=3>Front-runner</option>
-                    <option :value=4>Pacesetter</option>
+                    <option :value=1>End-Closer</option>
+                    <option :value=2>Late-Surger</option>
+                    <option :value=3>Pace-Chaser</option>
+                    <option :value=4>Front-Runner</option>
                   </select>
                 </div>
               </div>
@@ -252,10 +252,10 @@
                 <div class="form-group">
                   <label for="selectTactic2">Year 2</label>
                   <select v-model="selectedRaceTactic2" class="form-control" id="selectTactic2">
-                    <option :value=1>Stalker</option>
-                    <option :value=2>Midfield</option>
-                    <option :value=3>Front-runner</option>
-                    <option :value=4>Pacesetter</option>
+                    <option :value=1>End-Closer</option>
+                    <option :value=2>Late-Surger</option>
+                    <option :value=3>Pace-Chaser</option>
+                    <option :value=4>Front-Runner</option>
                   </select>
                 </div>
               </div>
@@ -263,10 +263,10 @@
                 <div class="form-group">
                   <label for="selectTactic3">Year 3</label>
                   <select v-model="selectedRaceTactic3" class="form-control" id="selectTactic3">
-                    <option :value=1>Stalker</option>
-                    <option :value=2>Midfield</option>
-                    <option :value=3>Front-runner</option>
-                    <option :value=4>Pacesetter</option>
+                    <option :value=1>End-Closer</option>
+                    <option :value=2>Late-Surger</option>
+                    <option :value=3>Pace-Chaser</option>
+                    <option :value=4>Front-Runner</option>
                   </select>
                 </div>
               </div>

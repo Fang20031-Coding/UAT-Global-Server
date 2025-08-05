@@ -41,7 +41,6 @@ This project is a **Global Server adaptation** of the original China Server vers
 - **Skill Choice System**: Intelligent skill selection interface in web application
 - **Event Choice Picker**: Smart event selection for optimal training
 - **70% English Translation**: Major UI and system text translated to English
-- **Automated Releases**: GitHub Actions for seamless executable distribution
 - **Auto Device Selection**: Interactive ADB device detection and selection
 
 ### 🔄 **Current Limitations**
@@ -54,14 +53,13 @@ This project is a **Global Server adaptation** of the original China Server vers
 ### **Core Automation**
 - ✅ **Automatic Training**: Complete training scenarios for all Uma Musume
 - ✅ **Customizable Targets**: Training attributes, racing tactics, additional races
-- ✅ **Skill Learning**: Optimized skill acquisition for 3-star factor farming
+- ✅ **Skill Learning**: Optimized skill acquisition for 3-star spark farming
 - ✅ **Inheritance Compatibility**: Improved training strategy support
 
 ### **Advanced Web Interface**
 - 🎛️ **Race Management**: Advanced filtering and selection tools
 - 📊 **Real-time Monitoring**: Live task status and progress tracking
 - ⚙️ **Easy Configuration**: Intuitive settings and preset management
-- 📱 **Responsive Design**: Works on desktop and mobile devices
 - 🎯 **Character Filter**: Filter races based on selected character (manual select on UAT web)
 
 ## 📦 **Installation & Setup**
@@ -175,10 +173,10 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 ## 🎯 **Roadmap**
 
 ### **Planned Features**
-- [ ] **Scheduled Tasks**: Automated execution at specific times
+- [ ] **Repeatable Tasks**: Automated execution at specific repeatable times
 - [ ] **AI Training Logic**: Enhanced decision-making algorithms
 - [ ] **Event Configuration**: Advanced event choice options
-- [ ] **Daily Automation**: Auto-complete daily tasks (coins, support points, JJC)
+- [ ] **Daily Automation**: Auto-complete daily tasks (daily races, fans farming, event)
 - [ ] **Uma Musume Auto-Selection**: Automated character and support card selection
 - [ ] **Card Name Translation**: Complete English translation for support card names
 

@@ -1,8 +1,26 @@
 # 🏇 Umamusume Auto Trainer (Global Server Edition)
 
-**Uma Musume Pretty Derby Global Server Automatic Training Tool**
+**Uma Musume Pretty Derby Global Server Automatic Career Tool**
 
 > **From China Server automation to Global Server excellence** - A complete transformation with enhanced features, improved UI, and robust automation capabilities.
+
+---
+## 📄 **License & Credits**
+
+This project is a **Global Server adaptation** of the original China Server version by [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer).
+
+### **Original Project**
+- **Original Author**: [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer)
+- **Original Repository**: [UmamusumeAutoTrainer](https://github.com/shiokaze/UmamusumeAutoTrainer) (China Server)
+
+### **This Project**
+- **Global Server Adaptation**: [UAT-Global-Server](https://github.com/BrayAlter/UAT-Global-Server)
+- **Based on**: Original China Server version
+- **Enhancements**: 70% translation, improved UI, Global Server compatibility
+
+**Please respect the original author's work while contributing improvements.**
+
+---
 
 ## 🌟 **What's New in Global Server Edition**
 
@@ -184,20 +202,5 @@ pip install -r requirements.txt
 # Run in development mode
 python main.py
 ```
-
-## 📄 **License & Credits**
-
-This project is a **Global Server adaptation** of the original China Server version by [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer).
-
-### **Original Project**
-- **Original Author**: [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer)
-- **Original Repository**: [UmamusumeAutoTrainer](https://github.com/shiokaze/UmamusumeAutoTrainer) (China Server)
-
-### **This Project**
-- **Global Server Adaptation**: [UAT-Global-Server](https://github.com/BrayAlter/UAT-Global-Server)
-- **Based on**: Original China Server version
-- **Enhancements**: 70% translation, improved UI, Global Server compatibility
-
-**Please respect the original author's work while contributing improvements.**
 
 ---

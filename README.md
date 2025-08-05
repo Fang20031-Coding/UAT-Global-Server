@@ -85,6 +85,7 @@ cd UAT-Global-Server
 - **DPI**: 180
 - **Graphics**: Standard (not Simple)
 - **ADB**: Must be enabled in emulator settings
+- **IMPORTANT**: Open umamusume app before launch
 
 ### **Launch**
 ```bash

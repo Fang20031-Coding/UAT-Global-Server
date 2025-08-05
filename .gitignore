@@ -137,5 +137,4 @@ brayscript/
 
 # Project specific
 userdata/
-public/
 **/__pycache__/

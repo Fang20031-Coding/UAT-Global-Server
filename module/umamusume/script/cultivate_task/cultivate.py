@@ -567,11 +567,12 @@ def script_cultivate_catch_doll_result(ctx: UmamusumeContext):
 
 
 def script_cultivate_finish(ctx: UmamusumeContext):
-    if not ctx.cultivate_detail.learn_skill_done or not ctx.cultivate_detail.cultivate_finish:
-        ctx.cultivate_detail.cultivate_finish = True
-        ctx.ctrl.click_by_point(CULTIVATE_FINISH_LEARN_SKILL)
-    else:
-        ctx.ctrl.click_by_point(CULTIVATE_FINISH_CONFIRM)
+    if not ctx.task.detail.manual_purchase_at_end:
+        if not ctx.cultivate_detail.learn_skill_done or not ctx.cultivate_detail.cultivate_finish:
+            ctx.cultivate_detail.cultivate_finish = True
+            ctx.ctrl.click_by_point(CULTIVATE_FINISH_LEARN_SKILL)
+        else:
+            ctx.ctrl.click_by_point(CULTIVATE_FINISH_CONFIRM)
 
 
 def script_cultivate_learn_skill(ctx: UmamusumeContext):

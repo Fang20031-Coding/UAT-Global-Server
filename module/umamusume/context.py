@@ -91,6 +91,12 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         detail.learn_skill_only_user_provided = task.detail.learn_skill_only_user_provided
         detail.allow_recover_tp = task.detail.allow_recover_tp
         detail.extra_weight = task.detail.extra_weight
+        
+        # Load motivation thresholds from preset (with defaults)
+        detail.motivation_threshold_year1 = getattr(task.detail, 'motivation_threshold_year1', 3)
+        detail.motivation_threshold_year2 = getattr(task.detail, 'motivation_threshold_year2', 4)
+        detail.motivation_threshold_year3 = getattr(task.detail, 'motivation_threshold_year3', 4)
+        
         ctx.cultivate_detail = detail
     return ctx
 

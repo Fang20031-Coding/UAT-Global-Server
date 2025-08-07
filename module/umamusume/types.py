@@ -176,6 +176,9 @@ class CultivateContextDetail:
     allow_recover_tp: bool
     parse_factor_done: bool
     extra_weight: list
+    motivation_threshold_year1: int
+    motivation_threshold_year2: int
+    motivation_threshold_year3: int
 
     def __init__(self):
         self.expect_attribute = None
@@ -194,6 +197,9 @@ class CultivateContextDetail:
         self.allow_recover_tp = False
         self.parse_factor_done = False
         self.extra_weight = []
+        self.motivation_threshold_year1 = 3  # Default values
+        self.motivation_threshold_year2 = 4
+        self.motivation_threshold_year3 = 4
 
     def reset_skill_learn(self):
         self.learn_skill_done = False

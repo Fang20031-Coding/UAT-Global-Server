@@ -137,7 +137,7 @@ def script_info(ctx: UmamusumeContext):
                     ctx.ctrl.click(350, 600, "Final fallback TP recovery click")
             return  # Exit early to prevent wrong handler execution
 
-        if title_text == TITLE[0]:
+        if title_text == TITLE[0]: #race details
             ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_3)
             time.sleep(1)
         if title_text == TITLE[1]:  # "Rest & Outing Confirmation"
@@ -160,32 +160,57 @@ def script_info(ctx: UmamusumeContext):
             if ctx.cultivate_detail.clock_use_limit > ctx.cultivate_detail.clock_used:
                 ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_USE_CLOCK)
                 ctx.cultivate_detail.clock_used += 1
-                log.info("🔋 Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit))
+                log.info("🔋 Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit), str(ctx.cultivate_detail.clock_used))
             else:
                 ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_CANCEL)
                 log.info("🔋 Reached Clock limit, cancel race")
             log.debug("Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit),
                         str(ctx.cultivate_detail.clock_used))
-        if title_text == TITLE[5]:
+        if title_text == TITLE[5]: #Earned Title
             ctx.ctrl.click_by_point(GET_TITLE_CONFIRM)
-        if title_text == TITLE[6]:
+        if title_text == TITLE[6]: #Training Complete
             ctx.ctrl.click_by_point(CULTIVATE_FINISH_RETURN_CONFIRM)
-        if title_text == TITLE[7]:
+        if title_text == TITLE[7]: #Quick Mode Settings
             ctx.ctrl.click_by_point(SCENARIO_SHORTEN_SET_2)
             time.sleep(0.5)
             ctx.ctrl.click_by_point(SCENARIO_SHORTEN_CONFIRM)
-        if title_text == TITLE[8]:
-            ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
-        if title_text == TITLE[9]:
+        if title_text == TITLE[8]: #Recreation
+            # Check for different types of recreation by detecting templates
+            img = ctx.current_screen
+            img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            from module.umamusume.asset.template import UI_FRIEND_RECREATION, UI_FRIEND_RECREATION_COMPLETE
+            
+            # Check for friend recreation complete first (most specific)
+            result_complete = image_match(img_gray, UI_FRIEND_RECREATION_COMPLETE)
+            log.info(f"🔍 Recreation - Friend recreation complete template match: {result_complete.find_match}")
+            
+            if result_complete.find_match:
+                # This is friend recreation complete - use CULTIVATE_TRIP_WITH_FRIEND_COMPLETE
+                log.info("🏖️ Friend recreation complete detected - using CULTIVATE_TRIP_WITH_FRIEND_COMPLETE")
+                ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND_COMPLETE)
+            else:
+                # Check for regular friend recreation
+                result = image_match(img_gray, UI_FRIEND_RECREATION)
+                log.info(f"🔍 Recreation - Friend recreation template match: {result.find_match}")
+                
+                if result.find_match:
+                    # This is friend recreation - use CULTIVATE_TRIP_WITH_FRIEND
+                    log.info("🏖️ Friend recreation detected - using CULTIVATE_TRIP_WITH_FRIEND")
+                    ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
+                else:
+                    # This is regular recreation - use CULTIVATE_OPERATION_COMMON_CONFIRM
+                    log.info("🏖️ Regular recreation detected - using CULTIVATE_OPERATION_COMMON_CONFIRM")
+                    ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
+        if title_text == TITLE[9]: #Confirmation
             ctx.ctrl.click_by_point(CULTIVATE_LEARN_SKILL_CONFIRM_AGAIN)
-        if title_text == TITLE[10]:
+        if title_text == TITLE[10]: #Skills Learned
             ctx.ctrl.click_by_point(CULTIVATE_LEARN_SKILL_DONE_CONFIRM)
             ctx.cultivate_detail.learn_skill_selected = False
-        if title_text == TITLE[11]:
+        if title_text == TITLE[11]: #Complete Career
             ctx.ctrl.click_by_point(CULTIVATE_FINISH_CONFIRM_AGAIN)
-        if title_text == TITLE[12]:
+        if title_text == TITLE[12]: #Umamusume Details
             ctx.ctrl.click_by_point(CULTIVATE_RESULT_CONFIRM)
-        if title_text == TITLE[13]:
+        if title_text == TITLE[13]: #Fan Count Below Target Race Requirement
             ctx.ctrl.click_by_point(CULTIVATE_FAN_NOT_ENOUGH_RETURN)
         if title_text == TITLE[14]:
             ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
@@ -206,9 +231,9 @@ def script_info(ctx: UmamusumeContext):
                 # Use CULTIVATE_LEARN_SKILL_CONFIRM_AGAIN coordinates for skill confirmations
                 ctx.ctrl.click_by_point(CULTIVATE_LEARN_SKILL_CONFIRM_AGAIN)
                 log.info("⚠️ Using skill confirmation coordinates for Skip Confirmation - template not found")
-        if title_text == TITLE[16]:
+        if title_text == TITLE[16]: #Rest
             ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
-        if title_text == TITLE[17]:
+        if title_text == TITLE[17]: #Race Recommendations
             ctx.ctrl.click_by_point(RACE_RECOMMEND_CONFIRM)
         if title_text == TITLE[18] or title_text == TITLE[19]:  # "Tactics" or "Strategy"
             date = ctx.cultivate_detail.turn_info.date

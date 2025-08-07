@@ -99,7 +99,6 @@ class U2AndroidController(AndroidController):
         self.recent_operation_time = time.time()
 
     def click(self, x, y, name="", random_offset=True, max_x=720, max_y=1280, hold_duration=0):
-        print("dis ran")
         if name != "":
             log.debug("click >> " + name)
         if random_offset: # why was this just "random" before

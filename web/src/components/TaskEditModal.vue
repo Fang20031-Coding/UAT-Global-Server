@@ -814,8 +814,12 @@
                     </div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col">
-                      <button type="button" class="btn btn-outline-secondary btn-sm" @click="clearSkillFilters">
+                    <div class="col-md-8">
+                      <label class="filter-label">Search Skill</label>
+                      <input v-model.trim="skillFilter.query" type="text" class="form-control form-control-sm" placeholder="Search by skill name or description" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                      <button type="button" class="btn btn-outline-secondary btn-sm ml-auto" @click="clearSkillFilters">
                         <i class="fas fa-times"></i> Clear Filters
                       </button>
                     </div>
@@ -1227,7 +1231,8 @@ export default {
         strategy: '',
         distance: '',
         tier: '',
-        rarity: ''
+        rarity: '',
+        query: ''
       },
       availableStrategies: ['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer'],
       availableDistances: ['', 'Sprint', 'Mile', 'Medium', 'Long'],
@@ -1429,7 +1434,7 @@ export default {
       return grouped;
     },
     filteredSkillsByType() {
-      const { strategy, distance, tier, rarity } = this.skillFilter;
+      const { strategy, distance, tier, rarity, query } = this.skillFilter;
       const allSkills = skillsData;
 
       // Filter skills based on selected criteria
@@ -1438,7 +1443,11 @@ export default {
         const matchesDistance = !distance || (skill.distance && skill.distance === distance);
         const matchesTier = !tier || (skill.tier && skill.tier === tier);
         const matchesRarity = !rarity || (skill.rarity && skill.rarity === rarity);
-        return matchesStrategy && matchesDistance && matchesTier && matchesRarity;
+        const q = (query || '').toLowerCase();
+        const matchesQuery = !q ||
+          (skill.name && skill.name.toLowerCase().includes(q)) ||
+          (skill.description && skill.description.toLowerCase().includes(q));
+        return matchesStrategy && matchesDistance && matchesTier && matchesRarity && matchesQuery;
       });
 
       // Group filtered skills by type
@@ -2167,7 +2176,8 @@ export default {
         strategy: '',
         distance: '',
         tier: '',
-        rarity: ''
+        rarity: '',
+        query: ''
       };
     },
     toggleSkillList() {

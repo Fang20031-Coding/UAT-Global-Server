@@ -191,11 +191,11 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 
 ### **Planned Features**
 - [ ] **Repeatable Tasks**: Automated execution at specific repeatable times
-- [✅] **AI Training Logic**: Enhanced decision-making algorithms
+- [x] **AI Training Logic**: Enhanced decision-making algorithms
 - [ ] **Event Configuration**: Advanced event choice options
 - [ ] **Daily Automation**: Auto-complete daily tasks (daily races, fans farming, event)
-- [ ] **Uma Musume Auto-Selection**: Automated character, legacy, and support card selection
-- [✅] **Card Name Translation**: Complete English translation for support card names
+- [x] **Uma Musume Auto-Selection**: Automated character, legacy, and support card selection
+- [x] **Card Name Translation**: Complete English translation for support card names
 - [ ] **Accurate Translation**: Complete English accurate translation
 
 ### **Recent Updates**

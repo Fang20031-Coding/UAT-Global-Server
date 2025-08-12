@@ -968,7 +968,20 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
         ctx.cultivate_detail.learn_skill_done = True
         ctx.cultivate_detail.turn_info.turn_learn_skill_done = True
     else:
-        log.warning(f"⚠️ No skills were processed - learn_skill_done flag not set")
+        # For user-provided only mode, if no skills were processed, it means all desired skills are already learned
+        if ctx.cultivate_detail.learn_skill_only_user_provided:
+            log.info(f"✅ User-provided only mode: No skills to learn - all desired skills already learned")
+            ctx.cultivate_detail.learn_skill_done = True
+            ctx.cultivate_detail.turn_info.turn_learn_skill_done = True
+        else:
+            # Check if all skills are already learned (priority -1 means already learned)
+            all_skills_already_learned = all(skill["priority"] == -1 for skill in skill_list)
+            if all_skills_already_learned:
+                log.info(f"✅ All desired skills are already learned - marking skill learning as complete")
+                ctx.cultivate_detail.learn_skill_done = True
+                ctx.cultivate_detail.turn_info.turn_learn_skill_done = True
+            else:
+                log.warning(f"⚠️ No skills were processed - learn_skill_done flag not set")
     
     # After learning skills, click the confirm button first, then back button
     log.info("✅ Skills learned - clicking confirm button first")

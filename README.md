@@ -31,7 +31,7 @@ This project is a **Global Server adaptation** of the original China Server vers
 ### 🎯 **Major Improvements**
 - **🌍 Global Server Migration**: 70% translation and asset updates for Global Server compatibility
 - **🎨 Enhanced Web Interface**: Advanced race filtering, skill choice system, and improved user experience
-- **🤖 Robust Bot System**: Dual detection (image + OCR) for reliable race fail handling
+- **🤖 Reliable Race Identification**: Dual verification (template + OCR) for accurate race ID detection
 - **⚡ Performance Optimization**: JSON-based data loading for faster operation
 - **📱 Smart Device Detection**: Automatic ADB device detection and selection when start the program (emulator must open the game first)
 
@@ -42,11 +42,12 @@ This project is a **Global Server adaptation** of the original China Server vers
 - **70% English Translation**: Major UI and system text translated to English
 - **Auto Device Selection**: Interactive ADB device detection and selection
 - **🎮 Manual Skill Purchase**: New feature allowing manual skill selection at the end of career while maintaining automatic skill learning during normal training
+- **Preset Saving System (UAT Web)**: Save and load your preferred race filter settings instantly
 
 ### 🔄 **Current Limitations**
 - **Uma Musume Selection**: Must be done manually in-game (not yet automated)
 - **Support Card Selection**: Manual selection in-game required
-- **Character Race Filter**: Race character filtering is implemented, the filter has been adjusted to the position and terrain of the field that the character masters, and has also been adjusted to the character's free schedule.
+
 
 ## 🚀 **Features**
 
@@ -56,13 +57,18 @@ This project is a **Global Server adaptation** of the original China Server vers
 - ✅ **Skill Learning**: Optimized skill acquisition for 3-star spark farming
 - ✅ **Manual Skill Purchase**: Option to manually select skills at career end while keeping auto-learning during training
 - ✅ **Inheritance Compatibility**: Improved training strategy support
+- ✅ **Loop Training Bot Logic**: Continuous stat-growth training loop for long runs — see the 📹 [Video Tutorial](https://youtu.be/XDETTIpzGd8)
+- ✅ **Reliable Race Identification**: Template + OCR dual verification with automatic fallback
+- ✅ **Extra Race Prioritization**: Extra races override recreation/rest/medic and use specific race IDs
 
 ### **Advanced Web Interface**
 - 🎛️ **Race Management**: Advanced filtering and selection tools
 - 📊 **Real-time Monitoring**: Live task status and progress tracking
 - ⚙️ **Easy Configuration**: Intuitive settings and preset management
-- 🎯 **Character Filter**: Filter races based on selected character (manual select on UAT web)
+- 🎯 **Smart Character Filter**: Preserves selections when switching characters, shows live match counters, and lets you clear all or keep only compatible races (manual select on UAT web; Bootstrap confirmation dialog). Includes support for the playable character Smart Falcon.
 - 🔔 **Web Notifications**: Modern notification system for manual skill purchase
+- 💾 **Preset Saving System**: Quickly save/load race filter presets
+- 🖥️ **Remastered UI**: Modernized layout and improved responsiveness
 
 ## 📦 **Installation & Setup**
 
@@ -105,6 +111,11 @@ The application will automatically:
 5. ⚙️ **Auto-update configuration**
 6. 🚀 **Start the web interface**
 
+#### **Preflight Health Checks**
+- Verifies ADB connectivity and device responsiveness before starting the bot
+- Validates screenshot stream quality to avoid running on corrupted/static images
+- Surfaces clear, English error messages for quick diagnosis
+
 **Success indicator:**
 ```
 🚀 UAT running on http://127.0.0.1:8071
@@ -128,11 +139,11 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 3. **Support Cards**: Avoid friend cards (no specific outing strategy)
 4. **Starting Position**: Be at Career Menu (where the UI Shows Training, Race, Recreation) 
 
-### **Website Settings RECOMENDED**
-- **Attribute Setting**: Set you desire attributes in the UAT interface, if you have no idea then try manual training first and put the result attribute value in the UAT interface
-- **Race Selection RECOMENDED**: Configure you race schedule, this is very necessary to avoid lack of fans in the next goal, consider using the character filter in the race menu, Don't worry when using the character filter, because the filter has been adjusted to the position and terrain of the field that the character masters, and has also been adjusted to the character's free schedule.
-- **Skill Optimization**: Set your desire skill, consider the priority 0 = the bot will buy the desire skill first
-- **Manual Skill Purchase**: Check "Purchase skill manually at the end of career" to manually select final skills while keeping auto-learning during training
+### **Website Settings RECOMMENDED**
+- **Attribute Setting**: Set desired target attributes in the UI. If unsure, do a manual run first and copy the resulting attributes into the UAT interface.
+- **Race Selection**: Configure your race schedule to avoid failing fan-count goals. Use the Smart Character Filter; it preserves selections when changing characters and can keep only compatible races.
+- **Skill Optimization**: Configure desired skills. Priority `0` means the bot will purchase those skills first.
+- **Manual Skill Purchase**: Enable to select end-of-career skills manually while keeping auto-learning during training.
 
 ## 🔧 **Troubleshooting**
 
@@ -180,20 +191,23 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 
 ### **Planned Features**
 - [ ] **Repeatable Tasks**: Automated execution at specific repeatable times
-- [ ] **AI Training Logic**: Enhanced decision-making algorithms
+- [✅] **AI Training Logic**: Enhanced decision-making algorithms
 - [ ] **Event Configuration**: Advanced event choice options
 - [ ] **Daily Automation**: Auto-complete daily tasks (daily races, fans farming, event)
 - [ ] **Uma Musume Auto-Selection**: Automated character, legacy, and support card selection
-- [ ] **Card Name Translation**: Complete English translation for support card names
+- [✅] **Card Name Translation**: Complete English translation for support card names
 - [ ] **Accurate Translation**: Complete English accurate translation
 
 ### **Recent Updates**
-- ✅ **Global Server Migration**: Complete compatibility update
-- ✅ **Web Interface Enhancement**: Advanced filtering and controls
-- ✅ **Performance Optimization**: JSON-based data loading
-- ✅ **Error Handling**: Robust fail-safe mechanisms
-- ✅ **Smart Device Detection**: Automatic ADB device selection
-- ✅ **Manual Skill Purchase**: New feature for manual skill selection at career end
+- ✅ Smart Character Race Filtering (keeps selections, live counters, keep-only-compatible option)
+- ✅ Dual Verification Race ID (template + OCR with fallback)
+- ✅ Extra Race Prioritization (overrides recreation/rest/medic; uses specific race IDs)
+- ✅ Loop Training Bot Logic (continuous growth; video tutorial available)
+- ✅ Preset Saving System in web UI (save/load race filter presets)
+- ✅ Smart Falcon added to Character Race Filter
+- ✅ Health checks before startup (ADB/device/screenshot pipeline)
+- ✅ Web UI remaster (modern layout; fixed “Select All G1 G2 G3”)
+- ✅ Multiple fixes: race list refresh, modal sizing, selection reset, corrupted screenshots, CSS conflicts
 
 ## 🤝 **Contributing**
 

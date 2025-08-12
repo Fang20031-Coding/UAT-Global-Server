@@ -57,7 +57,7 @@ This project is a **Global Server adaptation** of the original China Server vers
 - ✅ **Skill Learning**: Optimized skill acquisition for 3-star spark farming
 - ✅ **Manual Skill Purchase**: Option to manually select skills at career end while keeping auto-learning during training
 - ✅ **Inheritance Compatibility**: Improved training strategy support
-- ✅ **Loop Training Bot Logic**: Continuous stat-growth training loop for long runs — see the 📹 [Video Tutorial](https://youtu.be/XDETTIpzGd8)
+- ✅ **Loop Training Bot Logic**: Continuous stat-growth training loop for long runs — see the 📹 [Demo Video](https://youtu.be/XDETTIpzGd8)
 - ✅ **Reliable Race Identification**: Template + OCR dual verification with automatic fallback
 - ✅ **Extra Race Prioritization**: Extra races override recreation/rest/medic and use specific race IDs
 
@@ -202,7 +202,7 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 - ✅ Smart Character Race Filtering (keeps selections, live counters, keep-only-compatible option)
 - ✅ Dual Verification Race ID (template + OCR with fallback)
 - ✅ Extra Race Prioritization (overrides recreation/rest/medic; uses specific race IDs)
-- ✅ Loop Training Bot Logic (continuous growth; video tutorial available)
+- ✅ Loop Training Bot Logic
 - ✅ Preset Saving System in web UI (save/load race filter presets)
 - ✅ Smart Falcon added to Character Race Filter
 - ✅ Health checks before startup (ADB/device/screenshot pipeline)

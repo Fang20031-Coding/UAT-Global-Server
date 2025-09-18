@@ -13,15 +13,6 @@ I will be relying on you guys to automate the future senarios. 🙏
 
 If not I guess ill be stuck playing URA lmao
 
-# 🏇 Umamusume Auto Trainer (Global Server Edition)
-
-**Uma Musume Pretty Derby Global Server Automatic Career Tool**
-
-> **From China server automation to global server compatibility** - A complete transformation with enhanced features, improved UI, and robust automation capabilities.
->
-> ***This project is for educational purpose only, [use it at your own risk](https://umamusume.com/news/100029/)***
-
-
 ## 📄 **License & Credits**
 
 This project is a **Global Server adaptation** of the original China Server version by [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer).

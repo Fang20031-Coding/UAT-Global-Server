@@ -50,6 +50,9 @@ This project is a **Global Server adaptation** of the original China Server vers
 
 - ✅ **Saving of presets**: Save training parameters for easy access in future runs 
 
+### 🎥 **Demo Run**
+[Demo run](https://youtu.be/J07n4wvLSCw)
+
 ## 🚨 **Safety**
 - Question: Is this safe?
 - Answer: Safer than the steam release (All of your processes are transparent lmao), I have done what I can to humanize the inputs. **BUT** if they decide to put in the effort they **WILL** find you. It is near impossible to simulate perfect human behavior with code so use at your own risk. I take no responsibility.  **HIDING BEHIND A EMULATOR DOES NOT MAKE YOU UNDETECTABLE**

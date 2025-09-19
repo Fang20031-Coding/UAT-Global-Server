@@ -44,7 +44,7 @@ This project is a **Global Server adaptation** of the original China Server vers
 
 - ✅ **Completely hands off**: Recover tp, Starting runs, finding the right guest card
   - Everything is automated you can just afk for **DAYS** until legacy umas are full
-  - Handles everything from disconnections to the game crashing. The show will go on as long as there isn't a new update.
+  - Handles everything from disconnections to the game crashing. The show will go on as long as there isn't a new update. (it handles that too now lol)
   - Supports background play via emulators.
 
 

@@ -12,6 +12,7 @@ from module.umamusume.asset.point import *
 from module.umamusume.asset.ui import INFO
 from module.umamusume.context import UmamusumeContext
 import bot.base.log as logger
+from bot.engine.ctrl import reset_task
 
 log = logger.get_logger(__name__)
 
@@ -81,7 +82,8 @@ TITLE = [
     "Battle Confirmation", # TITLE[36]
     "Rewards Collected", # TITLE[37] after career if theres story
     "Event Story Unlocked", # TITLE[38] after career if theres story
-    "Connection Error" #39 
+    "Connection Error", #39 
+    "Data Update" #40
 ]
 
 
@@ -128,7 +130,9 @@ def script_info(ctx: UmamusumeContext):
         if title_text == "Confirm":
             log.info("🔋 FORCED: Handling 'Confirm' (TP recovery) screen")
             if not ctx.cultivate_detail.allow_recover_tp:
-                ctx.task.end_task(TaskStatus.TASK_STATUS_FAILED, UEndTaskReason.TP_NOT_ENOUGH)
+                from bot.engine.ctrl import reset_task
+                reset_task(ctx.task.task_id)
+                return
             else:
                 ctx.ctrl.click_by_point(TO_RECOVER_TP)
             return  # Exit early to prevent wrong handler execution
@@ -143,9 +147,9 @@ def script_info(ctx: UmamusumeContext):
                     # TODO: 没有考虑钻石也没了的情况
                     if ctx.cultivate_detail.allow_recover_tp == 2: # 允许用钻石回复TP
                         ctx.ctrl.click_by_point(USE_CARROT_RECOVER_TP)
-                    else: # 只允许用体力药
-                        # 直接结束任务
-                        ctx.task.end_task(TaskStatus.TASK_STATUS_FAILED, UEndTaskReason.TP_DRINK_NOT_ENOUGH)
+                    else: 
+                        reset_task(ctx.task.task_id)
+                        return
                     
             elif image_match(screen, REF_RECOVER_TP_2).find_match:
                 ctx.ctrl.click_by_point(USE_TP_DRINK_CONFIRM)
@@ -158,6 +162,8 @@ def script_info(ctx: UmamusumeContext):
                 ctx.ctrl.click_by_point(USE_TP_DRINK_RESULT_CLOSE)
         if title_text == TITLE[39]: #disconnect
             ctx.ctrl.click(383, 840, "reconnect")
+        if title_text == TITLE[40]: #disconnect
+            ctx.ctrl.click(383, 840, "update")
         if title_text == TITLE[0]: #race details
             ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_3)
             time.sleep(1)

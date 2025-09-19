@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 from module.umamusume.asset.template import UI_CULTIVATE_URA_RACE_1, UI_CULTIVATE_URA_RACE_2, UI_CULTIVATE_URA_RACE_3
 from bot.recog.image_matcher import image_match
+from bot.conn.fetch import fetch_state
 log = logger.get_logger(__name__)
 
 # Simple cache for race data to avoid repeated lookups
@@ -23,15 +24,18 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     if not ctx.cultivate_detail.debut_race_win:
         turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
     # this is stupid change later
-    if ctx.cultivate_detail.turn_info.medic_room_available and ctx.cultivate_detail.turn_info.remain_stamina <= 80:
-        log.info(f"🏥 Fast path: Low stamina ({ctx.cultivate_detail.turn_info.remain_stamina}) - prioritizing medic")
+    state = fetch_state()
+    energy = state.get("energy", 0)
+    mood_val = state.get("mood", 0)
+    if ctx.cultivate_detail.turn_info.medic_room_available and energy <= 80:
+        log.info(f"🏥 Fast path: Low stamina ({energy}) - prioritizing medic")
         turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_MEDIC
         return turn_operation
     
     
     # Fast path: If we have a clear decision based on stamina/motivation, skip complex calculations
-    if ctx.cultivate_detail.turn_info.remain_stamina <= 48:
-        log.info(f"🏥 Fast path: Low stamina ({ctx.cultivate_detail.turn_info.remain_stamina}) - prioritizing rest")
+    if energy <= 48:
+        log.info(f"🏥 Fast path: Low stamina ({energy}) - prioritizing rest")
         turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
         return turn_operation
     
@@ -167,13 +171,13 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
             log.info(f"🏆 Detected URA championship race: {ura_race_id} at date {date}")
             # Check if we should rest/recreate instead of racing
             medic = False
-            if ctx.cultivate_detail.turn_info.medic_room_available and ctx.cultivate_detail.turn_info.remain_stamina <= 85:
+            if ctx.cultivate_detail.turn_info.medic_room_available and energy <= 85:
                 medic = True
 
             trip = False
-            if not ctx.cultivate_detail.turn_info.medic_room_available and (ctx.cultivate_detail.turn_info.date <= 36 and ctx.cultivate_detail.turn_info.motivation_level.value <= 3 and ctx.cultivate_detail.turn_info.remain_stamina < 90 and not support_card_max >= 2
-                                                                        or 40 < ctx.cultivate_detail.turn_info.date <= 60 and ctx.cultivate_detail.turn_info.motivation_level.value <= 4 and ctx.cultivate_detail.turn_info.remain_stamina < 90
-                                                                        or 64 < ctx.cultivate_detail.turn_info.date <= 99 and ctx.cultivate_detail.turn_info.motivation_level.value <= 4 and ctx.cultivate_detail.turn_info.remain_stamina < 90):
+            if not ctx.cultivate_detail.turn_info.medic_room_available and (ctx.cultivate_detail.turn_info.date <= 36 and mood_val <= 3 and energy < 90 and not support_card_max >= 2
+                                                                        or 40 < ctx.cultivate_detail.turn_info.date <= 60 and mood_val <= 4 and energy < 90
+                                                                        or 64 < ctx.cultivate_detail.turn_info.date <= 99 and mood_val <= 4 and energy < 90):
                 try:
                     best_idx = training_score.index(np.max(training_score))
                     relevant = ctx.cultivate_detail.turn_info.training_info_list[best_idx].relevant_count
@@ -186,15 +190,15 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                     trip = True
 
             rest = False
-            if ctx.cultivate_detail.turn_info.remain_stamina <= 48:
+            if energy <= 48:
                 rest = True
             elif (
-                    ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and ctx.cultivate_detail.turn_info.remain_stamina < 65:
+                    ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < 65:
                 rest = True
 
             # If we need rest/recreation, prioritize that over racing
             if rest:
-                log.info(f"🏥 Low stamina ({ctx.cultivate_detail.turn_info.remain_stamina}) - prioritizing rest over URA race")
+                log.info(f"🏥 Low stamina ({energy}) - prioritizing rest over URA race")
                 turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 return turn_operation
             elif trip:
@@ -207,7 +211,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 return turn_operation
             else:
                 # Only race if we have enough stamina
-                log.info(f"🏆 Proceeding with URA race - stamina: {ctx.cultivate_detail.turn_info.remain_stamina}")
+                log.info(f"🏆 Proceeding with URA race - stamina: {energy}")
                 turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
                 turn_operation.race_id = ura_race_id
                 return turn_operation
@@ -223,13 +227,13 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
             return turn_operation
 
     medic = False
-    if ctx.cultivate_detail.turn_info.medic_room_available and ctx.cultivate_detail.turn_info.remain_stamina <= 85:
+    if ctx.cultivate_detail.turn_info.medic_room_available and energy <= 85:
         medic = True
 
     trip = False
-    if not ctx.cultivate_detail.turn_info.medic_room_available and (ctx.cultivate_detail.turn_info.date <= 36 and ctx.cultivate_detail.turn_info.motivation_level.value < ctx.cultivate_detail.motivation_threshold_year1 and ctx.cultivate_detail.turn_info.remain_stamina < 90 and not support_card_max >= 3
-                                                                    or 40 < ctx.cultivate_detail.turn_info.date <= 60 and ctx.cultivate_detail.turn_info.motivation_level.value < ctx.cultivate_detail.motivation_threshold_year2 and ctx.cultivate_detail.turn_info.remain_stamina < 90
-                                                                    or 64 < ctx.cultivate_detail.turn_info.date <= 99 and ctx.cultivate_detail.turn_info.motivation_level.value < ctx.cultivate_detail.motivation_threshold_year3 and ctx.cultivate_detail.turn_info.remain_stamina < 90):
+    if not ctx.cultivate_detail.turn_info.medic_room_available and (ctx.cultivate_detail.turn_info.date <= 36 and mood_val < ctx.cultivate_detail.motivation_threshold_year1 and energy < 90 and not support_card_max >= 3
+                                                                    or 40 < ctx.cultivate_detail.turn_info.date <= 60 and mood_val < ctx.cultivate_detail.motivation_threshold_year2 and energy < 90
+                                                                    or 64 < ctx.cultivate_detail.turn_info.date <= 99 and mood_val < ctx.cultivate_detail.motivation_threshold_year3 and energy < 90):
         try:
             best_idx = training_score.index(np.max(training_score))
             relevant = ctx.cultivate_detail.turn_info.training_info_list[best_idx].relevant_count
@@ -243,10 +247,10 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
            
 
     rest = False
-    if ctx.cultivate_detail.turn_info.remain_stamina <= 48:
+    if energy <= 48:
         rest = True
     elif (
-            ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and ctx.cultivate_detail.turn_info.remain_stamina < 65:
+            ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < 65:
         rest = True
 
     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN
@@ -275,7 +279,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 rainbow = 0
             if rainbow < 2:
                 log.info("Low rainbow count conserving energy for summer")
-                if ctx.cultivate_detail.turn_info.remain_stamina < 60:
+                if energy < 60:
                     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 else:
                     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRAINING

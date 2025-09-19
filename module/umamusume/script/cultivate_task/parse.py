@@ -204,9 +204,7 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
 
 def parse_cultivate_main_menu(ctx: UmamusumeContext, img):
     parse_train_main_menu_operations_availability(ctx, img)
-    parse_umamusume_remain_stamina_value(ctx, img)
     parse_umamusume_basic_ability_value(ctx, img)
-    parse_motivation(ctx, img)
     parse_debut_race(ctx, img)
     ctx.cultivate_detail.turn_info.parse_main_menu_finish = True
 

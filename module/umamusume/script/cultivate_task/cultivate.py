@@ -115,7 +115,9 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         return
 
     if not ctx.cultivate_detail.turn_info.parse_train_info_finish:
-        if has_extra_race or ctx.cultivate_detail.turn_info.remain_stamina < 48:
+        from bot.conn.fetch import read_energy
+        energy = read_energy()
+        if has_extra_race or energy < 48:
             ctx.cultivate_detail.turn_info.parse_train_info_finish = True
             return
         else:

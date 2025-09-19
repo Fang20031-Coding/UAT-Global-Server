@@ -129,12 +129,17 @@ class TurnInfo:
         self.turn_learn_skill_done = False
         self.aoharu_race_index = 0
 
-    def log_turn_info(self, scenario_type : ScenarioType):
+    def log_turn_info(self, scenario_type: ScenarioType):
         log.info("Current turn time " + str(self.date))
-        log.info("Motivation level " + str(self.motivation_level.name))
-        log.info("Remaining stamina " + str(self.remain_stamina))
-        log.info("Current attribute values Speed: %s, Stamina: %s, Power: %s, Guts: %s, Intelligence: %s, Skill Points: %s", self.uma_attribute.speed,
-                 self.uma_attribute.stamina, self.uma_attribute.power, self.uma_attribute.will, self.uma_attribute.intelligence, self.uma_attribute.skill_point)
+        log.info(
+            "Current attribute values Speed: %s, Stamina: %s, Power: %s, Guts: %s, Intelligence: %s, Skill Points: %s",
+            self.uma_attribute.speed,
+            self.uma_attribute.stamina,
+            self.uma_attribute.power,
+            self.uma_attribute.will,
+            self.uma_attribute.intelligence,
+            self.uma_attribute.skill_point,
+        )
         log.info("Speed training results:")
         self.training_info_list[0].log_training_info(scenario_type)
         log.info("Stamina training results:")

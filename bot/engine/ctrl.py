@@ -1,5 +1,7 @@
 from bot.base.manifest import APP_MANIFEST_LIST
 from bot.engine.scheduler import scheduler
+from bot.conn.u2_ctrl import U2AndroidController
+from module.umamusume.asset.point import *
 
 
 def start():
@@ -26,3 +28,6 @@ def get_task_list():
 
 def reset_task(task_id):
     scheduler.reset_task(task_id)
+    ctrl = U2AndroidController()
+    ctrl.init_env()
+    ctrl.click_by_point(ESCAPE)

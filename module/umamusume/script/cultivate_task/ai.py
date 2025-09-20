@@ -243,12 +243,20 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         if date_num in (59, 60): 
             rainbow = 0
             try:
-                best_idx = training_score.index(np.max(training_score))
-                id_counts = {}
-                for sc in ctx.cultivate_detail.turn_info.training_info_list[best_idx].support_card_info_list:
-                    k = id(sc)
-                    id_counts[k] = id_counts.get(k, 0) + 1
-                rainbow = sum(1 for v in id_counts.values() if v >= 2)
+                best_idx = int(np.argmax(training_score))
+                til = ctx.cultivate_detail.turn_info.training_info_list[best_idx]
+                target_type = type_map[best_idx]
+                from module.umamusume.define import SupportCardFavorLevel
+                for sc in (getattr(til, "support_card_info_list", []) or []):
+                    ctype = getattr(sc, "card_type", None)
+                    favor = getattr(sc, "favor", None)
+                    is_rb = False
+                    if hasattr(sc, "is_rainbow") and bool(getattr(sc, "is_rainbow")) and (ctype == target_type):
+                        is_rb = True
+                    if not is_rb and (ctype == target_type and favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4)):
+                        is_rb = True
+                    if is_rb:
+                        rainbow += 1
             except Exception:
                 rainbow = 0
             if rainbow < 2:

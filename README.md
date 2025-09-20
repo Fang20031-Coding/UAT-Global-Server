@@ -138,6 +138,7 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 ## ⚠️ **Known issues/Wont fix**
 - I have made the bot quite slow to improve reliability
   - The focus of this bot is to be ran unsupervised for long periods of time (days/weeks) hence speed is not my concern reliability is.
+  - All of my testing is done on "Loop until canceled and Auto recover tp" There might be bugs in single run mode
 - Bot seems to get stuck sometimes
   - There are failsafes in place. It should break out of it within 5 mintues. if not then yeah I'll fix it.
 - The event detection reads the text wrong sometimes

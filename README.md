@@ -63,6 +63,9 @@ This project is a **Global Server adaptation** of the original China Server vers
 - Question: Is this safe?
 - Answer: Safer than the steam release (All of your processes are transparent lmao), I have done what I can to humanize the inputs. **BUT** if they decide to put in the effort they **WILL** find you. It is near impossible to simulate perfect human behavior with code so use at your own risk. I take no responsibility.  **HIDING BEHIND A EMULATOR DOES NOT MAKE YOU UNDETECTABLE**
 
+- Answer 2: As long as there are people cheating on the steam release we are chilling (if ykyk)
+  - https://en.wikipedia.org/wiki/Sentinel_species
+  
 running this 24/7 looks sus as hell so I would suggest turning it off for a few hours every day. 
 (im just gonna risk it and run it 24/7 ill let you guys know if i get banned)
 
@@ -146,7 +149,9 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 - Bot seems to get stuck sometimes
   - There are failsafes in place. It should break out of it within 5 mintues. if not then yeah I'll fix it.
 - The event detection reads the text wrong sometimes
-  - Go fund paddleocr  
+  - Go fund paddleocr
+- Detection of supports sometimes fails
+  - Just restart both bluestacks and the bot. If it works from the start then it should not break halfway (it either breaks 100% of the time since launch or its fine and will never break) so its not really a issue. I also have no idea whats causing this.
 
 ## 🤝 **Contributing**
 

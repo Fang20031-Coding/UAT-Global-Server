@@ -2,7 +2,7 @@ I push everytime i make ANY changes so I would suggest not pulling unless the re
 
 Hello bray I'll be detaching this fork for now since im 99% sure ur not coming back
 
-# ⚠️🚨 !!DONT PULL I BROKE RAINBOW TRAINING!! 🚨⚠️  
+# ⚠️🚨 !!ATTENTION!! 🚨⚠️  
 ### THE [ORIGINAL CREATOR](https://github.com/BrayAlter/UAT-Global-Server) IS MISSING IN ACTION 
 
 unfortunately I too will no longer have time to work on this so hopefully he returns soon

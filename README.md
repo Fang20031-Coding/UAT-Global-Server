@@ -153,7 +153,8 @@ Access the web interface at `http://127.0.0.1:8071` to configure and start tasks
 - Detection of supports sometimes fails
   - Just restart both bluestacks and the bot. If it works from the start then it should not break halfway (it either breaks 100% of the time since launch or its fine and will never break) so its not really a issue. I also have no idea whats causing this.
 - Sometimes it fails to detect the hint (!)
-  - Its animated, so either I kill performance and template match like 20 screenshots or we just take the L when it fails the detect like 10% of the time
+  - Its animated, so either I kill performance and template match like 20 screenshots or we just take the L when it fails the detect like 5% of the time
+  - Could also check the general area for red pixels but it led to a bunch of false positives from my testing
 
 ## 🤝 **Contributing**
 

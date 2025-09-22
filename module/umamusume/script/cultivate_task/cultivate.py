@@ -371,6 +371,61 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
 
         ctx.cultivate_detail.turn_info.parse_train_info_finish = True
 
+        from module.umamusume.define import SupportCardType, SupportCardFavorLevel, TrainingType
+        date = ctx.cultivate_detail.turn_info.date
+        if date <= 24:
+            w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.01
+        elif 24 < date <= 48:
+            w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.09
+        elif 48 < date <= 60:
+            w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.12
+        else:
+            w_lv1, w_lv2, w_rainbow = 0.03, 0.05, 0.15
+        type_map = [
+            SupportCardType.SUPPORT_CARD_TYPE_SPEED,
+            SupportCardType.SUPPORT_CARD_TYPE_STAMINA,
+            SupportCardType.SUPPORT_CARD_TYPE_POWER,
+            SupportCardType.SUPPORT_CARD_TYPE_WILL,
+            SupportCardType.SUPPORT_CARD_TYPE_INTELLIGENCE,
+        ]
+        local_score = [0.0, 0.0, 0.0, 0.0, 0.0]
+        for idx in range(5):
+            til = ctx.cultivate_detail.turn_info.training_info_list[idx]
+            target_type = type_map[idx]
+            s = 0.0
+            for sc in (getattr(til, "support_card_info_list", []) or []):
+                favor = getattr(sc, "favor", SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN)
+                ctype = getattr(sc, "card_type", SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN)
+                if ctype == SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN:
+                    s += 0.001
+                    continue
+                if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
+                    continue
+                is_rb = False
+                if hasattr(sc, "is_rainbow"):
+                    is_rb = bool(getattr(sc, "is_rainbow")) and (ctype == target_type)
+                if not is_rb and (favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4) and ctype == target_type):
+                    is_rb = True
+                if is_rb:
+                    s += w_rainbow
+                    continue
+                if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
+                    s += w_lv1
+                elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
+                    s += w_lv2
+            local_score[idx] = s
+        max_score = max(local_score) if len(local_score) == 5 else 0.0
+        eps = 1e-9
+        ties = [i for i, v in enumerate(local_score) if abs(v - max_score) < eps]
+        if 4 in ties:
+            chosen_idx = 4
+        else:
+            chosen_idx = min(ties) if len(ties) > 0 else int(np.argmax(local_score))
+        if ctx.cultivate_detail.turn_info.turn_operation is None:
+            ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+        ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRAINING
+        ctx.cultivate_detail.turn_info.turn_operation.training_type = TrainingType(chosen_idx + 1)
+
 
     if (
         ctx.cultivate_detail.turn_info.turn_operation is None

@@ -285,12 +285,12 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                     turn_operation.training_type = TrainingType.TRAINING_TYPE_INTELLIGENCE
                 else:
                     eps = 1e-9
-                    tie_count = sum(1 for s in training_score if abs(s - max_score) < eps)
-                    if tie_count > 1:
-                        turn_operation.training_type = TrainingType.TRAINING_TYPE_INTELLIGENCE
+                    ties = [i for i, v in enumerate(training_score) if abs(v - max_score) < eps]
+                    if 4 in ties:
+                        chosen_idx = 4
                     else:
-                        best_idx = int(np.argmax(training_score))
-                        turn_operation.training_type = TrainingType(best_idx + 1)
+                        chosen_idx = min(ties) if len(ties) > 0 else int(np.argmax(training_score))
+                    turn_operation.training_type = TrainingType(chosen_idx + 1)
 
     if turn_operation.turn_operation_type != TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN:
         turn_operation.turn_operation_type_replace = expect_operation_type

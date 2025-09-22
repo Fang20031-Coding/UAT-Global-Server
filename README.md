@@ -15,6 +15,8 @@ I will be relying on you guys to automate the future senarios. 🙏
 
 If not I guess ill be stuck playing URA lmao
 
+(When i'm gone yall can run scrape.py and move the updated file to UAT-Global-Server\resource\umamusume\data to get updates for new cards/characters)
+
 ## 📄 **License & Credits**
 
 This project is a **Global Server adaptation** of the original China Server version by [@shiokaze](https://github.com/shiokaze/UmamusumeAutoTrainer).

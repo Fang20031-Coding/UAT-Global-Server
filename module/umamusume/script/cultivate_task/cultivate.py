@@ -554,12 +554,16 @@ def script_cultivate_event(ctx: UmamusumeContext):
     clicked = False
     if tpl is not None:
         try:
-            res = image_match(img_gray, tpl)
-            if res.find_match:
-                ctx.ctrl.click(res.center_point[0], res.center_point[1], f"Event option-{choice_index}")
-                clicked = True
-                ctx.cultivate_detail.event_cooldown_until = time.time() + 5
-                return
+            for _ in range(2):
+                res = image_match(img_gray, tpl)
+                if res.find_match:
+                    ctx.ctrl.click(res.center_point[0], res.center_point[1], f"Event option-{choice_index}")
+                    clicked = True
+                    ctx.cultivate_detail.event_cooldown_until = time.time() + 5
+                    return
+                time.sleep(0.56)
+                img = ctx.ctrl.get_screen()
+                img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         except:
             pass
     if not clicked:

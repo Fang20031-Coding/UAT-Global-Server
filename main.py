@@ -12,7 +12,6 @@ import os
 
 try:
     cores = str(os.cpu_count() or 1)
-    os.environ.setdefault("OMP_NUM_THREADS", cores)
     os.environ.setdefault("MKL_NUM_THREADS", cores)
     os.environ.setdefault("OPENBLAS_NUM_THREADS", cores)
     os.environ.setdefault("VECLIB_MAXIMUM_THREADS", cores)

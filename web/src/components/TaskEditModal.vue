@@ -376,7 +376,7 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 16px;">
-                  <div>⭐ Score Value</div>
+                  <div>⭐ Score Value (Blue friendship, Green Friendship, Rainbows, Hints)</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col">

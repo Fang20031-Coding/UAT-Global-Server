@@ -401,11 +401,11 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     curr_vals = [uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]
                     if curr_vals[idx] >= expect_attr[idx]:
                         label = names[idx]
-                        log.info(f"  {label} cap reached: -30% to score")
-                        score *= 0.7
+                        log.info(f"  {label} cap reached: -40% to score")
+                        score *= 0.6
                     elif expect_attr[idx] > 0 and curr_vals[idx] >= 0.8 * expect_attr[idx]:
-                        log.info("  Almost at goal -10% to score")
-                        score *= 0.9
+                        log.info("  Almost at goal -20% to score")
+                        score *= 0.8
             except Exception:
                 pass
             log.info(f"  Total score: {score:.3f}")

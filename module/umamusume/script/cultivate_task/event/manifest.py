@@ -6,6 +6,7 @@ import time
 import json
 import os
 from collections import Counter
+import unicodedata
 
 from bot.conn.fetch import *
 
@@ -82,12 +83,11 @@ def get_local_event_choice(ctx: UmamusumeContext, event_name: str) -> Union[int,
     def normalizeString(text: str) -> str:
         if not text:
             return ""
-        text = text.strip().lower()
-        text = " ".join(text.split())
-        quotes = "\"'“”‘’`"
-        while len(text) >= 2 and text[0] in quotes and text[-1] in quotes:
-            text = text[1:-1].strip()
-        return text
+        t = unicodedata.normalize('NFKD', str(text))
+        t = t.lower().strip()
+        t = re.sub(r"[^a-z0-9]+", " ", t)
+        t = " ".join(t.split())
+        return t
 
     def positionalRatio(left: str, right: str) -> float:
         length_left = len(left)
@@ -112,42 +112,74 @@ def get_local_event_choice(ctx: UmamusumeContext, event_name: str) -> Union[int,
     query = normalizeString(event_name)
     query_length = len(query)
     query_bigrams = build_bigrams(query)
+    query_tokens = set(query.split())
+    norm_map = getattr(get_local_event_choice, "cacheNormalizedKeyMap", None)
+    if norm_map and query in norm_map:
+        key = norm_map[query]
+        log.info(f"detected='{event_name}' matched='{key}'")
+        return calculate_optimal_choice_from_db(ctx, events_db[key])
 
     index_cache = getattr(get_local_event_choice, "cacheIndex", None)
     source_cache = getattr(get_local_event_choice, "cacheSource", None)
     if index_cache is None or source_cache is not events_db:
         cache_list = []
+        token_index = {}
+        norm_map = {}
         for original_key in events_db.keys():
             normalized_key = normalizeString(original_key)
-            cache_list.append((original_key, normalized_key, len(normalized_key), build_bigrams(normalized_key)))
+            tokens = set(normalized_key.split())
+            entry = (original_key, normalized_key, len(normalized_key), build_bigrams(normalized_key), tokens)
+            cache_list.append(entry)
+            norm_map[normalized_key] = original_key
+            idx = len(cache_list) - 1
+            for tok in tokens:
+                if tok:
+                    token_index.setdefault(tok, []).append(idx)
         setattr(get_local_event_choice, "cacheIndex", cache_list)
         setattr(get_local_event_choice, "cacheSource", events_db)
+        setattr(get_local_event_choice, "cacheTokenIndex", token_index)
+        setattr(get_local_event_choice, "cacheNormalizedKeyMap", norm_map)
         index_cache = cache_list
 
     best_key = None
     best_score = 0.0
     best_len_ratio = 0.0
-    for original_key, normalized_key, normalized_length, normalized_bigrams in index_cache:
+    token_index = getattr(get_local_event_choice, "cacheTokenIndex", None)
+    candidate_indices = set()
+    for tok in query_tokens:
+        if token_index and tok in token_index:
+            for idx in token_index[tok]:
+                candidate_indices.add(idx)
+    if not candidate_indices:
+        iterable = range(len(index_cache))
+    else:
+        iterable = candidate_indices
+    for idx in iterable:
+        original_key, normalized_key, normalized_length, normalized_bigrams, normalized_tokens = index_cache[idx]
+        if not query or not normalized_key:
+            continue
+        if query in normalized_key or normalized_key in query:
+            best_key = original_key
+            best_score = 1.0
+            best_len_ratio = min(query_length, normalized_length) / max(query_length, normalized_length) if max(query_length, normalized_length) else 1.0
+            break
+        token_inter = len(query_tokens & normalized_tokens)
+        token_union = len(query_tokens | normalized_tokens) or 1
+        token_score = token_inter / token_union
+        bigram_score = jaccard_counter_ratio(query_bigrams, normalized_bigrams)
         if normalized_length == query_length:
             positional = positionalRatio(query, normalized_key)
-            bigram_score = jaccard_counter_ratio(query_bigrams, normalized_bigrams)
-            score = positional if positional > bigram_score else bigram_score
-            if score > best_score:
-                best_score = score
-                best_len_ratio = 1.0
-                best_key = original_key
-                if score == 1.0:
-                    break
+            score = max(bigram_score, token_score, positional)
+            len_ratio = 1.0
         else:
+            score = max(bigram_score, token_score)
             len_ratio = min(query_length, normalized_length) / max(query_length, normalized_length)
-            bigram_score = jaccard_counter_ratio(query_bigrams, normalized_bigrams)
-            score = bigram_score
-            if score > best_score or (score == best_score and len_ratio > best_len_ratio):
-                best_score = score
-                best_len_ratio = len_ratio
-                best_key = original_key
+        if score > best_score or (score == best_score and len_ratio > best_len_ratio):
+            best_score = score
+            best_len_ratio = len_ratio
+            best_key = original_key
 
-    if best_key is not None and best_score >= 0.91 and best_len_ratio >= 0.91:
+    if best_key is not None and ((best_score >= 0.85 and best_len_ratio >= 0.8) or best_score >= 0.95):
         log.info(f"detected='{event_name}' matched='{best_key}'")
         return calculate_optimal_choice_from_db(ctx, events_db[best_key])
     
@@ -155,6 +187,38 @@ def get_local_event_choice(ctx: UmamusumeContext, event_name: str) -> Union[int,
     log.info(f"🔄 Event '{event_name}' not in database - likely auto-skipped, using random choice")
     return 1  # Default choice for auto-skipped events
 
+def warmup_event_index():
+    events_db = load_events_database()
+    if not events_db:
+        return False
+    def normalizeString(text: str) -> str:
+        if not text:
+            return ""
+        t = unicodedata.normalize('NFKD', str(text))
+        t = t.lower().strip()
+        t = re.sub(r"[^a-z0-9]+", " ", t)
+        t = " ".join(t.split())
+        return t
+    def build_bigrams(text: str):
+        return Counter(text[i:i+2] for i in range(len(text) - 1)) if len(text) >= 2 else Counter()
+    cache_list = []
+    token_index = {}
+    norm_map = {}
+    for original_key in events_db.keys():
+        normalized_key = normalizeString(original_key)
+        tokens = set(normalized_key.split())
+        entry = (original_key, normalized_key, len(normalized_key), build_bigrams(normalized_key), tokens)
+        cache_list.append(entry)
+        norm_map[normalized_key] = original_key
+        idx = len(cache_list) - 1
+        for tok in tokens:
+            if tok:
+                token_index.setdefault(tok, []).append(idx)
+    setattr(get_local_event_choice, "cacheIndex", cache_list)
+    setattr(get_local_event_choice, "cacheSource", events_db)
+    setattr(get_local_event_choice, "cacheTokenIndex", token_index)
+    setattr(get_local_event_choice, "cacheNormalizedKeyMap", norm_map)
+    return True
 
 
 def calculate_optimal_choice_from_db(ctx: UmamusumeContext, event_data: dict) -> int:

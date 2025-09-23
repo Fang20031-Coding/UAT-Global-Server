@@ -474,6 +474,10 @@ if __name__ == '__main__':
     enforcer_thread = threading.Thread(target=time_window_enforcer, args=(selected_device,), daemon=True)
     enforcer_thread.start()
 
+
+    from module.umamusume.script.cultivate_task.event.manifest import warmup_event_index
+    warmup_event_index()
+
     # Start the bot
     register_app(UmamusumeManifest)
     scheduler_thread = threading.Thread(target=scheduler.init, args=())

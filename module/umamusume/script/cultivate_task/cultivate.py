@@ -540,7 +540,7 @@ def script_cultivate_event(ctx: UmamusumeContext):
         return
     img = ctx.ctrl.get_screen()
     event_name_img = img[237:283, 111:480]
-    event_name = ocr_line(event_name_img)
+    event_name = ocr_line(event_name_img, lang="en")
     choice_index = get_event_choice(ctx, event_name)
     if not isinstance(choice_index, int) or choice_index < 1:
         choice_index = 1

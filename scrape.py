@@ -573,6 +573,96 @@ def runEventsEn() -> None:
         bar.close()
 
     finalOut = finalizeAverages(aggregated)
+    forced_events = {
+        "New Year's Shrine Visit": {
+            "choices": {
+                "1": "Choice 1",
+                "2": "Choice 2",
+                "3": "Choice 3"
+            },
+            "stats": {
+                "1": {
+                    "Friendship": 0.0,
+                    "Guts": 0.0,
+                    "HP": 30.0,
+                    "Max Energy": 0.0,
+                    "Mood": 0.0,
+                    "Power": 0.0,
+                    "Skill": 0.0,
+                    "Skill Hint": 0.0,
+                    "Skill Pts": 0.0,
+                    "Speed": 0.0,
+                    "Stamina": 0.0,
+                    "Wisdom": 0.0
+                },
+                "2": {
+                    "Friendship": 0.0,
+                    "Guts": 5.0,
+                    "HP": 0.0,
+                    "Max Energy": 0.0,
+                    "Mood": 0.0,
+                    "Power": 5.0,
+                    "Skill": 0.0,
+                    "Skill Hint": 0.0,
+                    "Skill Pts": 0.0,
+                    "Speed": 5.0,
+                    "Stamina": 5.0,
+                    "Wisdom": 5.0
+                },
+                "3": {
+                    "Friendship": 0.0,
+                    "Guts": 0.0,
+                    "HP": 0.0,
+                    "Max Energy": 0.0,
+                    "Mood": 0.0,
+                    "Power": 0.0,
+                    "Skill": 0.0,
+                    "Skill Hint": 0.0,
+                    "Skill Pts": 35.0,
+                    "Speed": 0.0,
+                    "Stamina": 0.0,
+                    "Wisdom": 0.0
+                }
+            }
+        },
+        "Extra Training": {
+            "choices": {
+                "1": "Choice 1",
+                "2": "Choice 2"
+            },
+            "stats": {
+                "1": {
+                    "Friendship": 5.0,
+                    "Guts": 0.0,
+                    "HP": -5.0,
+                    "Max Energy": 0.0,
+                    "Mood": 0.0,
+                    "Power": 0.0,
+                    "Skill": 0.0,
+                    "Skill Hint": 0.0,
+                    "Skill Pts": 0.0,
+                    "Speed": 5.0,
+                    "Stamina": 0.0,
+                    "Wisdom": 5.0
+                },
+                "2": {
+                    "Friendship": 0.0,
+                    "Guts": 0.0,
+                    "HP": 5.0,
+                    "Max Energy": 0.0,
+                    "Mood": 0.0,
+                    "Power": 0.0,
+                    "Skill": 0.0,
+                    "Skill Hint": 0.0,
+                    "Skill Pts": 0.0,
+                    "Speed": 0.0,
+                    "Stamina": 0.0,
+                    "Wisdom": 0.0
+                }
+            }
+        }
+    }
+    finalOut.update(forced_events)
     with open('event_data.json', 'w', encoding='utf-8') as f:
         json.dump(finalOut, f, ensure_ascii=False, indent=2)
 

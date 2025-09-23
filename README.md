@@ -69,6 +69,16 @@ This project is a **Global Server adaptation** of the original China Server vers
 running this 24/7 looks sus as hell so I would suggest turning it off for a few hours every day. 
 (im just gonna risk it and run it 24/7 ill let you guys know if i get banned)
 
+## ❗ **Important Information**
+
+When trying to hunt for skill hints open advanced options and crank the score of hints up like so:
+
+![Hint hunting](docs/hint%20hunting.png)
+
+If you wish to skip a training adjust its weight to be -1 like so:
+
+![Skip training](docs/skip%20training.png)
+
 ## 📦 **Installation & Setup**
 
 #### **Clone Repository**

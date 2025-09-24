@@ -2,7 +2,7 @@ I push everytime i make ANY changes so I would suggest not pulling unless the re
 
 I cant be bothered managing a prod branch and im using this as version control. I will push even when the bot is completely broken. When that happens ur gonna have to look for and install a past commit. 
 
-(cutting corners since im kinda on a time crunch rn)
+(cutting corners since im kinda on a time crunch rn wont do this in the future)
 
 Hello bray I'll be detaching this fork for now since im 99% sure ur not coming back
 

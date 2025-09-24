@@ -47,7 +47,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     except Exception:
         support_card_max = 0
 
-    from module.umamusume.define import SupportCardType, SupportCardFavorLevel
+    from module.umamusume.define import SupportCardType, SupportCardFavorLevel, TrainingType
     type_map = [
         SupportCardType.SUPPORT_CARD_TYPE_SPEED,
         SupportCardType.SUPPORT_CARD_TYPE_STAMINA,
@@ -55,6 +55,50 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         SupportCardType.SUPPORT_CARD_TYPE_WILL,
         SupportCardType.SUPPORT_CARD_TYPE_INTELLIGENCE,
     ]
+
+    if date <= 24:
+        w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.01
+    elif 24 < date <= 48:
+        w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.09
+    elif 48 < date <= 60:
+        w_lv1, w_lv2, w_rainbow = 0.11, 0.10, 0.12
+    else:
+        w_lv1, w_lv2, w_rainbow = 0.03, 0.05, 0.15
+
+    training_score = [0.0, 0.0, 0.0, 0.0, 0.0]
+    total_rainbows_all = 0
+    for idx in range(5):
+        til = turn_info.training_info_list[idx]
+        target_type = type_map[idx]
+        score = 0.0
+        rainbow_count = 0
+        for sc in (getattr(til, "support_card_info_list", []) or []):
+            favor = getattr(sc, "favor", SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN)
+            ctype = getattr(sc, "card_type", SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN)
+            if ctype == SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN:
+                score += 0.001
+                continue
+            if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
+                continue
+            is_rb = False
+            if hasattr(sc, "is_rainbow") and bool(getattr(sc, "is_rainbow")) and (ctype == target_type):
+                is_rb = True
+            if not is_rb and (favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4) and ctype == target_type):
+                is_rb = True
+            if is_rb:
+                rainbow_count += 1
+                score += w_rainbow
+                continue
+            if favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4):
+                continue
+            if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
+                score += w_lv1
+            elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
+                score += w_lv2
+        total_rainbows_all += rainbow_count
+        training_score[idx] = score
+
+    log.debug("Overall training score: " + str(training_score))
 
     rainbow_counts = [0, 0, 0, 0, 0]
     for idx in range(5):
@@ -106,7 +150,8 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                                                                         or 40 < ctx.cultivate_detail.turn_info.date <= 60 and mood_val <= 4 and energy < 90
                                                                         or 64 < ctx.cultivate_detail.turn_info.date <= 99 and mood_val <= 4 and energy < 90):
                 try:
-                    relevant = max(getattr(ti, 'relevant_count', 0) for ti in ctx.cultivate_detail.turn_info.training_info_list)
+                    best_idx = max(range(5), key=lambda i: training_score[i]) if len(training_score) == 5 else 0
+                    relevant = getattr(ctx.cultivate_detail.turn_info.training_info_list[best_idx], 'relevant_count', 0)
                 except Exception:
                     relevant = 0
                 if relevant >= 3:
@@ -152,7 +197,8 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                                                                     or 40 < ctx.cultivate_detail.turn_info.date <= 60 and mood_val < ctx.cultivate_detail.motivation_threshold_year2 and energy < 90
                                                                     or 64 < ctx.cultivate_detail.turn_info.date <= 99 and mood_val < ctx.cultivate_detail.motivation_threshold_year3 and energy < 90):
         try:
-            relevant = max(getattr(ti, 'relevant_count', 0) for ti in ctx.cultivate_detail.turn_info.training_info_list)
+            best_idx = max(range(5), key=lambda i: training_score[i]) if len(training_score) == 5 else 0
+            relevant = getattr(ctx.cultivate_detail.turn_info.training_info_list[best_idx], 'relevant_count', 0)
         except Exception:
             relevant = 0
         if relevant >= 3:
@@ -179,12 +225,30 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     if expect_operation_type is TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN:
         date_num = ctx.cultivate_detail.turn_info.date
         if date_num in (59, 60):
-            max_rainbow = max(rainbow_counts) if len(rainbow_counts) == 5 else 0
-            if max_rainbow < 2:
+            rainbow = 0
+            try:
+                best_idx = max(range(5), key=lambda i: training_score[i]) if len(training_score) == 5 else 0
+                til = ctx.cultivate_detail.turn_info.training_info_list[best_idx]
+                target_type = type_map[best_idx]
+                for sc in (getattr(til, "support_card_info_list", []) or []):
+                    ctype = getattr(sc, "card_type", None)
+                    favor = getattr(sc, "favor", None)
+                    is_rb = False
+                    if hasattr(sc, "is_rainbow") and bool(getattr(sc, "is_rainbow")) and (ctype == target_type):
+                        is_rb = True
+                    if not is_rb and (ctype == target_type and favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4)):
+                        is_rb = True
+                    if is_rb:
+                        rainbow += 1
+            except Exception:
+                rainbow = 0
+            if rainbow < 2:
+                log.info("Low rainbow count conserving energy for summer")
                 if energy < 60:
                     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 else:
                     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRAINING
+                    turn_operation.training_type = TrainingType.TRAINING_TYPE_INTELLIGENCE
 
     if expect_operation_type is TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN:
         expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRAINING

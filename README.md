@@ -101,11 +101,11 @@ Ensure python 3.10 is installed
 uninstall whatever python version you have
 
 winget install -e --id Python.Python.3.10
-```
 
-```bash
 pip install -r requirements.txt
-
+```
+After that you can just
+```bash
 python main.py
 ```
 

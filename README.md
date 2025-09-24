@@ -74,6 +74,8 @@ running this 24/7 looks sus as hell so I would suggest turning it off for a few 
 
 When trying to hunt for skill hints open advanced options and crank the score of hints up like so:
 
+(I would suggest not adjusting the rest of the values unless you have a funky deck the current values gives the best results from my testing)
+
 ![Hint hunting](docs/hint%20hunting.png)
 
 If you wish to skip a training adjust its weight to be -1 like so:

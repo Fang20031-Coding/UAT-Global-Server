@@ -97,8 +97,12 @@ cd UAT-Global-Server
 
 ### **Launch**
 Ensure python 3.10 is installed
+```bash
+uninstall whatever python version you have
 
-Recommended Python version: 3.10.9 
+winget install -e --id Python.Python.3.10
+```
+
 ```bash
 pip install -r requirements.txt
 

@@ -175,3 +175,7 @@ python main.py
 ## 🤝 **Contributing**
 
 If you ask and pinky promise you won't just nuke everything I can just give you collaborator permissions.
+
+## **Disclosure**
+Something Something this is for educational purposes only. Please do not misuse or break the rules with this.
+![alt text](docs/topcunt.gif)

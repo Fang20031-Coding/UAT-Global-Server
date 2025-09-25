@@ -162,7 +162,7 @@ python main.py
 - Raise the classic year rainbows score to promote early game stat growth (this will hurt long term stat gain however)
   ![alt text](docs/classicRainbow.png)
 
-- ### The bot picks pics bad races when not enough fans to meet goals (Pre-op, Op, G3)
+- ### The bot picks bad races when not enough fans to meet goals (Pre-op, Op, G3)
 - If a career runs has high fan goals (Top gun, Urara) you should be manually selecting the races instead of letting the bot pick for you
   ![alt text](docs/races.png)
 

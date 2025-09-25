@@ -115,7 +115,10 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
     turn_operation = ctx.cultivate_detail.turn_info.turn_operation
     if turn_operation is not None and turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRIP:
         log.info("🏖️ Executing prioritized trip operation")
-        ctx.ctrl.click_by_point(CULTIVATE_TRIP)
+        if 36 < ctx.cultivate_detail.turn_info.date <= 40 or 60 < ctx.cultivate_detail.turn_info.date <= 64:
+            ctx.ctrl.click(68, 991, "Summer Camp")
+        else:
+            ctx.ctrl.click_by_point(CULTIVATE_TRIP)
         return
 
     if not ctx.cultivate_detail.turn_info.parse_train_info_finish:
@@ -140,7 +143,10 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             else:
                 ctx.ctrl.click_by_point(CULTIVATE_MEDIC)
         elif turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRIP:
-            ctx.ctrl.click_by_point(CULTIVATE_TRIP)
+            if 36 < ctx.cultivate_detail.turn_info.date <= 40 or 60 < ctx.cultivate_detail.turn_info.date <= 64:
+                ctx.ctrl.click(68, 991, "Summer Camp")
+            else:
+                ctx.ctrl.click_by_point(CULTIVATE_TRIP)
         elif turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_RACE:
             # Check if this is a URA race operation
             race_id = turn_operation.race_id

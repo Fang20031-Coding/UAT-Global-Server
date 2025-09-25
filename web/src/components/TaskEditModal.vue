@@ -374,6 +374,15 @@
                     </div>
                   </div>
                 </div>
+                <div style="margin-bottom: 10px;">Summer Weights (overrides during Summer Camps)</div>
+                <div class="row">
+                  <div v-for="v, i in extraWeightSummer" class="col">
+                    <div class="form-group">
+                      <input type="number" v-model="extraWeightSummer[i]" class="form-control"
+                        @input="onExtraWeightInput(extraWeightSummer, i)" id="speed-value-input">
+                    </div>
+                  </div>
+                </div>
 
                 <div class="form-group" style="margin-top: 16px;">
                   <div>⭐ Score Value (Blue friendship, Green Friendship, Rainbows, Hints)</div>
@@ -1225,6 +1234,7 @@ export default {
       extraWeight1: [0, 0, 0, 0, 0],
       extraWeight2: [0, 0, 0, 0, 0],
       extraWeight3: [0, 0, 0, 0, 0],
+      extraWeightSummer: [0, 0, 0, 0, 0],
 
       // Motivation thresholds for trip decisions
       motivationThresholdYear1: 3,
@@ -1838,7 +1848,7 @@ export default {
           "learn_skill_threshold": this.learnSkillThreshold,
           "allow_recover_tp": this.recoverTP,
           "learn_skill_only_user_provided": this.learnSkillOnlyUserProvided,
-          "extra_weight": [this.extraWeight1, this.extraWeight2, this.extraWeight3],
+          "extra_weight": [this.extraWeight1, this.extraWeight2, this.extraWeight3, this.extraWeightSummer],
           "score_value": [
             this.scoreValueJunior,
             this.scoreValueClassic,
@@ -1913,11 +1923,13 @@ export default {
         this.extraWeight1 = this.presetsUse.extraWeight[0].map(v => Math.max(-1, Math.min(1, v)));
         this.extraWeight2 = this.presetsUse.extraWeight[1].map(v => Math.max(-1, Math.min(1, v)));
         this.extraWeight3 = this.presetsUse.extraWeight[2].map(v => Math.max(-1, Math.min(1, v)));
+        this.extraWeightSummer = (this.presetsUse.extraWeight.length >= 4 ? this.presetsUse.extraWeight[3] : [0, 0, 0, 0, 0]).map(v => Math.max(-1, Math.min(1, v)));
       }
       else {
         this.extraWeight1 = [0, 0, 0, 0, 0]
         this.extraWeight2 = [0, 0, 0, 0, 0]
         this.extraWeight3 = [0, 0, 0, 0, 0]
+        this.extraWeightSummer = [0, 0, 0, 0, 0]
       }
 
       // Load new skill system data if available
@@ -2072,7 +2084,8 @@ export default {
         extraWeight: [
           this.extraWeight1.map(v => Math.max(-1, Math.min(1, v))),
           this.extraWeight2.map(v => Math.max(-1, Math.min(1, v))),
-          this.extraWeight3.map(v => Math.max(-1, Math.min(1, v)))
+          this.extraWeight3.map(v => Math.max(-1, Math.min(1, v))),
+          this.extraWeightSummer.map(v => Math.max(-1, Math.min(1, v)))
         ],
         scoreValue: [
           this.scoreValueJunior,

@@ -282,6 +282,12 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         else:
             extra_weight = ctx.cultivate_detail.extra_weight[2]
 
+        try:
+            if (36 < date <= 40 or 60 < date <= 64) and isinstance(ctx.cultivate_detail.extra_weight, (list, tuple)) and len(ctx.cultivate_detail.extra_weight) >= 4:
+                extra_weight = ctx.cultivate_detail.extra_weight[3]
+        except Exception:
+            pass
+
         img = ctx.current_screen
         train_type = parse_train_type(ctx, img)
         if train_type == TrainingType.TRAINING_TYPE_UNKNOWN:

@@ -340,13 +340,8 @@
                 <div class="form-group">
                   <div>⭐ Extra Weight</div>
                 </div>
-                <p>Adjusts AI training preferences without affecting final target attributes. Generally used to
-                  prioritize
-                  certain training types. Weight range [-1.0 ~ 1.0], 0 means no extra weight applied.</p>
-                <p>❗ Setting weight to -1 will skip that training</p>
-                <p>❗ Within the same year, all weights cannot be -1</p>
-                <p>When support cards or uma legacy are weak, recommend increasing one attribute weight while
-                  decreasing others by the same amount</p>
+                <p>Applies a flat multiplier to the training score (-100% To +100%)</p>
+                <p>-1 would make it skip the training</p>
                 <div style="margin-bottom: 10px;">Year 1</div>
                 <div class="row">
                   <div v-for="v, i in extraWeight1" class="col">

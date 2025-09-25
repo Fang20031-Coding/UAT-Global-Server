@@ -417,6 +417,20 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         score *= 0.8
             except Exception:
                 pass
+            try:
+                ew = extra_weight[idx] if isinstance(extra_weight, (list, tuple)) and len(extra_weight) == 5 else 0.0
+            except Exception:
+                ew = 0.0
+            if ew > -1.0:
+                mult = 1.0 + float(ew)
+                if mult < 0.0:
+                    mult = 0.0
+                elif mult > 2.0:
+                    mult = 2.0
+                weight_bonus = (mult - 1.0) * 100.0
+                log.info(f"  Weight bonus: {weight_bonus:+.0f}%")
+                score *= mult
+
             log.info(f"  Total score: {score:.3f}")
             computed_scores[idx] = score
             rbc_counts[idx] = rbc

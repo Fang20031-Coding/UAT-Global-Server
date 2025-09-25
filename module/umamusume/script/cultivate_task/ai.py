@@ -163,10 +163,10 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
             ):
                 try:
                     best_idx = max(range(5), key=lambda i: training_score[i]) if len(training_score) == 5 else 0
-                    relevant = getattr(ctx.cultivate_detail.turn_info.training_info_list[best_idx], 'relevant_count', 0)
+                    best_score = training_score[best_idx] if len(training_score) == 5 else 0.0
                 except Exception:
-                    relevant = 0
-                if relevant >= 3:
+                    best_score = 0.0
+                if best_score > 0.3:
                     log.info("No recreation as good training detected")
                     trip = False
                 else:
@@ -210,10 +210,10 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                                                                     or 64 < ctx.cultivate_detail.turn_info.date <= 99 and mood_val < ctx.cultivate_detail.motivation_threshold_year3 and energy < 90):
         try:
             best_idx = max(range(5), key=lambda i: training_score[i]) if len(training_score) == 5 else 0
-            relevant = getattr(ctx.cultivate_detail.turn_info.training_info_list[best_idx], 'relevant_count', 0)
+            best_score = training_score[best_idx] if len(training_score) == 5 else 0.0
         except Exception:
-            relevant = 0
-        if relevant >= 3:
+            best_score = 0.0
+        if best_score > 0.3:
             log.info("No recreation as good training detected")
             trip = False
         else:

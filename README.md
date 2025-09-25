@@ -126,27 +126,40 @@ python main.py
   * Could also check the general area for red pixels but it led to a bunch of false positives from my testing
 
 ## **Training settings guide**
-- ### **Upon creating a new deck the first thing you should do is experiment with the values under advanced options**
-- ### These values are made for 3/3 split decks THEY ARE NOT 1 SIZE FITS ALL
+- **Upon creating a new deck the first thing you should do is experiment with the values under advanced options**
+- These values are made for 3/3 split decks THEY ARE NOT 1 SIZE FITS ALL  
   ![alt text](docs/default.png)
 
-- ### **Stat caps**
-- ### Under normal circumstances you want to just put a large number into all of them like so this way it will always pick the best training option
+- ### **STAT CAPS**
+- Under normal circumstances you want to just put a large number into all of them like so this way it will always pick the best training option
   ![alt text](docs/statCaps.png)
-- ### HOWEVER if you keep maxxing out a stat too early for example 1000+ speed before the 2nd summer you would want to do this
+- HOWEVER if you keep maxxing out a stat too early for example 1000+ speed before the 2nd summer you would want to do this
   ![alt text](docs/capSpeed.png)
-- ### Stat caps work like this
+- Stat caps work like this
  - Soft cap  
   When at least 80% of the desired stat that training gets a 20% score nerf during training selection
  - Hard cap  
   After exceeding the stat cap the training will now recieve a 40% score nerf during training selection
  - HOWEVER IT IS ENCOURAGE THAT YOU RE-EVALUATE YOUR DECK INSTEAD. THIS WAY THE BOT CAN CLICK THE BEST OPTION 100% OF THE TIME INSTEAD OF ARTIFICIALLY LIMITING
 
-- ### **Struggling with a certain stat**
-- ### If you are struggling with a certain stat (Guts) you can raise the summer weight of that stat (while reducing others) to encourage the bot totake advandage of the lv5 summer facilities
+- ### **STRUGGLING WITH A CERTAIN STAT**
+- If you are struggling with a certain stat (Guts) you can raise the summer weight of that stat (while reducing others) to encourage the bot totake advandage of the lv5 summer facilities
   ![alt text](docs/summerWeight.png)
 
+- ### **Hint/Skills hunting**
+- Raise the score of hints. This way the bot will always take the training with hints in them
+  ![alt text](docs/hintHunting.png)
+- If you want to bot to select a certain event option to get a skill ur going to have to diy it for now
+  > head over to UAT-Global-Server\resource\umamusume\data\event_data.json  
+  > ctrl F find your event  
+  > increase one of the stat gain to a very big number  
+  > then that choice should get picked all the time   
+  ![alt text](docs/huntHint.png)  
+  > save a backup so it doesn't get overwritten when the repo gets updated
 
+- ### **STRUGGLING WITH THE CAREER**
+- Raise the classic year rainbows score to promote early game stat growth (this will hurt long term stat gain however)
+  ![alt text](docs/classicRainbow.png)
 
 ## 🤝 **Contributing**
 

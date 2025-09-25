@@ -465,6 +465,20 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.ctrl.click_by_point(TRAINING_POINT_LIST[op.training_type.value - 1])
         time.sleep(1.5)
         return
+    elif op.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRIP:
+        try:
+            best_idx_tmp = int(np.argmax(computed_scores))
+            best_score_tmp = computed_scores[best_idx_tmp]
+        except Exception:
+            best_idx_tmp = None
+            best_score_tmp = 0.0
+        if best_idx_tmp is not None and best_score_tmp > 0.3:
+            log.info("skipping recreation due to good training")
+            ctx.ctrl.click_by_point(TRAINING_POINT_LIST[best_idx_tmp])
+            time.sleep(0.35)
+            ctx.ctrl.click_by_point(TRAINING_POINT_LIST[best_idx_tmp])
+            time.sleep(1.5)
+            return
     
     ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
     return

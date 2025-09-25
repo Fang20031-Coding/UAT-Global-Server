@@ -252,8 +252,57 @@ def script_info(ctx: UmamusumeContext):
             ctx.ctrl.click_by_point(CULTIVATE_RESULT_CONFIRM)
         if title_text == TITLE[13]: #Fan Count Below Target Race Requirement
             ctx.ctrl.click_by_point(CULTIVATE_FAN_NOT_ENOUGH_RETURN)
-        if title_text == TITLE[43]: #Fan Count Below Target Race Requirement
+        if title_text == TITLE[43]:  
             ctx.ctrl.click_by_point(CULTIVATE_FAN_NOT_ENOUGH_RETURN)
+            time.sleep(2)
+
+            ctx.current_screen = ctx.ctrl.get_screen()
+
+            from module.umamusume.script.cultivate_task.parse import parse_date
+            current_date = parse_date(ctx.current_screen, ctx)
+            if current_date == -1:
+                log.warning("bruh")
+                return
+
+            next_period = current_date
+            ctx.cultivate_detail.turn_info.date = current_date
+
+            from module.umamusume.asset.race_data import get_races_for_period
+            next_period_races = get_races_for_period(next_period)
+            user_selected_races = ctx.cultivate_detail.extra_race_list
+            matching_races = [race_id for race_id in next_period_races] if next_period_races else []
+            matching_races = [race_id for race_id in matching_races if race_id in user_selected_races]
+
+            if matching_races:
+                target_race_id = matching_races[0]
+            else:
+                target_race_id = 0  
+
+            from module.umamusume.types import TurnOperation, TurnOperationType
+            ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+            ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            ctx.cultivate_detail.turn_info.turn_operation.race_id = target_race_id
+            log.info("racing for unmet requirements")
+            ctx.ctrl.click_by_point(CULTIVATE_RACE)
+
+
+            if not matching_races:
+                time.sleep(2) 
+
+                img2 = ctx.ctrl.get_screen(to_gray=True)
+                from module.umamusume.asset import REF_SUITABLE_RACE
+                suitable_race_match = image_match(img2, REF_SUITABLE_RACE)
+
+                if suitable_race_match.find_match:
+                    center_x = suitable_race_match.center_point[0]
+                    center_y = suitable_race_match.center_point[1]
+                    ctx.ctrl.click(center_x, center_y, "Click suitable race")
+                    log.info(f"🎯 Clicked suitable race at position ({center_x}, {center_y})")
+                else:
+                    log.info("⚠️ Suitable race template not found - returning to main menu for normal logic")
+                    ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                    ctx.cultivate_detail.turn_info.turn_operation = None
+
         if title_text == TITLE[14]:
             ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
         if title_text == TITLE[15]:  # Skip Confirmation
@@ -370,7 +419,7 @@ def script_info(ctx: UmamusumeContext):
                     ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
                     # Clear the race operation so AI can decide what to do next
                     ctx.cultivate_detail.turn_info.turn_operation = None
-                    log.info("🔄 Returned to main menu - AI will decide next action (training, rest, trip, etc.)")
+
         if title_text == TITLE[21]:  # insufficient fans (was TITLE[19])
             log.info("🏆 insufficient fans detected - navigating to races to fulfill fan goals")
             
@@ -453,7 +502,7 @@ def script_info(ctx: UmamusumeContext):
                     ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
                     # Clear the race operation so AI can decide what to do next
                     ctx.cultivate_detail.turn_info.turn_operation = None
-                    log.info("🔄 Returned to main menu - AI will decide next action (training, rest, trip, etc.)")
+
         if title_text == TITLE[22]:  # Consecutive Racing (was TITLE[20])
             ctx.ctrl.click_by_point(CULTIVATE_TOO_MUCH_RACE_WARNING_CONFIRM)
         if title_text == TITLE[23]:  # Infirmary Confirmation (was TITLE[21])

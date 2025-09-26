@@ -1,3 +1,6 @@
+memory leak lmao hold on leme find it
+ok found it i blame the chinese
+
 # New user? [Read this to improve your runs](#training-settings-guide)
 
 ## **Credits**

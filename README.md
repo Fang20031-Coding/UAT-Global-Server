@@ -112,9 +112,9 @@ python main.py
 * **ADB connection fails**: Close accelerators, kill adb.exe, restart emulator
 
 #### **Out of memory**
-> Open main.py
-> Change cores = str(os.cpu_count() or 1) to cores = 1
-> or uh buy more ram
+> Open main.py  
+> Change cores = str(os.cpu_count() or 1) to cores = 1  
+> or uh buy more ram  
 
 * **ADB connection fails**: Close accelerators, kill adb.exe, restart emulator
 

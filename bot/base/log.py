@@ -25,7 +25,7 @@ log_colors_config = {
 
 current_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 log_path = os.path.join(base_path, "log_" + current_time + ".txt")
-ENABLE_FILE_LOG = True
+ENABLE_FILE_LOG = False
 
 class TaskLogHandler(logging.Handler):
     def __init__(self, capacity=1000):
@@ -63,14 +63,14 @@ def get_logger(name) -> Logger:
     logger = logging.getLogger(name)
     logger.propagate = False
     if not logger.handlers:
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
         fmt = colorlog.ColoredFormatter(
             fmt='%(log_color)s%(asctime)s  %(levelname)-8s [%(funcName)34s] %(filename)-20s: %(message)s',
             log_colors=log_colors_config
         )
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(fmt)
-        console_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
         logger.addHandler(console_handler)
 
         fmt = logging.Formatter('%(asctime)s  %(levelname)-8s [%(funcName)34s] %(filename)-20s: %(message)s') 
@@ -80,7 +80,6 @@ def get_logger(name) -> Logger:
             file_handler.setLevel(logging.DEBUG)
             logger.addHandler(file_handler)
 
-        logger.addHandler(task_log_handler)
-    return logger
+        return logger
 
 

@@ -685,7 +685,7 @@ def script_aoharuhai_race_schedule(ctx: UmamusumeContext):
     ctx.ctrl.click(360, 1100, "End Youth Cup race")
 
 def script_cultivate_goal_race(ctx: UmamusumeContext):
-    log.info("�� Entering goal race function")
+    log.info("Entering goal race function")
     img = ctx.current_screen
     current_date = parse_date(img, ctx)
     if current_date == -1:

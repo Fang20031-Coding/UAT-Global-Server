@@ -1,4 +1,5 @@
-### Run pip install -r requirements.txt again its updated
+### Run pip install -r requirements.txt again its updated  
+please read the readme before opening a issue
 
 # New user? [Read this to improve your runs](#training-settings-guide)
 
@@ -121,7 +122,6 @@ python main.py
 ## ⚠️ **Known issues / Won’t fix**
 
 * Bot seems to get stuck sometimes
-
   * There are failsafes in place. It should break out of it within 5 minutes. If not then yeah I'll fix it.
 * Detection of supports sometimes fails (you will know this if it keeps clicking wit training/a bad training and in the logs the score is either stuck/only detecting unknown cards)  
   * Just restart both bluestacks and the bot.

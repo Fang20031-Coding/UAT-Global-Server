@@ -1395,17 +1395,7 @@ def script_not_found_ui(ctx: UmamusumeContext):
     except Exception as e:
         log.debug(f"Goal detection fallback failed: {str(e)}")
     img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
-    if image_match(img, REF_HOME_GIFT).find_match:
-        ctx.ctrl.click(552, 1082, "resume 1")
-        time.sleep(1)
-        img = cv2.cvtColor(ctx.ctrl.get_screen(), cv2.COLOR_BGR2GRAY)
-        if image_match(img, REF_RESUME_CAREER).find_match:
-            ctx.ctrl.click(505, 908, "resume 2")
-        return
-    if image_match(img, REF_RESUME_CAREER).find_match:
-        ctx.ctrl.click(505, 908, "resume 2")
-        return
-    # Original fallback if goal detection fails
+            # Original fallback if goal detection fails
     log.debug("🔍 No specific UI detected - using default fallback click")
     ctx.ctrl.click(719, 1, "Default fallback click")
 

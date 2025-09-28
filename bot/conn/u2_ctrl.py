@@ -77,7 +77,8 @@ class U2AndroidController(AndroidController):
     min_click_interval = 0.3
 
     def __init__(self):
-        pass
+        self.recent_click_buckets = []
+        self.fallback_block_until = 0.0
 
     # init_env 初始化环境
     def init_env(self) -> None:
@@ -105,7 +106,7 @@ class U2AndroidController(AndroidController):
             if point.template.image_match_config.match_mode == ImageMatchMode.IMAGE_MATCH_MODE_TEMPLATE_MATCH:
                 match_result = image_match(cur_screen, point.template)
                 if getattr(match_result, "find_match", False):
-                    self.click(match_result.center_point[0], match_result.center_point[1], random_offset=random_offset, hold_duration=hold_duration)
+                    self.click(match_result.center_point[0], match_result.center_point[1], name=point.desc, random_offset=random_offset, hold_duration=hold_duration)
         self.recent_point = point
         self.recent_operation_time = time.time()
 
@@ -115,35 +116,44 @@ class U2AndroidController(AndroidController):
         if name != "":
             log.debug("click >> " + name)
 
-        if isinstance(name, str) and name.strip() != "":
-            click_name = name
-            if self.repetitive_click_name is None:
-                self.repetitive_click_name = click_name
-                self.repetitive_click_count = 1
-                self.repetitive_other_clicks = 0
-            else:
-                if click_name == self.repetitive_click_name:
-                    self.repetitive_click_count += 1
-                else:
-                    self.repetitive_other_clicks += 1
-                    if self.repetitive_other_clicks >= 2:
-                        self.repetitive_click_name = click_name
-                        self.repetitive_click_count = 1
-                        self.repetitive_other_clicks = 0
-
-            if (
-                self.repetitive_click_name == click_name and
-                self.repetitive_click_count >= 6 and #helps to prevent getting stuck
-                self.repetitive_other_clicks < 2
-            ):
-                try:
-                    self.recover_home_and_reopen()
-                finally:
-                    self.repetitive_click_name = None
-                    self.repetitive_click_count = 0
-                    self.repetitive_other_clicks = 0
-                time.sleep(self.config.delay)
+        if isinstance(name, str) and name == "Default fallback click":
+            if time.time() < getattr(self, "fallback_block_until", 0.0):
                 return
+        bucket = (int(x/25), int(y/25))
+        lst = getattr(self, "recent_click_buckets", None)
+        if lst is None:
+            self.recent_click_buckets = []
+            lst = self.recent_click_buckets
+        if bucket not in lst:
+            lst.append(bucket)
+            if len(lst) > 2:
+                lst.pop(0)
+            self.fallback_block_until = time.time() + 2.0
+
+        click_key = name.strip() if isinstance(name, str) and name.strip() != "" else f"{int(x/50)}:{int(y/50)}"
+        if self.repetitive_click_name is None:
+            self.repetitive_click_name = click_key
+            self.repetitive_click_count = 1
+            self.repetitive_other_clicks = 0
+        else:
+            if click_key == self.repetitive_click_name:
+                self.repetitive_click_count += 1
+            else:
+                self.repetitive_other_clicks += 1
+                if self.repetitive_other_clicks >= 5:
+                    self.repetitive_click_name = click_key
+                    self.repetitive_click_count = 1
+                    self.repetitive_other_clicks = 0
+
+        if self.repetitive_click_name == click_key and self.repetitive_click_count >= 6:
+            try:
+                self.recover_home_and_reopen()
+            finally:
+                self.repetitive_click_name = None
+                self.repetitive_click_count = 0
+                self.repetitive_other_clicks = 0
+            time.sleep(self.config.delay)
+            return
 
         try:
             if 263 <= x <= 458 and 559 <= y <= 808:

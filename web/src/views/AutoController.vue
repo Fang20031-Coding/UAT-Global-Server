@@ -128,17 +128,19 @@ export default {
 
             this.taskList.forEach(
               t=>{
-                if (t['task_execute_mode'] === 1 || t['task_execute_mode'] === 3) {
-                  if (t['task_status'] === 2) {
-                    runningTask = t
-                  } else if (t['task_status'] === 1) {
-                    waitingTaskList.push(t)
-                  } else if (t['task_status'] === 5 || t['task_status'] === 4 || t['task_status'] === 3) {
-                    historyTaskList.push(t)
-                  }
-                } else if (t['task_execute_mode'] === 2) {
-                  if (t['task_status'] === 6 || t['task_status'] === 7) {
+                const mode = t['task_execute_mode']
+                const status = t['task_status']
+                if (mode === 2 || mode === 'TASK_EXECUTE_MODE_CRON_JOB') {
+                  if (status === 6 || status === 7) {
                     cronJobList.push(t)
+                  }
+                } else {
+                  if (status === 2) {
+                    runningTask = t
+                  } else if (status === 1) {
+                    waitingTaskList.push(t)
+                  } else if (status === 5 || status === 4 || status === 3) {
+                    historyTaskList.push(t)
                   }
                 }
               }

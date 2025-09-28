@@ -188,6 +188,6 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## **Changelogs**
 - 28/9/2025   
-Team trials execution mode. not tested and held together by hopes and dreams so its probably gonna break half the time.
+Team trials execution mode. not tested and held together by hopes and dreams so its probably gonna break half the time.  
 Maybe fix card selection breaking
 

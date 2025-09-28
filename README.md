@@ -33,7 +33,9 @@ If you're like me and is using this because you wont have access to your pc for 
   - **Supports background play via emulators. (You can play another game while this runs)**
   - **If Auto tp recovery is set to false it will wait until you have enough tp to start the career run**
 
-- ✅ **Saving of presets**: Save training parameters for easy access in future runs 
+- ✅ **Saving of presets**: Save training parameters for easy access in future runs
+
+- ✅ **Team trials execution mode**: its under Execution Mode not Task Selection. 
 
 ### **Demo Run**
 - I'd say its about 80% as competent as a actual player. This makes the bot not just a fan/parent farmer but it's more than capable of producing ACES  
@@ -183,3 +185,8 @@ If you ask and pinky promise you won't just nuke everything I can just give you 
 Something Something this is for educational purposes only. Please do not misuse to break umamusume or cygames terms of service.   
 *cough cough*
 ![alt text](docs/topcunt.gif)
+
+## **Changelogs**
+- 28/9/2025
+Team trials execution mode. not tested and held together by hopes and dreams so its probably gonna break half the time.
+

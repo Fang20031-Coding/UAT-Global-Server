@@ -50,8 +50,7 @@ class Scheduler:
         while True:
             if self.active:
                 for task in self.task_list:
-                    if task.task_execute_mode in [TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME,
-                                                   TaskExecuteMode.TASK_EXECUTE_MODE_TEAM_TRIALS]:
+                    if task.task_execute_mode == TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME:
                         if task.task_status == TaskStatus.TASK_STATUS_PENDING and not task_executor.active:
                             executor_thread = threading.Thread(target=task_executor.start, args=([task]))
                             executor_thread.start()

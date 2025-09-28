@@ -34,40 +34,23 @@ class Executor:
     app_alive_check_counter = 5
     app_alive_check_interval = 5
 
+    detect_ui_results_write_lock = threading.Lock()
+    detect_ui_results = []
+    executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
+
     def __init__(self):
         psutil.Process().cpu_affinity(list(range(CONFIG.bot.auto.cpu_alloc)))
-        self.detect_ui_results_write_lock = threading.Lock()
-        self.detect_ui_results = []
-        self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
+        pass
 
     def start(self, task):
         self.active = True
-        if self.executor is None or getattr(self.executor, "_shutdown", False):
-            self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
-        try:
-            self.detect_ui_results.clear()
-        except Exception:
-            self.detect_ui_results = []
         self.run_work_flow(task)
 
     def stop(self):
         self.active = False
-        try:
-            self.executor.shutdown(wait=False, cancel_futures=True)
-        except TypeError:
-            try:
-                self.executor.shutdown(wait=False)
-            except Exception:
-                pass
-        except Exception:
-            pass
-        finally:
-            self.executor = None
 
     def detect_ui(self, ui_list: list[UI], target) -> UI:
         target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
-        if self.executor is None or getattr(self.executor, "_shutdown", False):
-            self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
         futures = {self.executor.submit(self.detect_ui_sub, ui, target): ui for ui in ui_list}
         found = None
         for _ in as_completed(futures):
@@ -97,7 +80,7 @@ class Executor:
         for template in ui.check_exist_template_list:
             sub_target = target[
                          template.image_match_config.match_area.y1:template.image_match_config.match_area.y2,
-                         template.image_match_config.match_area.x1:template.image_match_config.match_area.x2].copy()
+                         template.image_match_config.match_area.x1:template.image_match_config.match_area.x2]
             if template.image_match_config.match_mode == ImageMatchMode.IMAGE_MATCH_MODE_TEMPLATE_MATCH:
                 if not image_match(sub_target, template).find_match:
                     result = False
@@ -107,7 +90,7 @@ class Executor:
         for template in ui.check_non_exist_template_list:
             sub_target = target[
                          template.image_match_config.match_area.y1:template.image_match_config.match_area.y2,
-                         template.image_match_config.match_area.x1:template.image_match_config.match_area.x2].copy()
+                         template.image_match_config.match_area.x1:template.image_match_config.match_area.x2]
             if template.image_match_config.match_mode == ImageMatchMode.IMAGE_MATCH_MODE_TEMPLATE_MATCH:
                 if image_match(sub_target, template).find_match:
                     result = False
@@ -274,17 +257,6 @@ class Executor:
         else:
             self.active = False
         task.end_task_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        push_system_notification("任务结束", str(getattr(getattr(task, 'end_task_reason', None), 'value', '')), 10)
+        push_system_notification("任务结束", str(task.end_task_reason.value), 10)
         controller.destroy()
-        try:
-            self.executor.shutdown(wait=False, cancel_futures=True)
-        except TypeError:
-            try:
-                self.executor.shutdown(wait=False)
-            except Exception:
-                pass
-        except Exception:
-            pass
-        finally:
-            self.executor = None
 

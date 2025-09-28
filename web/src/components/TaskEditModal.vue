@@ -33,6 +33,7 @@
                 <select v-model.number="selectedExecuteMode" class="form-control" id="selectExecuteMode">
                   <option :value="1">One-time</option>
                   <option :value="3">Loop until canceled</option>
+                  <option :value="4">Team Trials</option>
                 </select>
               </div>
               <div class="row">

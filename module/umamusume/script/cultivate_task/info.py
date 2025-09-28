@@ -87,10 +87,17 @@ TITLE = [
     "Data Download", #41
     "Date Changed", #42
     "Unmet Requirements", #43 (Fail maiden race lmao just glue)
+    "Items Selected",
 ]
 
 
 def script_info(ctx: UmamusumeContext):
+    try:
+        mode_name = getattr(ctx.task.task_execute_mode, "name", "")
+        if mode_name == "TASK_EXECUTE_MODE_TEAM_TRIALS":
+            return
+    except Exception:
+        pass
     img = ctx.current_screen
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     result = image_match(img, UI_INFO)

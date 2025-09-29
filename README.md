@@ -1,3 +1,5 @@
+welp getting conscripted tmr. updates will slow down greatly now.
+
 ### Run pip install -r requirements.txt again its updated  
 please read the readme before opening a issue  
 ok yeah paddleOCR was the cause of the memory issues. UNFORTUNATELY. eveything else is kinda dogshit compared to it. so ehhhhhh. If you've got any recomendations LMK, easy and rapid ocr are out they arent good enough.

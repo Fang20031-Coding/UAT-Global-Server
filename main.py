@@ -430,6 +430,12 @@ def time_window_enforcer(device_id: str):
                     running = []
                 paused_task_ids = set(running)
                 scheduler.stop()
+                try:
+                    from bot.base.purge import save_scheduler_tasks, save_scheduler_state
+                    save_scheduler_tasks()
+                    save_scheduler_state()
+                except Exception:
+                    pass
                 u2_ctrl.INPUT_BLOCKED = True
                 KEEPALIVE_ACTIVE = False
                 try:

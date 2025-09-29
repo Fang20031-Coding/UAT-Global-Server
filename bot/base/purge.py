@@ -119,7 +119,7 @@ def serialize_umamusume_task(t):
             'clock_use_limit': int(getattr(d, 'clock_use_limit', 0)),
             'learn_skill_threshold': int(getattr(d, 'learn_skill_threshold', 0)),
             'learn_skill_only_user_provided': bool(getattr(d, 'learn_skill_only_user_provided', False)),
-            'allow_recover_tp': bool(getattr(d, 'allow_recover_tp', False)),
+            'allow_recover_tp': int(getattr(d, 'allow_recover_tp', 0)),
             'extra_weight': getattr(d, 'extra_weight', []) or [],
             'manual_purchase_at_end': bool(getattr(d, 'manual_purchase_at_end', False)),
             'cure_asap_conditions': getattr(d, 'cure_asap_conditions', ''),

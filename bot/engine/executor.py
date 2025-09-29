@@ -15,6 +15,7 @@ from bot.conn.os import push_system_notification
 from bot.conn.u2_ctrl import U2AndroidController
 from bot.recog.image_matcher import template_match, image_match
 from bot.recog.ocr import reset_ocr
+from bot.base.purge import save_task_data, save_scheduler_tasks, save_scheduler_state, soft_process_restart
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bot.base.manifest import APP_MANIFEST_LIST
 from config import CONFIG
@@ -65,7 +66,7 @@ class Executor:
         finally:
             self.executor = None
         try:
-            reset_ocr()
+            purge_all("executor.stop")
         except Exception:
             pass
 
@@ -293,7 +294,19 @@ class Executor:
         finally:
             self.executor = None
         try:
-            reset_ocr()
+            save_task_data(task)
+        except Exception:
+            pass
+        try:
+            save_scheduler_tasks()
+        except Exception:
+            pass
+        try:
+            save_scheduler_state()
+        except Exception:
+            pass
+        try:
+            soft_process_restart()
         except Exception:
             pass
 

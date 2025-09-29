@@ -8,7 +8,9 @@ from config import CONFIG
 os.environ['FLAGS_allocator_strategy'] = 'naive_best_fit'
 os.environ['FLAGS_fraction_of_cpu_memory_to_use'] = '0.27'
 
+
 log = logger.get_logger(__name__)
+
 
 
 def cpu_threads():
@@ -38,11 +40,11 @@ def init_ocr_if_needed():
     ensure_paddleocr()
     try:
         if OCR_EN is None:
-            OCR_EN = paddleocr.PaddleOCR(lang="en", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=True, cpu_threads=cpu_threads())
+            OCR_EN = paddleocr.PaddleOCR(lang="en", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=False, cpu_threads=cpu_threads())
         if OCR_JP is None:
-            OCR_JP = paddleocr.PaddleOCR(lang="japan", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=True, cpu_threads=cpu_threads())
+            OCR_JP = paddleocr.PaddleOCR(lang="japan", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=False, cpu_threads=cpu_threads())
         if OCR_CH is None:
-            OCR_CH = paddleocr.PaddleOCR(lang="ch", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=True, cpu_threads=cpu_threads())
+            OCR_CH = paddleocr.PaddleOCR(lang="ch", show_log=False, use_angle_cls=False, use_gpu=False, enable_mkldnn=False, cpu_threads=cpu_threads())
     except Exception as e:
         log.error(f"Failed to initialize PaddleOCR: {e}")
         raise
@@ -57,6 +59,10 @@ def get_ocr(lang: str):
     if lang == "ch":
         return OCR_CH
     return OCR_EN
+
+
+
+
 
 
 def reset_ocr():
@@ -98,6 +104,13 @@ def reset_ocr():
             try:
                 if hasattr(_paddle, "device") and hasattr(_paddle.device, "cuda") and hasattr(_paddle.device.cuda, "empty_cache"):
                     _paddle.device.cuda.empty_cache()
+            except Exception:
+                pass
+            try:
+                if hasattr(_paddle, "framework") and hasattr(_paddle.framework, "core"):
+                    core = _paddle.framework.core
+                    if hasattr(core, 'set_flags'):
+                        core.set_flags({})
             except Exception:
                 pass
         except Exception:

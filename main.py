@@ -446,12 +446,28 @@ def time_window_enforcer(device_id: str):
 
 
 if __name__ == '__main__':
+    try:
+        from bot.base.purge import acquire_instance_lock
+        acquire_instance_lock()
+    except Exception:
+        pass
     if sys.version_info.minor != 10 or sys.version_info.micro != 9:
         print("\033[33m{}\033[0m".format("Warning: Python version is incorrect, may not run properly"))
         print("Recommended Python version: 3.10.9  Current: " + sys.version)
     
     # Device selection
-    selected_device = select_device()
+    selected_device = None
+    if os.environ.get("UAT_AUTORESTART", "0") == "1":
+        try:
+            with open("config.yaml", 'r', encoding='utf-8') as f:
+                cfg = yaml.safe_load(f)
+            selected_device = cfg['bot']['auto']['adb']['device_name']
+            if not selected_device:
+                selected_device = select_device()
+        except Exception:
+            selected_device = select_device()
+    else:
+        selected_device = select_device()
     if selected_device is None:
         print("❌ No device selected. Exiting.")
         sys.exit(1)
@@ -481,9 +497,24 @@ if __name__ == '__main__':
 
     # Start the bot
     register_app(UmamusumeManifest)
+    restored = False
+    was_active = None
+    try:
+        from bot.base.purge import load_saved_tasks, load_scheduler_state
+        restored = load_saved_tasks()
+        was_active = load_scheduler_state()
+    except Exception:
+        restored = False
+        was_active = None
     scheduler_thread = threading.Thread(target=scheduler.init, args=())
     scheduler_thread.start()
+    try:
+        if was_active is True or (was_active is None and restored):
+            scheduler.start()
+    except Exception:
+        pass
     print("🚀 UAT running on http://127.0.0.1:8071")
-    threading.Thread(target=lambda: (time.sleep(1), __import__('webbrowser').open("http://127.0.0.1:8071")), daemon=True).start()
+    if os.environ.get("UAT_AUTORESTART", "0") != "1":
+        threading.Thread(target=lambda: (time.sleep(1), __import__('webbrowser').open("http://127.0.0.1:8071")), daemon=True).start()
     run("bot.server.handler:server", host="127.0.0.1", port=8071, log_level="error")
 

@@ -9,9 +9,30 @@ log = logger.get_logger(__name__)
 RESTARTING = False
 
 
-def save_task_data(task):
+def write_json(path, data):
     try:
         import json
+        os.makedirs(os.path.dirname(path) or '.', exist_ok=True)
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False)
+        return True
+    except Exception:
+        return False
+
+
+def read_json(path):
+    try:
+        import json
+        if not os.path.exists(path):
+            return None
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def save_task_data(task):
+    try:
         d = {
             "task_id": getattr(task, "task_id", None),
             "status": getattr(getattr(task, "task_status", None), "name", None),
@@ -21,8 +42,7 @@ def save_task_data(task):
             "app": getattr(task, "app_name", None),
             "type": getattr(getattr(task, "task_type", None), "name", None),
         }
-        with open("userdata/last_task.json", "w", encoding="utf-8") as f:
-            json.dump(d, f, ensure_ascii=False)
+        write_json("userdata/last_task.json", d)
     except Exception:
         pass
 
@@ -152,23 +172,17 @@ def serialize_umamusume_task(t):
 def save_scheduler_state():
     try:
         from bot.engine.scheduler import scheduler
-        import json
-        os.makedirs('userdata', exist_ok=True)
-        with open('userdata/scheduler_state.json', 'w', encoding='utf-8') as f:
-            json.dump({'active': bool(getattr(scheduler, 'active', False))}, f)
-        return True
+        return bool(write_json('userdata/scheduler_state.json', {'active': bool(getattr(scheduler, 'active', False))}))
     except Exception:
         return False
 
 
 def load_scheduler_state():
     try:
-        import json
         path = 'userdata/scheduler_state.json'
-        if not os.path.exists(path):
+        d = read_json(path)
+        if d is None:
             return None
-        with open(path, 'r', encoding='utf-8') as f:
-            d = json.load(f)
         try:
             os.remove(path)
         except Exception:
@@ -181,7 +195,6 @@ def load_scheduler_state():
 def save_scheduler_tasks():
     try:
         from bot.engine.scheduler import scheduler
-        import json
         tasks = []
         for t in scheduler.get_task_list() or []:
             try:
@@ -208,25 +221,20 @@ def save_scheduler_tasks():
                 tasks.append(entry)
             except Exception:
                 continue
-        os.makedirs('userdata', exist_ok=True)
-        with open('userdata/saved_tasks.json', 'w', encoding='utf-8') as f:
-            json.dump(tasks, f, ensure_ascii=False)
-        return True
+        return bool(write_json('userdata/saved_tasks.json', tasks))
     except Exception:
         return False
 
 
 def load_saved_tasks():
     try:
-        import json
         import bot.engine.ctrl as ctrl
         from bot.base.task import TaskExecuteMode as TEM
         from bot.base.common import CronJobConfig
         path = 'userdata/saved_tasks.json'
-        if not os.path.exists(path):
+        data = read_json(path)
+        if data is None:
             return False
-        with open(path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
         for it in data or []:
             try:
                 mode_raw = it.get('task_execute_mode')

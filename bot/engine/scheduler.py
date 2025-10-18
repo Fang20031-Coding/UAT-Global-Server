@@ -22,6 +22,27 @@ class Scheduler:
         log.info("Task added: " + task.task_id)
         self.task_list.append(task)
 
+    def start_executor_for(self, task, task_executor):
+        executor_thread = threading.Thread(target=task_executor.start, args=([task]))
+        executor_thread.start()
+
+    def compute_next_cron(self, cron_expr):
+        now = datetime.datetime.now()
+        cron = croniter.croniter(cron_expr, now)
+        return cron.get_next(datetime.datetime)
+
+    def clone_to_mode(self, task, to_task_execute_mode: TaskExecuteMode):
+        new_task = copy.deepcopy(task)
+        new_task.task_id = str(int(round(time.time() * 1000)))
+        if (to_task_execute_mode == TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME and task.task_execute_mode ==
+                TaskExecuteMode.TASK_EXECUTE_MODE_CRON_JOB):
+            new_task.task_id = "CRONJOB_" + new_task.task_id
+            new_task.cron_job_config = None
+        new_task.task_execute_mode = to_task_execute_mode
+        if new_task.task_execute_mode == TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME:
+            new_task.task_status = TaskStatus.TASK_STATUS_PENDING
+        self.task_list.append(new_task)
+
     def delete_task(self, task_id):
         remove_idx = -1
         for i, v in enumerate(self.task_list):
@@ -53,28 +74,22 @@ class Scheduler:
                     if task.task_execute_mode in [TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME,
                                                    TaskExecuteMode.TASK_EXECUTE_MODE_TEAM_TRIALS]:
                         if task.task_status == TaskStatus.TASK_STATUS_PENDING and not task_executor.active:
-                            executor_thread = threading.Thread(target=task_executor.start, args=([task]))
-                            executor_thread.start()
+                            self.start_executor_for(task, task_executor)
                     elif task.task_execute_mode == TaskExecuteMode.TASK_EXECUTE_MODE_CRON_JOB:
                         if task.task_status == TaskStatus.TASK_STATUS_SCHEDULED:
                             if task.cron_job_config is not None:
                                 if task.cron_job_config.next_time is None:
-                                    now = datetime.datetime.now()
-                                    cron = croniter.croniter(task.cron_job_config.cron, now)
-                                    task.cron_job_config.next_time = cron.get_next(datetime.datetime)
+                                    task.cron_job_config.next_time = self.compute_next_cron(task.cron_job_config.cron)
                                 else:
                                     if task.cron_job_config.next_time < datetime.datetime.now():
                                         self.copy_task(task, TaskExecuteMode.TASK_EXECUTE_MODE_ONE_TIME)
-                                        now = datetime.datetime.now()
-                                        cron = croniter.croniter(task.cron_job_config.cron, now)
-                                        task.cron_job_config.next_time = cron.get_next(datetime.datetime)
+                                        task.cron_job_config.next_time = self.compute_next_cron(task.cron_job_config.cron)
                     elif task.task_execute_mode == TaskExecuteMode.TASK_EXECUTE_MODE_LOOP:
                         if not task_executor.active:
                             if task.task_status in [TaskStatus.TASK_STATUS_SUCCESS, TaskStatus.TASK_STATUS_FAILED]:
                                 task.task_status = TaskStatus.TASK_STATUS_PENDING
                             if task.task_status == TaskStatus.TASK_STATUS_PENDING:
-                                executor_thread = threading.Thread(target=task_executor.start, args=([task]))
-                                executor_thread.start()
+                                self.start_executor_for(task, task_executor)
                     else:
                         log.warning("Unknown task type: " + str(task.task_execute_mode) + ", task_id: " + str(task.task_id))
 

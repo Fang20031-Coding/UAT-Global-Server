@@ -42,18 +42,19 @@ class Executor:
         self.detect_ui_results = []
         self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
 
-    def start(self, task):
-        self.active = True
+    def ensure_pool(self):
         if self.executor is None or getattr(self.executor, "_shutdown", False):
             self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
-        try:
-            self.detect_ui_results.clear()
-        except Exception:
-            self.detect_ui_results = []
-        self.run_work_flow(task)
 
-    def stop(self):
-        self.active = False
+    def cancel_futures(self, futures):
+        for f in futures:
+            if not f.done():
+                try:
+                    f.cancel()
+                except Exception:
+                    pass
+
+    def close_pool(self):
         try:
             self.executor.shutdown(wait=False, cancel_futures=True)
         except TypeError:
@@ -65,6 +66,19 @@ class Executor:
             pass
         finally:
             self.executor = None
+
+    def start(self, task):
+        self.active = True
+        self.ensure_pool()
+        try:
+            self.detect_ui_results.clear()
+        except Exception:
+            self.detect_ui_results = []
+        self.run_work_flow(task)
+
+    def stop(self):
+        self.active = False
+        self.close_pool()
         try:
             purge_all("executor.stop")
         except Exception:
@@ -72,8 +86,7 @@ class Executor:
 
     def detect_ui(self, ui_list: list[UI], target) -> UI:
         target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
-        if self.executor is None or getattr(self.executor, "_shutdown", False):
-            self.executor = ThreadPoolExecutor(max_workers=CONFIG.bot.auto.cpu_alloc)
+        self.ensure_pool()
         futures = {self.executor.submit(self.detect_ui_sub, ui, target): ui for ui in ui_list}
         found = None
         for _ in as_completed(futures):
@@ -81,15 +94,9 @@ class Executor:
                 found = self.detect_ui_results[0]
                 break
         if found is not None:
-            for f in futures:
-                if not f.done():
-                    try:
-                        f.cancel()
-                    except Exception:
-                        pass
+            self.cancel_futures(futures)
             self.detect_ui_results = []
             return found
-        # no match; ensure all tasks complete
         for f in futures:
             try:
                 f.result()
@@ -282,17 +289,7 @@ class Executor:
         task.end_task_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         push_system_notification("任务结束", str(getattr(getattr(task, 'end_task_reason', None), 'value', '')), 10)
         controller.destroy()
-        try:
-            self.executor.shutdown(wait=False, cancel_futures=True)
-        except TypeError:
-            try:
-                self.executor.shutdown(wait=False)
-            except Exception:
-                pass
-        except Exception:
-            pass
-        finally:
-            self.executor = None
+        self.close_pool()
         try:
             save_task_data(task)
         except Exception:

@@ -27,6 +27,7 @@ class TaskDetail:
     motivation_threshold_year3: int
     prioritize_recreation: bool
     score_value: list
+    compensate_failure: bool
     # 剧本相关配置
     scenario_config: ScenarioConfig
     # 限时: 富士奇石的表演秀
@@ -73,6 +74,7 @@ def build_task(task_execute_mode: TaskExecuteMode, task_type: int,
     td.learn_skill_only_user_provided = attachment_data['learn_skill_only_user_provided']
     td.allow_recover_tp = attachment_data['allow_recover_tp']
     td.extra_weight = attachment_data['extra_weight']
+    td.compensate_failure = attachment_data.get('compensate_failure', True)
     td.manual_purchase_at_end = attachment_data['manual_purchase_at_end']
     td.cure_asap_conditions = attachment_data.get("cure_asap_conditions", "")
     td.rest_treshold = attachment_data.get('rest_treshold', attachment_data.get('fast_path_energy_limit', 48))

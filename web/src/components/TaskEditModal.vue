@@ -205,8 +205,16 @@
                 </div>
                 <div class="col-3">
                   <div class="form-group">
-                    <label for="inputRestTreshold">Rest Treshold</label>
+                    <label for="inputRestTreshold">Rest Threshold</label>
                     <input v-model="restTreshold" type="number" min="20" max="80" class="form-control" id="inputRestTreshold" placeholder="">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <div class="form-check" style="margin-top: 24px;">
+                      <input type="checkbox" v-model="compensateFailure" class="form-check-input" id="compensateFailure">
+                      <label class="form-check-label" for="compensateFailure">Compensate for failure</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -345,7 +353,7 @@
               </div>
               <div v-if="showAdvanceOption" class="advanced-options-content">
                 <div class="form-group">
-                  <div>⭐ Extra Weights (Speed, Stamina, Power, Guts, Wits)</div>
+                  <div>⭐ Extra Weights (Speed, Stamina, Power, Guts, Wit)</div>
                 </div>
                 <p>Applies a flat multiplier to the training score (-100% To +100%)</p>
                 <p>-1 would make it skip the training</p>
@@ -1226,6 +1234,7 @@ export default {
       selectedRaceTactic3: 4,
       clockUseLimit: 99,
       restTreshold: 48,
+      compensateFailure: true,
       learnSkillThreshold: 9999,
       cureAsapConditions: 'Migraine,Night Owl,Skin Outbreak,Slacker,Slow Metabolism,(Practice poor isn\'t worth a turn to cure)',
       recoverTP: 0,
@@ -1851,6 +1860,7 @@ export default {
           "learn_skill_threshold": this.learnSkillThreshold,
           "allow_recover_tp": this.recoverTP,
           "rest_treshold": this.restTreshold,
+          "compensate_failure": this.compensateFailure,
           "learn_skill_only_user_provided": this.learnSkillOnlyUserProvided,
           "extra_weight": [this.extraWeight1, this.extraWeight2, this.extraWeight3, this.extraWeightSummer],
           "score_value": [
@@ -1905,6 +1915,7 @@ export default {
         this.supportCardLevel = this.presetsUse.follow_support_card_level,
         this.clockUseLimit = this.presetsUse.clock_use_limit,
         this.restTreshold = (this.presetsUse.rest_treshold || this.presetsUse.fast_path_energy_limit || 48),
+      this.compensateFailure = (this.presetsUse.compensate_failure !== false)
         this.learnSkillThreshold = this.presetsUse.learn_skill_threshold,
         this.selectedRaceTactic1 = this.presetsUse.race_tactic_1,
         this.selectedRaceTactic2 = this.presetsUse.race_tactic_2,
@@ -2073,6 +2084,7 @@ export default {
 
       let preset = {
         name: this.presetNameEdit,
+        compensate_failure: this.compensateFailure,
         scenario: this.selectedScenario,
         race_list: this.extraRace,
         skill_priority_list: skill_priority_list,

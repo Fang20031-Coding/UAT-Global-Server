@@ -41,6 +41,7 @@ class TrainingInfo:
     will_incr: int
     intelligence_incr: int
     skill_point_incr: int
+    failure_rate: int
     # not maxxed or rainbow
     relevant_count: int
 
@@ -51,6 +52,7 @@ class TrainingInfo:
         self.will_incr = 0
         self.intelligence_incr = 0
         self.skill_point_incr = 0
+        self.failure_rate = -1
         self.support_card_info_list = []
         self.relevant_count = 0
 
@@ -132,7 +134,7 @@ class TurnInfo:
     def log_turn_info(self, scenario_type: ScenarioType):
         log.info("Current turn time " + str(self.date))
         log.info(
-            "Current attribute values Speed: %s, Stamina: %s, Power: %s, Guts: %s, Intelligence: %s, Skill Points: %s",
+            "Current attribute values Speed: %s, Stamina: %s, Power: %s, Guts: %s, Wit: %s, Skill Points: %s",
             self.uma_attribute.speed,
             self.uma_attribute.stamina,
             self.uma_attribute.power,
@@ -148,7 +150,7 @@ class TurnInfo:
         self.training_info_list[2].log_training_info(scenario_type)
         log.info("Guts training results:")
         self.training_info_list[3].log_training_info(scenario_type)
-        log.info("Intelligence training results:")
+        log.info("Wit training results:")
         self.training_info_list[4].log_training_info(scenario_type)
 
 

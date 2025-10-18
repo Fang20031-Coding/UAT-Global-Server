@@ -257,7 +257,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     energy = read_energy()
     limit = int(getattr(ctx.cultivate_detail, 'rest_treshold', getattr(ctx.cultivate_detail, 'fast_path_energy_limit', 48)))
     if energy <= limit:
-        log.info(f"rest treshold: energy={energy}, treshold={limit} - prioritizing rest")
+        log.info(f"rest threshold: energy={energy}, threshold={limit} - prioritizing rest")
         op = TurnOperation()
         op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
         ctx.cultivate_detail.turn_info.turn_operation = op
@@ -268,6 +268,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         def _parse_training_in_thread(ctx, img, train_type):
             """Helper function to run parsing in a separate thread."""
             parse_training_result(ctx, img, train_type)
+            try:
+                parse_failure_rates(ctx, img, train_type)
+            except Exception:
+                pass
             parse_training_support_card(ctx, img, train_type)
             try:
                 from module.umamusume.asset.template import REF_TRAINING_HINT
@@ -374,7 +378,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             SupportCardType.SUPPORT_CARD_TYPE_WILL,
             SupportCardType.SUPPORT_CARD_TYPE_INTELLIGENCE,
         ]
-        names = ["Speed", "Stamina", "Power", "Guts", "Intelligence"]
+        names = ["Speed", "Stamina", "Power", "Guts", "Wit"]
         computed_scores = [0.0, 0.0, 0.0, 0.0, 0.0]
         rbc_counts = [0, 0, 0, 0, 0]
 
@@ -420,6 +424,12 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     lv2c += 1
                     score += w_lv2
             log.info(f"{names[idx]}:")
+            try:
+                fr = int(getattr(til, 'failure_rate', -1))
+            except Exception:
+                fr = -1
+            if fr >= 0:
+                log.info(f"  failure: {fr}%")
             log.info(f"  lv1: {lv1c}")
             log.info(f"  lv2: {lv2c}")
             log.info(f"  Rainbows: {rbc}")
@@ -433,6 +443,16 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             if hint_bonus > 0:
                 log.info(f"  Hint bonus: +{hint_bonus:.3f}")
             score += hint_bonus
+            try:
+                if getattr(ctx.cultivate_detail, 'compensate_failure', True):
+                    fr_val = int(getattr(til, 'failure_rate', -1))
+                    if fr_val >= 0:
+                        mult_fr = max(0.0, 1.0 - (float(fr_val) / 100.0))
+                        if mult_fr != 1.0:
+                            log.info(f"  Failure compensation: x{mult_fr:.2f}")
+                        score *= mult_fr
+            except Exception:
+                pass
             try:
                 expect_attr = ctx.cultivate_detail.expect_attribute
                 if isinstance(expect_attr, list) and len(expect_attr) == 5:

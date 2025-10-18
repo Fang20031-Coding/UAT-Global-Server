@@ -148,32 +148,9 @@ def normalize_ocr_result(result):
         return []
     return []
 
-# ocr_line 文字识别图片，返回所有出现的文字
-
-def ocr_line(img, lang="en"):
-    raw = ocr(img, lang)
-    ocr_result = normalize_ocr_result(raw)
-    text = ""
-    for text_info in (ocr_result or []):
-        try:
-            if not text_info:
-                continue
-            if isinstance(text_info, dict):
-                candidate = text_info.get("text") or ""
-            else:
-                # expected format: [box, (text, score)]
-                candidate = text_info[1][0] if len(text_info) > 1 else ""
-            if candidate:
-                text += str(candidate)
-        except Exception:
-            continue
-    return text
-
-
-def ocr_digits(img):
-    raw = get_ocr("en").ocr(img, cls=False)
-    res = normalize_ocr_result(raw)
-    digits = []
+def parse_text_items(result):
+    res = normalize_ocr_result(result)
+    items = []
     for info in (res or []):
         try:
             if not info:
@@ -187,12 +164,29 @@ def ocr_digits(img):
                     score = info[1][1]
                 else:
                     score = 0
-            digits.append((txt, score))
+            if txt:
+                items.append((str(txt), score))
         except Exception:
             continue
-    if not digits:
+    return items
+
+# ocr_line 文字识别图片，返回所有出现的文字
+
+def ocr_line(img, lang="en"):
+    raw = ocr(img, lang)
+    items = parse_text_items(raw)
+    text = ""
+    for candidate, _ in (items or []):
+        text += candidate
+    return text
+
+
+def ocr_digits(img):
+    raw = get_ocr("en").ocr(img, cls=False)
+    items = parse_text_items(raw)
+    if not items:
         return ""
-    best, _ = max(digits, key=lambda x: x[1])
+    best, _ = max(items, key=lambda x: x[1])
     return best
 
 # find_text_pos 查找目标文字在图片中的位置

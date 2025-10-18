@@ -10,32 +10,40 @@ log = logger.get_logger(__name__)
 
 
 class ImageMatchResult:
-    # matched_area 匹配结果区域 [100, 100]
     matched_area = None
-    # center_point 匹配结果的中心点
     center_point = None
-    # find_match 匹配是否成功
     find_match: bool = False
-    # score 匹配的相似得分（仅用于特征匹配）
     score: int = 0
 
 
-def image_match(target, template: Template) -> ImageMatchResult:
+def to_gray(img):
+    if img is None or getattr(img, 'size', 0) == 0:
+        return img
+    if len(img.shape) == 3:
+        return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return img
 
+
+def clip_roi(img, area):
+    if img is None or getattr(img, 'size', 0) == 0:
+        return img, 0, 0
+    if area is None:
+        return img, 0, 0
+    h, w = img.shape[:2]
+    x1 = max(0, min(w, area.x1))
+    y1 = max(0, min(h, area.y1))
+    x2 = max(x1, min(w, area.x2))
+    y2 = max(y1, min(h, area.y2))
+    return img[y1:y2, x1:x2], x1, y1
+
+
+def image_match(target, template: Template) -> ImageMatchResult:
     try:
         if template.image_match_config.match_mode == ImageMatchMode.IMAGE_MATCH_MODE_TEMPLATE_MATCH:
-            if len(target.shape) == 3:
-                tgt = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
-            else:
-                tgt = target
+            tgt = to_gray(target)
             area = template.image_match_config.match_area
             if area is not None:
-                h, w = tgt.shape[:2]
-                x1 = max(0, min(w, area.x1))
-                y1 = max(0, min(h, area.y1))
-                x2 = max(x1, min(w, area.x2))
-                y2 = max(y1, min(h, area.y2))
-                roi = tgt[y1:y2, x1:x2]
+                roi, x1, y1 = clip_roi(tgt, area)
                 res = template_match(roi, template, template.image_match_config.match_accuracy)
                 if res.find_match:
                     cx, cy = res.center_point

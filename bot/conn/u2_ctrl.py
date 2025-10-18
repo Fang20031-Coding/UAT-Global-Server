@@ -80,6 +80,92 @@ class U2AndroidController(AndroidController):
         self.recent_click_buckets = []
         self.fallback_block_until = 0.0
 
+    def in_fallback_block(self, name):
+        if isinstance(name, str) and name == "Default fallback click":
+            if time.time() < getattr(self, "fallback_block_until", 0.0):
+                return True
+        return False
+
+    def update_click_buckets(self, x, y):
+        bucket = (int(x/25), int(y/25))
+        lst = getattr(self, "recent_click_buckets", None)
+        if lst is None:
+            self.recent_click_buckets = []
+            lst = self.recent_click_buckets
+        if bucket not in lst:
+            lst.append(bucket)
+            if len(lst) > 2:
+                lst.pop(0)
+            self.fallback_block_until = time.time() + 2.0
+
+    def build_click_key(self, x, y, name):
+        if isinstance(name, str) and name.strip() != "":
+            return name.strip()
+        return f"{int(x/50)}:{int(y/50)}"
+
+    def update_repetitive_click(self, click_key):
+        if self.repetitive_click_name is None:
+            self.repetitive_click_name = click_key
+            self.repetitive_click_count = 1
+            self.repetitive_other_clicks = 0
+            return False
+        if click_key == self.repetitive_click_name:
+            self.repetitive_click_count += 1
+        else:
+            self.repetitive_other_clicks += 1
+            if self.repetitive_other_clicks >= 5:
+                self.repetitive_click_name = click_key
+                self.repetitive_click_count = 1
+                self.repetitive_other_clicks = 0
+        if self.repetitive_click_name == click_key and self.repetitive_click_count >= 6:
+            try:
+                self.recover_home_and_reopen()
+            finally:
+                self.repetitive_click_name = None
+                self.repetitive_click_count = 0
+                self.repetitive_other_clicks = 0
+            time.sleep(self.config.delay)
+            return True
+        return False
+
+    def safety_dont_click(self, x, y):
+        if 263 <= x <= 458 and 559 <= y <= 808:
+            screen_gray = self.get_screen(to_gray=True)
+            match = image_match(screen_gray, REF_DONT_CLICK)
+            if getattr(match, "find_match", False):
+                log.info("unsafe click blocked")
+                return True
+        return False
+
+    def randomize_and_clamp(self, x, y, random_offset, max_x, max_y):
+        if random_offset:
+            x += random.randint(-5, 5)
+            y += random.randint(-5, 5)
+        if x >= max_x:
+            x = max_x-1
+        if y >= max_y:
+            y = max_y-1
+        if x < 0:
+            x = 1
+        if y <= 0:
+            y = 1
+        return x, y
+
+    def wait_click_interval(self, name):
+        now = time.time()
+        elapsed = now - self.last_click_time if hasattr(self, "last_click_time") else now
+        min_interval = getattr(self, "min_click_interval", 0.3)
+        wait_needed = max(0.0, min_interval - elapsed)
+        log.debug(f"click queue: elapsed={elapsed:.3f}s, min_interval={min_interval:.3f}s, wait={wait_needed:.3f}s, name={name}")
+        if wait_needed > 0:
+            time.sleep(wait_needed)
+
+    def tap(self, x, y, hold_duration):
+        duration = random.randint(0, 166) + hold_duration
+        _ = self.execute_adb_shell("shell input swipe " + str(x) + " " + str(y) + " " + str(x) + " " + str(y) + " " + str(duration), True)
+        self.last_click_time = time.time()
+        time.sleep(self.config.delay)
+
     # init_env 初始化环境
     def init_env(self) -> None:
         self.u2client = u2.connect(self.config.device_name)
@@ -116,83 +202,24 @@ class U2AndroidController(AndroidController):
         if name != "":
             log.debug("click >> " + name)
 
-        if isinstance(name, str) and name == "Default fallback click":
-            if time.time() < getattr(self, "fallback_block_until", 0.0):
-                return
-        bucket = (int(x/25), int(y/25))
-        lst = getattr(self, "recent_click_buckets", None)
-        if lst is None:
-            self.recent_click_buckets = []
-            lst = self.recent_click_buckets
-        if bucket not in lst:
-            lst.append(bucket)
-            if len(lst) > 2:
-                lst.pop(0)
-            self.fallback_block_until = time.time() + 2.0
+        if self.in_fallback_block(name):
+            return
+        self.update_click_buckets(x, y)
 
-        click_key = name.strip() if isinstance(name, str) and name.strip() != "" else f"{int(x/50)}:{int(y/50)}"
-        if self.repetitive_click_name is None:
-            self.repetitive_click_name = click_key
-            self.repetitive_click_count = 1
-            self.repetitive_other_clicks = 0
-        else:
-            if click_key == self.repetitive_click_name:
-                self.repetitive_click_count += 1
-            else:
-                self.repetitive_other_clicks += 1
-                if self.repetitive_other_clicks >= 5:
-                    self.repetitive_click_name = click_key
-                    self.repetitive_click_count = 1
-                    self.repetitive_other_clicks = 0
-
-        if self.repetitive_click_name == click_key and self.repetitive_click_count >= 6:
-            try:
-                self.recover_home_and_reopen()
-            finally:
-                self.repetitive_click_name = None
-                self.repetitive_click_count = 0
-                self.repetitive_other_clicks = 0
-            time.sleep(self.config.delay)
+        click_key = self.build_click_key(x, y, name)
+        if self.update_repetitive_click(click_key):
             return
 
         try:
-            if 263 <= x <= 458 and 559 <= y <= 808:
-                screen_gray = self.get_screen(to_gray=True)
-                match = image_match(screen_gray, REF_DONT_CLICK)
-                if getattr(match, "find_match", False):
-                    log.info("unsafe click blocked")
-                    return
+            if self.safety_dont_click(x, y):
+                return
         except Exception as e:
             log.info("wtf")
 
-        if random_offset: # why was this just "random" before
-            offset_x = random.randint(-5, 5)
-            offset_y = random.randint(-5, 5)
-            x += offset_x
-            y += offset_y
-        if x >= max_x:
-            x = max_x-1
-        if y >= max_y:
-            y = max_y-1
-        if x < 0:
-            x = 1
-        if y <= 0:
-            y = 1
+        x, y = self.randomize_and_clamp(x, y, random_offset, max_x, max_y)
         
-        # MIGHT prevent game ui from being bugged out (just a theory)
-        now = time.time()
-        elapsed = now - self.last_click_time if hasattr(self, "last_click_time") else now
-        min_interval = getattr(self, "min_click_interval", 0.3)
-        wait_needed = max(0.0, min_interval - elapsed)
-        log.debug(f"click queue: elapsed={elapsed:.3f}s, min_interval={min_interval:.3f}s, wait={wait_needed:.3f}s, name={name}")
-        if wait_needed > 0:
-            time.sleep(wait_needed)
-
-        duration = random.randint(0, 166) + hold_duration #maybe im just paranoid but <100ms seemed like a number they would check
-
-        _ = self.execute_adb_shell("shell input swipe " + str(x) + " " + str(y) + " " + str(x) + " " + str(y) + " " + str(duration), True)
-        self.last_click_time = time.time()
-        time.sleep(self.config.delay)
+        self.wait_click_interval(name)
+        self.tap(x, y, hold_duration)
 
     def swipe(self, x1=1025, y1=550, x2=1025, y2=550, duration=0.2, name=""):
         if INPUT_BLOCKED:

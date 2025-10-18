@@ -60,6 +60,27 @@ def find_similar_skill_name(target_text: str, ref_text_list: list[str], threshol
     return result
 
 
+def ocr_en(sub_img):
+    return ocr_line(sub_img, lang="en")
+
+
+def try_alt_cost_regions(skill_info_img):
+    regions = [
+        skill_info_img[65: 95, 520: 595],
+        skill_info_img[70: 100, 515: 590],
+        skill_info_img[60: 90, 530: 600],
+    ]
+    for i, alt_region in enumerate(regions):
+        try:
+            alt_cost_text = ocr_en(alt_region)
+            alt_cost = re.sub("\\D", "", alt_cost_text)
+            if alt_cost and alt_cost != '':
+                return alt_cost, i+1
+        except:
+            continue
+    return "", 0
+
+
 def parse_date(img, ctx: UmamusumeContext) -> int:
     # Youth Cup and URA UI positions are different
     if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
@@ -380,6 +401,51 @@ def parse_training_result(ctx: UmamusumeContext, img, train_type: TrainingType):
     ctx.cultivate_detail.turn_info.training_info_list[train_type.value - 1].skill_point_incr = train_incr[5]
 
 
+def parse_failure_rates(ctx: UmamusumeContext, img, train_type: TrainingType | None = None):
+    try:
+        import cv2
+        from bot.recog.ocr import ocr_line
+        y1, y2 = 916, 981
+        x_ranges = [
+            (75, 134),
+            (202, 261),
+            (330, 389),
+            (457, 516),
+            (584, 643),
+        ]
+        rates = []
+        for (x1, x2) in x_ranges:
+            h, w = img.shape[:2]
+            y1c = max(0, min(h, y1)); y2c = max(y1c, min(h, y2))
+            x1c = max(0, min(w, x1)); x2c = max(x1c, min(w, x2))
+            roi = img[y1c:y2c, x1c:x2c]
+            roi = cv2.copyMakeBorder(roi, 10, 10, 10, 10, cv2.BORDER_CONSTANT, None, (255, 255, 255))
+            text = ocr_line(roi, lang="en")
+            import re
+            digits = re.sub("\\D", "", text)
+            if digits == "":
+                rates.append(-1)
+            else:
+                try:
+                    rates.append(int(digits))
+                except Exception:
+                    rates.append(-1)
+        if train_type is not None and isinstance(train_type, TrainingType) and 1 <= train_type.value <= 5:
+            idx = train_type.value - 1
+            try:
+                ctx.cultivate_detail.turn_info.training_info_list[idx].failure_rate = rates[idx] if idx < len(rates) else -1
+            except Exception:
+                pass
+        else:
+            for i, val in enumerate(rates):
+                try:
+                    ctx.cultivate_detail.turn_info.training_info_list[i].failure_rate = val
+                except Exception:
+                    pass
+    except Exception as e:
+        log.debug(f"Failure rate parsing error: {e}")
+
+
 def find_support_card(ctx: UmamusumeContext, img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     while True:
@@ -663,40 +729,25 @@ def find_skill(ctx: UmamusumeContext, img, skill: list[str], learn_any_skill: bo
                 skill_info_img = img[pos[0][1] - 65:pos[1][1] + 75, pos[0][0] - 470: pos[1][0] + 150]
                 if not image_match(skill_info_img, REF_SKILL_LEARNED).find_match:
                     skill_name_img = skill_info_img[10: 47, 100: 445]
-                    text = ocr_line(skill_name_img, lang="en")  # Use English OCR for Global version
+                    text = ocr_en(skill_name_img)
                     log.debug(f"🔍 find_skill - OCR detected skill: '{text}'")
                     result = find_similar_skill_name(text, skill, 0.7)
                     log.debug(f"🔍 find_skill - Similar skill match: '{text}' -> '{result}'")
                     
                     if result != "" or learn_any_skill:
                         tmp_img = ctx.ctrl.get_screen()
-                        pt_text = re.sub("\\D", "", ocr_line(tmp_img[400: 440, 490: 665], lang="en"))
-                        skill_pt_cost_text = re.sub("\\D", "", ocr_line(skill_info_img[69: 99, 525: 588], lang="en"))
+                        pt_text = re.sub("\\D", "", ocr_en(tmp_img[400: 440, 490: 665]))
+                        skill_pt_cost_text = re.sub("\\D", "", ocr_en(skill_info_img[69: 99, 525: 588]))
                         
                         # Handle empty cost (Global Server UI compatibility) - same as get_skill_list()
                         if not skill_pt_cost_text or skill_pt_cost_text == '':
-                            # Try alternative cost extraction regions for Global Server
-                            alt_cost_regions = [
-                                skill_info_img[65: 95, 520: 595],  # Slightly adjusted region
-                                skill_info_img[70: 100, 515: 590], # Different adjustment
-                                skill_info_img[60: 90, 530: 600],  # Wider region
-                            ]
-                            
-                            for i, alt_region in enumerate(alt_cost_regions):
-                                try:
-                                    alt_cost_text = ocr_line(alt_region, lang="en")
-                                    alt_cost = re.sub("\\D", "", alt_cost_text)
-                                    if alt_cost and alt_cost != '':
-                                        skill_pt_cost_text = alt_cost
-                                        log.debug(f"find_skill - Found skill cost using alternative region {i+1}: '{alt_cost}' for '{text}'")
-                                        break
-                                except:
-                                    continue
-                            
-                            # Final fallback if all regions fail
+                            alt_cost, alt_idx = try_alt_cost_regions(skill_info_img)
+                            if alt_cost:
+                                skill_pt_cost_text = alt_cost
+                                log.debug(f"find_skill - Found skill cost using alternative region {alt_idx}: '{alt_cost}' for '{text}'")
                             if not skill_pt_cost_text or skill_pt_cost_text == '':
                                 log.debug(f"find_skill - Could not parse skill cost for '{text}', defaulting to 1")
-                                skill_pt_cost_text = '1'  # Default cost to avoid crashes
+                                skill_pt_cost_text = '1'
                         
                         # Debug: Log point and cost extraction
                         log.debug(f"🔍 find_skill - Available points: '{pt_text}', Skill cost: '{skill_pt_cost_text}'")
@@ -747,8 +798,8 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
 
                 skill_name_img = skill_info_img[10: 47, 100: 445]
                 skill_cost_img = skill_info_img[69: 99, 525: 588]
-                text = ocr_line(skill_name_img, lang="en")  # Use English OCR for Global version
-                cost_text = ocr_line(skill_cost_img, lang="en")  # Use English OCR for Global version
+                text = ocr_en(skill_name_img)
+                cost_text = ocr_en(skill_cost_img)
                 cost = re.sub("\\D", "", cost_text)
                 
                 # Debug: Log OCR text for skill names
@@ -756,28 +807,13 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                 
                 # Handle empty cost (Global Server UI compatibility)
                 if not cost or cost == '':
-                    # Try alternative cost extraction regions for Global Server
-                    alt_cost_regions = [
-                        skill_info_img[65: 95, 520: 595],  # Slightly adjusted region
-                        skill_info_img[70: 100, 515: 590], # Different adjustment
-                        skill_info_img[60: 90, 530: 600],  # Wider region
-                    ]
-                    
-                    for i, alt_region in enumerate(alt_cost_regions):
-                        try:
-                            alt_cost_text = ocr_line(alt_region, lang="en")
-                            alt_cost = re.sub("\\D", "", alt_cost_text)
-                            if alt_cost and alt_cost != '':
-                                cost = alt_cost
-                                log.debug(f"Found skill cost using alternative region {i+1}: '{alt_cost}' for '{text}'")
-                                break
-                        except:
-                            continue
-                    
-                    # Final fallback if all regions fail
+                    alt_cost, alt_idx = try_alt_cost_regions(skill_info_img)
+                    if alt_cost:
+                        cost = alt_cost
+                        log.debug(f"Found skill cost using alternative region {alt_idx}: '{alt_cost}' for '{text}'")
                     if not cost or cost == '':
                         log.debug(f"Could not parse skill cost for '{text}', cost_text: '{cost_text}', defaulting to 1")
-                        cost = '1'  # Default cost to avoid crashes
+                        cost = '1'
 
                 # Check if it's a gold skill
                 mask = cv2.inRange(skill_info_cp, numpy.array([40, 180, 240]), numpy.array([100, 210, 255]))

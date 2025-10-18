@@ -107,6 +107,7 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
             [0.11, 0.10, 0.12, 0.09],
             [0.03, 0.05, 0.15, 0.09]
         ])
+        detail.compensate_failure = getattr(task.detail, 'compensate_failure', True)
         
         ctx.cultivate_detail = detail
     return ctx

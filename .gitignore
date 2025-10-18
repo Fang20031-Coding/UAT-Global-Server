@@ -139,4 +139,6 @@ brayscript/
 userdata/umamusume/presets/
 userdata/log_*.txt
 userdata/*.txt
+userdata/instance.lock
+userdata/last_task.json
 **/__pycache__/

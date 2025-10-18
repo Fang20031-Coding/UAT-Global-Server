@@ -129,8 +129,11 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         from bot.conn.fetch import read_energy
         energy = read_energy()
         limit = int(getattr(ctx.cultivate_detail, 'rest_treshold', getattr(ctx.cultivate_detail, 'fast_path_energy_limit', 48)))
-        if has_extra_race or energy <= limit:
+        if has_extra_race:
             ctx.cultivate_detail.turn_info.parse_train_info_finish = True
+            return
+        if energy <= limit:
+            ctx.ctrl.click_by_point(CULTIVATE_REST)
             return
         else:
             ctx.ctrl.click_by_point(TO_TRAINING_SELECT)

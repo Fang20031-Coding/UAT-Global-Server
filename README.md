@@ -1,3 +1,5 @@
+# Don't pull messed smth up
+
 welp got conscripted. For 2 years+ updates will slow down greatly now.
 I get free time on Saturdays only now (updates not guaranteed on Saturdays.)
 

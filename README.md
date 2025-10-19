@@ -192,7 +192,7 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## **Changelogs**
 - 18/10/2025   
-Customizable energy limit.
+Customizable energy limit.  
 Option to adjust score based on training failure rate
 - 29/9/2025   
 Soft reset after every task. Should help with memory issues.  

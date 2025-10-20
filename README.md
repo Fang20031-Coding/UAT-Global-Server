@@ -94,6 +94,7 @@ After that you can just:
 ```bash
 python main.py
 ```
+Or just run start.bat
 
 ---
 

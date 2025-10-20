@@ -117,6 +117,35 @@ def before_hook(ctx: UmamusumeContext):
 
 
 def after_hook(ctx: UmamusumeContext):
+    try:
+        if getattr(ctx.ctrl, 'trigger_decision_reset', False):
+            log.info("failsafe triggered. restarting decision making")
+            ti = getattr(ctx.cultivate_detail, 'turn_info', None)
+            if ti is not None:
+                try:
+                    ti.parse_main_menu_finish = False
+                except Exception:
+                    pass
+                try:
+                    ti.parse_train_info_finish = False
+                except Exception:
+                    pass
+                try:
+                    ti.turn_operation = None
+                except Exception:
+                    pass
+                for attr in ("race_search_started_at", "race_search_id"):
+                    if hasattr(ti, attr):
+                        try:
+                            delattr(ti, attr)
+                        except Exception:
+                            pass
+            try:
+                ctx.ctrl.trigger_decision_reset = False
+            except Exception:
+                pass
+    except Exception:
+        pass
     img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
     if apply_rules(ctx, img):
         return

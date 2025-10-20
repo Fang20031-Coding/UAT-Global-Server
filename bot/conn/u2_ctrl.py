@@ -79,6 +79,7 @@ class U2AndroidController(AndroidController):
     def __init__(self):
         self.recent_click_buckets = []
         self.fallback_block_until = 0.0
+        self.trigger_decision_reset = False
 
     def in_fallback_block(self, name):
         if isinstance(name, str) and name == "Default fallback click":
@@ -263,6 +264,7 @@ class U2AndroidController(AndroidController):
             time.sleep(1.2)
         except Exception:
             pass
+        self.trigger_decision_reset = True
 
     def start_app(self, package_name, activity_name=None):
         if activity_name:

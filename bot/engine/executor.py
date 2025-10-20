@@ -225,6 +225,10 @@ class Executor:
                                 time.sleep(1.0)
                                 controller.start_app(manifest.app_package_name, manifest.app_activity_name)
                                 time.sleep(2.0)
+                                try:
+                                    controller.trigger_decision_reset = True
+                                except Exception:
+                                    pass
                             except Exception:
                                 pass
                             finally:

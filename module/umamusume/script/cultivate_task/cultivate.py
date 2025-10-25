@@ -1078,13 +1078,7 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
         return
     learn_skill_list: list[list[str]]
     learn_skill_blacklist: list[str] = ctx.cultivate_detail.learn_skill_blacklist
-    if ctx.cultivate_detail.cultivate_finish or not ctx.cultivate_detail.learn_skill_only_user_provided:
-        if len(ctx.cultivate_detail.learn_skill_list) == 0:
-            learn_skill_list = SKILL_LEARN_PRIORITY_LIST
-        else:
-            # If user customizes skill priority, no longer use preset priority
-            learn_skill_list = ctx.cultivate_detail.learn_skill_list
-    else:
+    if ctx.cultivate_detail.learn_skill_only_user_provided:
         if len(ctx.cultivate_detail.learn_skill_list) == 0:
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_FINISH)
             ctx.cultivate_detail.learn_skill_done = True
@@ -1092,6 +1086,24 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
             return
         else:
             learn_skill_list = ctx.cultivate_detail.learn_skill_list
+    else:
+        if len(ctx.cultivate_detail.learn_skill_list) == 0:
+            learn_skill_list = SKILL_LEARN_PRIORITY_LIST
+        else:
+            learn_skill_list = ctx.cultivate_detail.learn_skill_list
+
+    try:
+        log.info("Priority list:")
+        if isinstance(learn_skill_list, list):
+            for idx, plist in enumerate(learn_skill_list):
+                try:
+                    log.info(f"  priority {idx}: {', '.join(plist) if plist else ''}")
+                except Exception:
+                    pass
+        bl = ctx.cultivate_detail.learn_skill_blacklist or []
+        log.info(f"Blacklist: {', '.join(bl) if bl else ''}")
+    except Exception:
+        pass
 
     # Traverse entire page, find all clickable skills
     skill_list = []
@@ -1127,6 +1139,20 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
             ctx.cultivate_detail.learn_skill_done = True
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_FINISH)
             return
+
+    try:
+        purchased = []
+        for s in skill_list:
+            try:
+                if s.get('available') is False:
+                    n = s.get('skill_name_raw') or s.get('skill_name') or ''
+                    if n:
+                        purchased.append(n)
+            except Exception:
+                continue
+        log.info(f"Purchased skills: {', '.join(purchased) if purchased else ''}")
+    except Exception:
+        pass
 
     log.debug("Current skill state: " + str(skill_list))
 

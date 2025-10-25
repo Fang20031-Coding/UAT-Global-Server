@@ -44,14 +44,6 @@ class UmamusumeTask(Task):
     detail: TaskDetail
 
     def end_task(self, status, reason) -> None:
-        try:
-            from bot.base.task import TaskStatus as TS, EndTaskReason as ER
-            if status == TS.TASK_STATUS_SUCCESS and reason == ER.COMPLETE:
-                if isinstance(getattr(self, 'detail', None), TaskDetail):
-                    if isinstance(getattr(self.detail, 'learn_skill_list', None), list):
-                        self.detail.learn_skill_list = []
-        except Exception:
-            pass
         super().end_task(status, reason)
 
     def start_task(self) -> None:

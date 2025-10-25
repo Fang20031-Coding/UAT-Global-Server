@@ -31,6 +31,7 @@ class CultivateContextDetail:
     extra_weight: list
     manual_purchase_completed: bool
     final_skill_sweep_active: bool
+    user_provided_priority: bool
 
     def __init__(self):
         self.expect_attribute = None
@@ -51,6 +52,7 @@ class CultivateContextDetail:
         self.extra_weight = []
         self.manual_purchase_completed = False
         self.final_skill_sweep_active = False
+        self.user_provided_priority = False
 
     def reset_skill_learn(self):
         self.learn_skill_done = False
@@ -84,15 +86,23 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         detail.expect_attribute = task.detail.expect_attribute
         detail.follow_support_card_name = task.detail.follow_support_card_name
         detail.follow_support_card_level = task.detail.follow_support_card_level
-        detail.extra_race_list = task.detail.extra_race_list
-        detail.learn_skill_list = task.detail.learn_skill_list
-        detail.learn_skill_blacklist = task.detail.learn_skill_blacklist
-        detail.tactic_list = task.detail.tactic_list
+        detail.extra_race_list = list(task.detail.extra_race_list or [])
+        detail.learn_skill_list = [list(x) for x in (task.detail.learn_skill_list or [])]
+        try:
+            src = task.detail.learn_skill_list or []
+            detail.user_provided_priority = any((isinstance(x, list) and len(x) > 0) for x in src)
+        except Exception:
+            detail.user_provided_priority = False
+        detail.learn_skill_blacklist = list(task.detail.learn_skill_blacklist or [])
+        detail.tactic_list = list(task.detail.tactic_list or [])
         detail.clock_use_limit = task.detail.clock_use_limit
         detail.learn_skill_threshold = task.detail.learn_skill_threshold
         detail.learn_skill_only_user_provided = task.detail.learn_skill_only_user_provided
         detail.allow_recover_tp = task.detail.allow_recover_tp
-        detail.extra_weight = task.detail.extra_weight
+        try:
+            detail.extra_weight = list(task.detail.extra_weight or [])
+        except Exception:
+            detail.extra_weight = []
         
         detail.rest_treshold = getattr(task.detail, 'rest_treshold', getattr(task.detail, 'fast_path_energy_limit', 48))
         # Load motivation thresholds from preset (with defaults) - ensure they are integers

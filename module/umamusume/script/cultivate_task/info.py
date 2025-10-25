@@ -250,6 +250,19 @@ def script_info(ctx: UmamusumeContext):
         if title_text == TITLE[10]: #Skills Learned
             ctx.ctrl.click_by_point(CULTIVATE_LEARN_SKILL_DONE_CONFIRM)
             if getattr(ctx.cultivate_detail, 'final_skill_sweep_active', False) and getattr(ctx.cultivate_detail, 'learn_skill_selected', False):
+                try:
+                    ctx.cultivate_detail.learn_skill_done = False
+                except Exception:
+                    pass
+                try:
+                    if getattr(ctx.cultivate_detail, 'turn_info', None) is not None:
+                        ctx.cultivate_detail.turn_info.turn_learn_skill_done = False
+                except Exception:
+                    pass
+                try:
+                    ctx.cultivate_detail.learn_skill_selected = False
+                except Exception:
+                    pass
                 time.sleep(1)
                 ctx.ctrl.click_by_point(CULTIVATE_FINISH_LEARN_SKILL)
         if title_text == TITLE[11]: #Complete Career

@@ -44,7 +44,9 @@ If you're like me and is using this because you wont have access to your pc for 
 
 - ✅ **Saving of presets**: Save training parameters for easy access in future runs
 
-- ✅ **Team trials execution mode**: its under Execution Mode not Task Selection. 
+- ✅ **Team trials execution mode**: its under Execution Mode not Task Selection.
+
+- ✅ **Human Behaviour**: Bot will Automatically shut down and restart based on configured timing (Runs 24 hours by default but not recommended), Inputs are also humanized.
 
 ### Demo Run
 - I'd say its about 80% as competent as a actual player. This makes the bot not just a fan/parent farmer but it's more than capable of producing ACES  

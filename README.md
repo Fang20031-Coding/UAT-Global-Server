@@ -167,13 +167,11 @@ I will only focus on fixing issues for those (which is what I use personally.) E
 ### Hint/Skills hunting
 - Raise the score of hints. This way the bot will always take the training with hints in them
   ![alt text](docs/hintHunting.png)
-- If you want to bot to select a certain event option to get a skill ur going to have to diy it for now
-  > Head over to UAT-Global-Server\resource\umamusume\data\event_data.json  
-  > Ctrl F find your event  
-  > Increase one of the stat gain to a very big number  
-  > Then that choice should get picked all the time   
+- If you want to bot to select a certain event option scroll to the bottom of task creation
+  > Expand Skill List
+  > Search For Your Event
+  > Select Event Choice
   ![alt text](docs/huntHint.png)  
-  > Save a backup so it doesn't get overwritten when the repo gets updated
 
 ### STRUGGLING WITH THE CAREER
 #### Early game stat gain is too low
@@ -200,6 +198,8 @@ Something Something this is for educational purposes only. Please do not misuse 
 ![alt text](docs/topcunt.gif)
 
 ## Changelogs
+- **26/10/2025**   
+Made it easier to customize event choices
 - **25/10/2025**   
 Maybe fixed buying skills  
 Prep for aoharu hai

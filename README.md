@@ -31,8 +31,8 @@ If you're like me and is using this because you wont have access to your pc for 
     - **Claw machine**
     - **Running styles** 
     - **Alarm clock usage** 
-    - **Building fiendship early, focus on rainbows later** 
-    - **Optimal event choices (Knows when to build friendship/recover energy and mood)**
+    - **Almost every part of training is customizable (How much to focus on friendship, rainbows, hints ect ect and when)** 
+    - **Optimal event choices (Knows when to build friendship/recover energy and mood) [is also customizable for skill hunting]**
     - **Skipping bad turns with wit training**
     - **I'm not gonna list everything. Just search for keywords in the repo if you are wondering if a feature exist**
 

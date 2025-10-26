@@ -168,9 +168,9 @@ I will only focus on fixing issues for those (which is what I use personally.) E
 - Raise the score of hints. This way the bot will always take the training with hints in them
   ![alt text](docs/hintHunting.png)
 - If you want to bot to select a certain event option scroll to the bottom of task creation
-  > Expand Skill List
-  > Search For Your Event
-  > Select Event Choice
+  > Expand Skill List  
+  > Search For Your Event  
+  > Select Event Choice  
   ![alt text](docs/huntHint.png)  
 
 ### STRUGGLING WITH THE CAREER

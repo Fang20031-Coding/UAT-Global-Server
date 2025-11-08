@@ -41,24 +41,16 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         
         if has_extra_race:
             log.info("🏆 Extra races available for current date - prioritizing races above all else")
-            # Force parse training info to finish so we can proceed to race handling
-            ctx.cultivate_detail.turn_info.parse_train_info_finish = True
-            # Set race operation to override everything else
             if ctx.cultivate_detail.turn_info.turn_operation is None:
                 ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
-            
-            # Find and set the specific race ID from user's selected races
-            matching_races = [race_id for race_id in ctx.cultivate_detail.extra_race_list 
-                             if race_id in available_races]
+            matching_races = [race_id for race_id in ctx.cultivate_detail.extra_race_list if race_id in available_races]
             if matching_races:
-                target_race_id = matching_races[0]  # Pick the first available selected race
+                target_race_id = matching_races[0]
                 ctx.cultivate_detail.turn_info.turn_operation.race_id = target_race_id
                 log.info(f"🎯 Set specific race ID: {target_race_id} from user's selected races")
             else:
                 log.warning("⚠️ No matching races found in available races for current date")
-            
-            # Mark main menu parsing as complete
             ctx.cultivate_detail.turn_info.parse_main_menu_finish = True
             return
         
@@ -353,6 +345,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         for thread in threads:
             thread.join()
 
+        
         date = ctx.cultivate_detail.turn_info.date
         sv = getattr(ctx.cultivate_detail, 'score_value', [
             [0.11, 0.10, 0.01, 0.09],
@@ -400,7 +393,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         log.info(f"Rainbows: {w_rainbow}")
         try:
             if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
-                log.info(f"Special: {w_special}")
+                log.info(f"Special Training weight: {w_special}")
         except Exception:
             pass
 
@@ -460,7 +453,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 log.info(f"  NPCs: {npc}")
             try:
                 if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
-                    log.info(f"  spirit explosion: {special_counts[idx]}")
+                    log.info(f"  special training: {special_counts[idx]}")
             except Exception:
                 pass
             hint_bonus = 0.0

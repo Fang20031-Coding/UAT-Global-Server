@@ -608,6 +608,8 @@ def find_support_card(ctx: UmamusumeContext, img):
 def parse_cultivate_event(ctx: UmamusumeContext, img) -> tuple[str, list[int]]:
     event_name_img = img[237:283, 111:480]
     event_name = ocr_line(event_name_img)
+    if not isinstance(event_name, str) or event_name.strip() == "":
+        return "", []
     event_selector_list = []
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
@@ -674,11 +676,8 @@ def parse_cultivate_event(ctx: UmamusumeContext, img) -> tuple[str, list[int]]:
                     deduped.append(pt)
             event_selector_list = deduped[:5]
         
-        if len(event_selector_list) > 0:
-            log.info(f"Found {len(event_selector_list)} dialogue options")
-        else:
-            log.warning("Individual dialogue templates also failed, using fallback position")
-            event_selector_list = [(360, 800)]
+        if len(event_selector_list) == 0:
+            return event_name, []
     
     event_selector_list.sort(key=lambda x: x[1])
     return event_name, event_selector_list

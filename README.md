@@ -1,5 +1,4 @@
 # UMAMUSUME AUTO TRAINER
-# BROKE SHIT DONT PULL
 
 ![UAT](docs/main.png)
 

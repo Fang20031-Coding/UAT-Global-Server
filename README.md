@@ -108,6 +108,8 @@ Or just run start.bat
 
 ## ⚠️ Important Notes
 
+As single run mode is deprecated if you wish to emulated it you can enable "Manual skill purchase at the end" to achieve the same thing 
+
 ### Game Settings
 
 1. **Graphics**: Must be set to `Standard`, not `Basic`

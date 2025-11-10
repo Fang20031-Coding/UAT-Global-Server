@@ -213,7 +213,7 @@ Bare minimum aoharu implementation. (60%)
   - customizable special training parameters
   - customizable spirit explosion parameters
 
-Customizable and more intuitive "Stuck" handling 
+  Customizable and more intuitive "Stuck" handling 
 - **26/10/2025**   
 Made it easier to customize event choices
 - **25/10/2025**   

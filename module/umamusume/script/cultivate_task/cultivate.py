@@ -888,7 +888,7 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
                 # If it's a URA race ID or 0 (unknown), try clicking the race button
                 if race_id in [2381, 2382, 2385, 2386, 2387] or race_id == 0:
                     log.info("🏆 Detected URA race operation - clicking race button directly")
-                    ctx.ctrl.click(510, 1082, "URA Race Button")
+                    ctx.ctrl.click(319, 1082, "URA Race Button")
                     time.sleep(1)
                     return
         if ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_RACE:

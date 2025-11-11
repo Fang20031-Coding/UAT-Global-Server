@@ -1454,7 +1454,7 @@ def script_not_found_ui(ctx: UmamusumeContext):
     # Debug: Log current screen info
     if ctx.current_screen is not None:
         log.debug(f"🔍 NOT_FOUND_UI - Screen shape: {ctx.current_screen.shape}")
-        
+                
         # Try direct template matching for cultivate_result_1.png first
         try:
             import cv2

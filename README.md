@@ -1,4 +1,5 @@
 # UPDATE  BROKE THE BOT HANG ON
+# UI changes everywhere this will take a while
 
 # UMAMUSUME AUTO TRAINER
 

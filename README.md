@@ -1,5 +1,4 @@
-# UPDATE  BROKE THE BOT HANG ON
-# UI changes everywhere this will take a while
+# bot mostly fixed but race images are outdated so custom races might fail
 
 # UMAMUSUME AUTO TRAINER
 

@@ -1,5 +1,17 @@
 [
   {
+    "skill_id": "SS_Angling_and_Scheming",
+    "name": "Angling and Scheming",
+    "tier": "SS",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
     "skill_id": "SS_Red_Shift_LP1211-M",
     "name": "Red Shift/LP1211-M",
     "tier": "SS",
@@ -9,21 +21,8 @@
     "description": "Increase acceleration by shifting gears when positioned toward the front on the final corner or later.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Maruzensky (Formula R)",
-    "base_cost": "200"
-  },
-  {
-    "skill_id": "SS_Behold_Thine_Emperor's_Divine_Might",
-    "name": "Behold Thine Emperor's Divine Might",
-    "tier": "SS",
-    "skill_type": "Unique",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Greatly increase velocity on the final straight after passing another runner 3 times late-race.",
-    "purchase_option": "Direct",
-    "rarity": "Unique",
-    "character": "Symboli Rudolf (Emperor's Path)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Maruzensky (Formula R)"
   },
   {
     "skill_id": "SS_Shooting_for_Victory!",
@@ -35,8 +34,8 @@
     "description": "Increase acceleration with a pow, a wow, and a bang when well-positioned on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Taiki Shuttle (Wild Frontier)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Taiki Shuttle (Wild Frontier)"
   },
   {
     "skill_id": "SS_Triumphant_Pulse",
@@ -48,37 +47,63 @@
     "description": "Greatly increase ability to break out of the pack by opening up a path when positioned toward the front with 200m remaining.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Oguri Cap (Starlight Beat)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Oguri Cap (Starlight Beat)"
   },
   {
-    "skill_id": "SS_U=ma2",
-    "name": "U=ma2",
+    "skill_id": "SS_A_Kiss_for_Courage",
+    "name": "A Kiss for Courage",
+    "tier": "SS",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "SS_Behold_Thine_Emperor's_Divine_Might",
+    "name": "Behold Thine Emperor's Divine Might",
+    "tier": "SS",
+    "skill_type": "Unique",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on the final straight after passing another runner 3 times late-race.",
+    "purchase_option": "Direct",
+    "rarity": "Unique",
+    "base_cost": "200",
+    "character": "Symboli Rudolf (Emperor's Path)"
+  },
+  {
+    "skill_id": "SS_Let's_Pump_Some_Iron",
+    "name": "Let's Pump Some Iron",
     "tier": "SS",
     "skill_type": "Advanced",
     "prerequisite_of": [],
     "prerequisites": [
-      "Introduction to Physiology"
+      "Feel the Burn!"
     ],
-    "description": "Greatly recover endurance when conserving energy on a corner in the second half of the race.",
+    "description": "Greatly increase acceleration in an attempt to move up on a corner late-race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Introduction to Physiology",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Feel the Burn!"
   },
   {
-    "skill_id": "SS_Introduction_to_Physiology",
-    "name": "Introduction to Physiology",
+    "skill_id": "SS_Feel_the_Burn!",
+    "name": "Feel the Burn!",
     "tier": "SS",
     "skill_type": "Unique",
     "prerequisite_of": [
-      "U=ma2"
+      "Let's Pump Some Iron!"
     ],
     "prerequisites": [],
-    "description": "Moderately recover endurance when conserving energy on a corner in the second half of the race.",
+    "description": "Moderately increase acceleration in an attempt to move up on a corner late-race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Agnes Tachyon (Tach-nology)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Mejiro Ryan (Down the Line)"
   },
   {
     "skill_id": "SS_Professor_of_Curvature",
@@ -109,59 +134,30 @@
     "base_cost": "180"
   },
   {
-    "skill_id": "SS_Corner_Connoisseur",
-    "name": "Corner Connoisseur",
+    "skill_id": "SS_Unrestrained",
+    "name": "Unrestrained",
     "tier": "SS",
     "skill_type": "Speed",
     "prerequisite_of": [],
-    "prerequisites": [
-      "Corner Acceleration ◯"
-    ],
-    "description": "Increase acceleration on a corner with masterful turning.",
-    "purchase_option": "Both",
+    "prerequisites": [],
+    "description": "Increase abilty to keep the lead on the final corner.\n\n\n(Front Runner)",
+    "purchase_option": "Direct",
     "rarity": "Rare",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
-    "skill_id": "SS_Corner_Acceleration_O",
-    "name": "Corner Acceleration ◯",
+    "skill_id": "SS_Final_Push",
+    "name": "Final Push",
     "tier": "SS",
     "skill_type": "Speed",
-    "prerequisite_of": [
-      "Corner Connoisseur"
-    ],
+    "prerequisite_of": [],
     "prerequisites": [],
-    "description": "Slightly increase acceleration on a corner with masterful turning.",
+    "description": "Slightly increase ability to keep the lead on the final corner.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "base_cost": "180"
-  },
-  {
-    "skill_id": "SS_Rushing_Gale!",
-    "name": "Rushing Gale!",
-    "tier": "SS",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [
-      "Straightaway Acceleration ◯"
-    ],
-    "description": "Increase acceleration on a straight.",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "base_cost": "170"
-  },
-  {
-    "skill_id": "SS_Straightaway_Acceleration_O",
-    "name": "Straightaway Acceleration ◯",
-    "tier": "SS",
-    "skill_type": "Speed",
-    "prerequisite_of": [
-      "Rushing Gale!"
-    ],
-    "prerequisites": [],
-    "description": "SS Tier Skill",
-    "purchase_option": "Direct",
-    "base_cost": "200"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "SS_In_Body_and_Mind",
@@ -203,8 +199,8 @@
     "description": "Increase velocity mid-race.\n\n\n(Late Surger)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Position_Pilfer",
@@ -218,8 +214,8 @@
     "description": "Slightly increase velocity mid-race.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Escape_Artist",
@@ -233,8 +229,8 @@
     "description": "Increase ability to go to the front mid-race.\n\n\n(Front Runner)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Front Runner",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "SS_Fast-Paced",
@@ -248,8 +244,8 @@
     "description": "Slightly increase ability to go to the front mid-race.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Front Runner",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "SS_Rising_Dragon",
@@ -263,8 +259,8 @@
     "description": "Increase velocity when passing another runner on the outside on the final corner.\n\n\n(Late Surger)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Outer_Swell",
@@ -278,8 +274,8 @@
     "description": "Slightly increase velocity when passing another runner on the outside on the final corner.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Turbo_Sprint",
@@ -293,8 +289,8 @@
     "description": "Increase acceleration on a straight.\n\n\n(Sprint)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "SS_Sprinting_Gear",
@@ -308,8 +304,8 @@
     "description": "Slightly increase acceleration on a straight.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "SS_On_Your_Left!",
@@ -323,8 +319,8 @@
     "description": "Increase acceleration late-race.\n\n\n(Late Surger)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Slick_Surge",
@@ -338,8 +334,32 @@
     "description": "Slightly increase acceleration late-race.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "SS_It's_On!",
+    "name": "It's On!",
+    "tier": "SS",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "SS_Ramp_Up",
+    "name": "Ramp Up",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when passing another runner mid-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "170"
   },
   {
     "skill_id": "SS_Swinging_Maestro",
@@ -381,8 +401,8 @@
     "description": "Recover endurance mid-race.\n\n\n(Pace Chaser)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "SS_Hydrate",
@@ -396,8 +416,66 @@
     "description": "Slightly recover endurance mid-race.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "SS_Race_Planner",
+    "name": "Race Planner",
+    "tier": "SS",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Preferred Position"
+    ],
+    "description": "Decrease fatigue mid-race.\n\n\n(Pace Chaser)",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "SS_Preferred_Position",
+    "name": "Preferred Position",
+    "tier": "SS",
+    "skill_type": "Recovery",
+    "prerequisite_of": [
+      "Race Planner"
+    ],
+    "prerequisites": [],
+    "description": "Slightly decrease fatigue mid-race.\n\n\n(Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "SS_Breath_of_Fresh_Air",
+    "name": "Breath of Fresh Air",
+    "tier": "SS",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Straightaway Recovery"
+    ],
+    "description": "Recover endurance on a straight",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "170"
+  },
+  {
+    "skill_id": "SS_Straightaway_Recovery",
+    "name": "Straightaway Recovery",
+    "tier": "SS",
+    "skill_type": "Recovery",
+    "prerequisite_of": [
+      "Breath of Fresh Air"
+    ],
+    "prerequisites": [],
+    "description": "Slightly recover endurance on a straight.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "170"
   },
   {
     "skill_id": "SS_Go-Home_Specialist",
@@ -411,8 +489,8 @@
     "description": "Reduce fatigue on a downhill.\n\n\n(End Closer)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "End Closer",
-    "base_cost": "170"
+    "base_cost": "170",
+    "strategy": "End Closer"
   },
   {
     "skill_id": "SS_After-School_Stroll",
@@ -426,37 +504,21 @@
     "description": "Slightly reduce fatigue on a downhill.\n\n\n(End Closer)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "170"
+    "base_cost": "170",
+    "strategy": "End Closer"
   },
   {
-    "skill_id": "SS_Pure_Heart",
-    "name": "Pure Heart",
+    "skill_id": "SS_Straightaway_Spurt",
+    "name": "Straightaway Spurt",
     "tier": "SS",
-    "skill_type": "Advanced",
+    "skill_type": "Speed",
     "prerequisite_of": [],
-    "prerequisites": [
-      "Clean Heart"
-    ],
-    "description": "Greatly increase velocity with a pure heart when passing another runner toward the back on the final corner.",
-    "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Clean Heart",
-    "base_cost": "200"
-  },
-  {
-    "skill_id": "SS_Clean_Heart",
-    "name": "Clean Heart",
-    "tier": "SS",
-    "skill_type": "Unique",
-    "prerequisite_of": [
-      "Pure Heart"
-    ],
     "prerequisites": [],
-    "description": "Moderately recover endurance when well-positioned mid-race.",
+    "description": "Slightly increase acceleration on a straight in the last spurt.\n\n\n(End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Unique",
-    "character": "Super Creek (Murmuring Stream)",
-    "base_cost": "200"
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "End Closer"
   },
   {
     "skill_id": "SS_Slipstream",
@@ -495,237 +557,212 @@
     "base_cost": "100"
   },
   {
-    "skill_id": "SS_Straightaway_Spurt",
-    "name": "Straightaway Spurt",
-    "tier": "SS",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly increase acceleration on a straight in the last spurt.\n\n\n(End Closer)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "180"
-  },
-  {
-    "skill_id": "SS_Ramp_Up",
-    "name": "Ramp Up",
-    "tier": "SS",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly increase velocity when passing another runner mid-race.",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "base_cost": "170"
-  },
-  {
-    "skill_id": "SS_Inside_Scoop",
-    "name": "Inside Scoop",
-    "tier": "SS",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly increase velocity when near the inner rail on the final corner.\n\n\n(Long)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
-  },
-  {
+    "skill_id": "SS_Front_Runner_Straightaways_O",
     "name": "Front Runner Straightaways ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly increase velocity on a straight.\n\n\n(Front Runner)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
-    "strategy": "Front Runner",
-    "base_cost": "130"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Front Runner"
   },
   {
-    "name": "Pace Chaser Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Pace Chaser)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "strategy": "Pace Chaser",
-    "base_cost": "130"
-  },
-  {
-    "name": "Medium Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Medium)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "distance": "Medium",
-    "base_cost": "100"
-  },
-  {
-    "name": "Sprint Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Sprint)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "distance": "Sprint",
-    "base_cost": "100"
-  },
-  {
-    "name": "End Closer Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(End Closer)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "strategy": "End Closer",
-    "base_cost": "130"
-  },
-  {
-    "name": "Long Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Long)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "distance": "Long",
-    "base_cost": "100"
-  },
-  {
-    "name": "Late Surger Straightaways ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Late Surger)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Straightaways_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "strategy": "Late Surger",
-    "base_cost": "130"
-  },
-  {
-    "name": "Long Corners ◯",
-    "description": "Slightly increase velocity on a corner.\n\n\n(Long)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "distance": "Long",
-    "base_cost": "100"
-  },
-  {
-    "name": "Pace Chaser Corners ◯",
-    "description": "Slightly increase velocity on a corner.\n\n\n(Pace Chaser)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "strategy": "Pace Chaser",
-    "base_cost": "130"
-  },
-  {
+    "skill_id": "SS_Front_Runner_Corners_O",
     "name": "Front Runner Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly increase velocity on a corner.\n\n\n(Front Runner)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
-    "strategy": "Front Runner",
-    "base_cost": "130"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Front Runner"
   },
   {
-    "name": "Medium Corners ◯",
-    "description": "Slightly increase velocity on a corner.\n\n\n(Medium)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
+    "skill_id": "SS_Pace_Chaser_Straightaways_O",
+    "name": "Pace Chaser Straightaways ◯",
     "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
+    "skill_type": "Speed",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
-    "distance": "Medium",
-    "base_cost": "100"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Pace Chaser"
   },
   {
+    "skill_id": "SS_Pace_Chaser_Corners_O",
+    "name": "Pace Chaser Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner.\n\n\n(Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "SS_Late_Surger_Straightaways_O",
+    "name": "Late Surger Straightaways ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "SS_Late_Surger_Corners_O",
     "name": "Late Surger Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly increase velocity on a corner.\n\n\n(Late Surger)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
-    "strategy": "Late Surger",
-    "base_cost": "130"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "Late Surger"
   },
   {
-    "name": "Sprint Corners ◯",
-    "description": "Slightly increase velocity on a corner.\n\n\n(Sprint)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
+    "skill_id": "SS_End_Closer_Straightaways_O",
+    "name": "End Closer Straightaways ◯",
     "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
+    "skill_type": "Speed",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(End Closer)",
     "purchase_option": "Direct",
-    "distance": "Sprint",
-    "base_cost": "100"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "End Closer"
   },
   {
-    "name": "Mile Corners ◯",
-    "description": "Slightly increase velocity on a corner\n\n\n(Mile)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "distance": "Mile",
-    "base_cost": "100"
-  },
-  {
+    "skill_id": "SS_End_Closer_Corners_O",
     "name": "End Closer Corners ◯",
-    "description": "Slightly increase velocity on a corner.\n\n\n(End Closer)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
     "tier": "SS",
-    "skill_id": "SS_Race_Type_Corners_O",
-    "prerequisites": [],
+    "skill_type": "Speed",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner.\n\n\n(End Closer)",
     "purchase_option": "Direct",
-    "strategy": "End Closer",
-    "base_cost": "130"
+    "rarity": "Normal",
+    "base_cost": "130",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "SS_Sprint_Straightaways_O",
+    "name": "Sprint Straightaways ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Sprint)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "SS_Sprint_Corners_O",
+    "name": "Sprint Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner.\n\n\n(Sprint)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "SS_Mile_Straightaway_O",
+    "name": "Mile Straightaway ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "SS_Mile_Corners_O",
+    "name": "Mile Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner\n\n\n(Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "SS_Medium_Straightaways_O",
+    "name": "Medium Straightaways ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "SS_Medium_Corners_O",
+    "name": "Medium Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner.\n\n\n(Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "SS_Long_Straightaways_O",
+    "name": "Long Straightaways ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a straight.\n\n\n(Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "SS_Long_Corners_O",
+    "name": "Long Corners ◯",
+    "tier": "SS",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity on a corner.\n\n\n(Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "100",
+    "distance": "Long"
   },
   {
     "skill_id": "SS_Passing_Pro",
@@ -737,8 +774,8 @@
     "description": "Slightly decrease fatigue when determined to pass another runner.\n\n\n(Long)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "SS_Dominator",
@@ -752,8 +789,8 @@
     "description": "Decrease velocity of runners ahead when positioned toward the back late-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "SS_Tether",
@@ -767,8 +804,8 @@
     "description": "Slightly decrease velocity of runners ahead when positioned toward the back late-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "SS_All-Seeing_Eyes",
@@ -782,8 +819,8 @@
     "description": "Startle other runners late-race.\n\n\n(Late Surger)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Sharp_Gaze",
@@ -797,8 +834,8 @@
     "description": "Slightly startle other runners late-race.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "SS_Mystifying_Murmur",
@@ -812,8 +849,8 @@
     "description": "Disturb runners directly ahead mid-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "SS_Murmur",
@@ -827,8 +864,56 @@
     "description": "Slightly disturb runners directly ahead mid-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "S_I_Never_Goof_Up!",
+    "name": "I Never Goof Up!",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Nemesis",
+    "name": "Nemesis",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Shadow_Break",
+    "name": "Shadow Break",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Lights_of_Vaudeville",
+    "name": "Lights of Vaudeville",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
   },
   {
     "skill_id": "S_The_Duty_of_Dignity_Calls",
@@ -840,12 +925,12 @@
     "description": "Increase velocity with the determination to not be overtaken when positioned toward the front on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Mejiro McQueen (Frontline Elegance)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Mejiro McQueen (Frontline Elegance)"
   },
   {
-    "skill_id": "S_Victoria_por_plancha_star",
-    "name": "Victoria por plancha ☆",
+    "skill_id": "S_Victoria_por_Plancha_star",
+    "name": "Victoria por Plancha ☆",
     "tier": "S",
     "skill_type": "Advanced",
     "prerequisite_of": [],
@@ -854,8 +939,9 @@
     ],
     "description": "Greatly hang on to the advantage when positioned toward the front with energy to spare on the final straight.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Corazón ☆ Ardiente",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Corazón ☆ Ardiente"
   },
   {
     "skill_id": "S_Corazón_star_Ardiente",
@@ -869,8 +955,8 @@
     "description": "Slightly hang on to the advantage when positioned toward the front with energy to spare on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "El Condor Pasa (El Numero 1)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "El Condor Pasa (El Numero 1)"
   },
   {
     "skill_id": "S_Blue_Rose_Closer",
@@ -882,8 +968,8 @@
     "description": "Increase velocity with strong willpower when breaking out of the pack on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Rice Shower (Rosy Dreams)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Rice Shower (Rosy Dreams)"
   },
   {
     "skill_id": "S_Genius_x_Bakushin_=_Victory",
@@ -896,8 +982,9 @@
     ],
     "description": "Greatly increase velocity with BAKUSHIN power when engaged in a challenge toward the front in the second half of the race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Class Rep + Speed = Bakushin",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Class Rep + Speed = Bakushin"
   },
   {
     "skill_id": "S_Class_Rep_+_Speed_=_Bakushin",
@@ -911,8 +998,8 @@
     "description": "Moderately increase velocity with BAKUSHIN power when engaged in a challenge toward the front in the second half of the race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Sakura Bakushin O (Blossom in Learning)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Sakura Bakushin O (Blossom in Learning)"
   },
   {
     "skill_id": "S_The_View_from_the_Lead_is_Mine!",
@@ -924,8 +1011,8 @@
     "description": "Increase velocity by drawing on all remaining strength when in the lead by a fair margin on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Silence Suzuka (Innocent Silence)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Silence Suzuka (Innocent Silence)"
   },
   {
     "skill_id": "S_Shooting_Star",
@@ -937,8 +1024,8 @@
     "description": "Ride the momentum and increase velocity after passing another runner toward the front late-race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Special Week (Special Dreamer)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Special Week (Special Dreamer)"
   },
   {
     "skill_id": "S_Sky-High_Teio_Step",
@@ -950,8 +1037,8 @@
     "description": "Greatly increase velocity with flashy footwork when closing gap to runners ahead on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Tokai Teio (Peak Joy)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Tokai Teio (Peak Joy)"
   },
   {
     "skill_id": "S_Cut_and_Drive!",
@@ -964,8 +1051,9 @@
     ],
     "description": "Become much stronger at challenging rivals and greatly increase velocity when positioned toward the front with 200m or less remaining.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Xceleration",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Xceleration"
   },
   {
     "skill_id": "S_Xceleration",
@@ -979,8 +1067,8 @@
     "description": "Become stronger at challenging rivals and moderately increase velocity when positioned toward the front with 200m or less remaining.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Vodka (Wild Top Gear)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Vodka (Wild Top Gear)"
   },
   {
     "skill_id": "S_Certain_Victory",
@@ -992,8 +1080,8 @@
     "description": "Increase velocity with an indomitable fighting spirit when on the heels of another runner toward the front of the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Tokai Teio (Beyond the Horizon)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Tokai Teio (Beyond the Horizon)"
   },
   {
     "skill_id": "S_Resplendent_Red_Ace",
@@ -1006,8 +1094,9 @@
     ],
     "description": "Greatly swell with the determination to stay number one in the second half of the race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Red Ace",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Red Ace"
   },
   {
     "skill_id": "S_Red_Ace",
@@ -1021,37 +1110,8 @@
     "description": "Slightly swell with the determination to stay number one in the second half of the race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Daiwa Scarlet (Peak Blue)",
-    "base_cost": "200"
-  },
-  {
-    "skill_id": "S_Let's_Pump_Some_Iron!",
-    "name": "Let's Pump Some Iron!",
-    "tier": "S",
-    "skill_type": "Advanced",
-    "prerequisite_of": [],
-    "prerequisites": [
-      "Feel the Burn!"
-    ],
-    "description": "Greatly increase acceleration in an attempt to move up on a corner late-race.",
-    "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Feel the Burn!",
-    "base_cost": "200"
-  },
-  {
-    "skill_id": "S_Feel_the_Burn!",
-    "name": "Feel the Burn!",
-    "tier": "S",
-    "skill_type": "Unique",
-    "prerequisite_of": [
-      "Let's Pump Some Iron!"
-    ],
-    "prerequisites": [],
-    "description": "Moderately increase acceleration in an attempt to move up on a corner late-race.",
-    "purchase_option": "Direct",
-    "rarity": "Unique",
-    "character": "Mejiro Ryan (Down the Line)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Daiwa Scarlet (Peak Blue)"
   },
   {
     "skill_id": "S_Anchors_Aweigh!",
@@ -1064,8 +1124,9 @@
     ],
     "description": "Greatly increase velocity with a long spurt starting halfway through the race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Warning Shot!",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Warning Shot!"
   },
   {
     "skill_id": "S_Warning_Shot!",
@@ -1079,8 +1140,151 @@
     "description": "Slightly increase velocity with a long spurt starting halfway through the race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Gold Ship (Red Strife)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Gold Ship (Red Strife)"
+  },
+  {
+    "skill_id": "S_SPARKLY_star_STARDOM",
+    "name": "SPARKLY ☆ STARDOM",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Flowery_star_Maneuver",
+    "name": "Flowery ☆ Maneuver",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Condor's_Fury",
+    "name": "Condor's Fury",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Dazzl'n_♪_Diver",
+    "name": "Dazzl'n ♪ Diver",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Superior_Heal",
+    "name": "Superior Heal",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_U=ma2",
+    "name": "U=ma2",
+    "tier": "S",
+    "skill_type": "Advanced",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Introduction to Physiology"
+    ],
+    "description": "Greatly recover endurance when conserving energy on a corner in the second half of the race.",
+    "purchase_option": "Both",
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Introduction to Physiology"
+  },
+  {
+    "skill_id": "S_Introduction_to_Physiology",
+    "name": "Introduction to Physiology",
+    "tier": "S",
+    "skill_type": "Unique",
+    "prerequisite_of": [
+      "U=ma2"
+    ],
+    "prerequisites": [],
+    "description": "Moderately recover endurance when conserving energy on a corner in the second half of the race.",
+    "purchase_option": "Direct",
+    "rarity": "Unique",
+    "base_cost": "200",
+    "character": "Agnes Tachyon (Tach-nology)"
+  },
+  {
+    "skill_id": "S_Pure_Heart",
+    "name": "Pure Heart",
+    "tier": "S",
+    "skill_type": "Advanced",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Clean Heart"
+    ],
+    "description": "Greatly increase velocity with a pure heart when passing another runner toward the back on the final corner.",
+    "purchase_option": "Both",
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Clean Heart"
+  },
+  {
+    "skill_id": "S_Clear_Heart",
+    "name": "Clear Heart",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Mile_Maven",
+    "name": "Mile Maven",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Widen the margin when in the lead early-race.\n\n\n(Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "base_cost": "160",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "S_Productive_Plan",
+    "name": "Productive Plan",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly widen the margin when in the lead early-race.\n\n\n(Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "S_Beeline_Burst",
@@ -1122,8 +1326,8 @@
     "description": "Increase acceleration when passing another runner mid-race.\n\n\n(Mile)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Mile",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "S_Acceleration",
@@ -1137,8 +1341,8 @@
     "description": "Slightly increase acceleration when passing another runner mid-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "180"
+    "base_cost": "180",
+    "distance": "Mile"
   },
   {
     "skill_id": "S_Plan_X",
@@ -1152,8 +1356,8 @@
     "description": "Increase passing ability when positioned toward the front mid-race.\n\n\n(Sprint)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "S_Countermeasure",
@@ -1167,8 +1371,8 @@
     "description": "Slightly increase passing ability when positioned toward the front mid-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "S_Changing_Gears",
@@ -1182,8 +1386,8 @@
     "description": "Increase passing ability when positioned toward the front mid-race.\n\n\n(Mile)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Mile",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "S_Shifting_Gears",
@@ -1197,8 +1401,8 @@
     "description": "Slightly increase passing ability when positioned toward the front mid-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "S_Concentration",
@@ -1229,62 +1433,56 @@
     "base_cost": "140"
   },
   {
-    "skill_id": "S_Lane_Legerdemain",
-    "name": "Lane Legerdemain",
+    "skill_id": "S_Furious_Feat",
+    "name": "Furious Feat",
     "tier": "S",
     "skill_type": "Speed",
     "prerequisite_of": [],
-    "prerequisites": [
-      "Go with the Flow"
-    ],
-    "description": "Increase navigation late-race.",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "base_cost": "120"
-  },
-  {
-    "skill_id": "S_Go_with_the_Flow",
-    "name": "Go with the Flow",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [
-      "Lane Legerdemain"
-    ],
     "prerequisites": [],
-    "description": "Moderately increase navigation late-race.",
+    "description": "Increase passing ability when positioned toward the back late-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
-    "base_cost": "120"
+    "rarity": "Rare",
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
-    "skill_id": "S_The_Coast_Is_Clear!",
-    "name": "The Coast Is Clear!",
+    "skill_id": "S_Updrafters",
+    "name": "Updrafters",
     "tier": "S",
     "skill_type": "Speed",
     "prerequisite_of": [],
-    "prerequisites": [
-      "I Can See Right Through You"
-    ],
-    "description": "Moderately widen field of view with situational awareness when moving sideways.\n\n\n(End Closer)",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "strategy": "End Closer",
-    "base_cost": "110"
-  },
-  {
-    "skill_id": "S_I_Can_See_Right_Through_You",
-    "name": "I Can See Right Through You",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [
-      "The Coast Is Clear!"
-    ],
     "prerequisites": [],
-    "description": "Slightly widen field of view with situational awareness when moving sideways.\n\n\n(End Closer)",
+    "description": "Slightly increase passing ability when positioned toward the back late-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "110"
+    "base_cost": "160",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "S_Taking_the_Lead",
+    "name": "Taking the Lead",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase ability to go to the front early-race.\n\n\n(Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "base_cost": "120",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "S_Early_Lead",
+    "name": "Early Lead",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase ability to go to the front early-race.\n\n\n(Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "120",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "S_No_Stopping_Me!",
@@ -1315,32 +1513,129 @@
     "base_cost": "150"
   },
   {
-    "skill_id": "S_Breath_of_Fresh_Air",
-    "name": "Breath of Fresh Air",
+    "skill_id": "S_Overwhelming_Pressure",
+    "name": "Overwhelming Pressure",
     "tier": "S",
-    "skill_type": "Recovery",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Pressure",
+    "name": "Pressure",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when passing another runner late-race.\n\n\n(Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "160",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "S_Trending_in_the_Charts!",
+    "name": "Trending in the Charts!",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Top_Pick",
+    "name": "Top Pick",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Rushing_Gale!",
+    "name": "Rushing Gale!",
+    "tier": "S",
+    "skill_type": "Speed",
     "prerequisite_of": [],
     "prerequisites": [
-      "Straightaway Recovery"
+      "Straightaway Acceleration ◯"
     ],
-    "description": "Recover endurance on a straight",
+    "description": "Increase acceleration on a straight.",
     "purchase_option": "Both",
     "rarity": "Rare",
     "base_cost": "170"
   },
   {
-    "skill_id": "S_Straightaway_Recovery",
-    "name": "Straightaway Recovery",
+    "skill_id": "S_Straightaway_Acceleration",
+    "name": "Straightaway Acceleration",
     "tier": "S",
-    "skill_type": "Recovery",
-    "prerequisite_of": [
-      "Breath of Fresh Air"
-    ],
+    "skill_type": "Speed",
+    "prerequisite_of": [],
     "prerequisites": [],
-    "description": "Slightly recover endurance on a straight.",
+    "description": "Slightly increase acceleration on a straight.",
     "purchase_option": "Direct",
     "rarity": "Normal",
     "base_cost": "170"
+  },
+  {
+    "skill_id": "S_Innate_Experience",
+    "name": "Innate Experience",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Inside_Scoop",
+    "name": "Inside Scoop",
+    "tier": "S",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when near the inner rail on the final corner.\n\n\n(Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "160",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "S_Sleeping_Lion",
+    "name": "Sleeping Lion",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Standing_By",
+    "name": "Standing By",
+    "tier": "S",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly decrease fatigue mid-race.\n\n\n(End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "End Closer"
   },
   {
     "skill_id": "S_Cooldown",
@@ -1354,8 +1649,8 @@
     "description": "Decrease fatigue by taking a breather upon entering a straight.\n\n\n(Long)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "S_Deep_Breaths",
@@ -1369,38 +1664,38 @@
     "description": "Slightly decrease fatigue by taking a breather upon entering a straight\n\n\n(Long)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
-    "skill_id": "S_Race_Planner",
-    "name": "Race Planner",
+    "skill_id": "S_Restless",
+    "name": "Restless",
     "tier": "S",
     "skill_type": "Recovery",
     "prerequisite_of": [],
     "prerequisites": [
-      "Preferred Position"
+      "Moxie"
     ],
-    "description": "Decrease fatigue mid-race.\n\n\n(Pace Chaser)",
+    "description": "Reduce fatigue on an uphill.\n\n\n(Front Runner)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
-    "skill_id": "S_Preferred_Position",
-    "name": "Preferred Position",
+    "skill_id": "S_Moxie",
+    "name": "Moxie",
     "tier": "S",
     "skill_type": "Recovery",
     "prerequisite_of": [
-      "Race Planner"
+      "Restless"
     ],
     "prerequisites": [],
-    "description": "Slightly decrease fatigue mid-race.\n\n\n(Pace Chaser)",
+    "description": "Slightly reduce fatigue on an uphill.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "S_Playtime's_Over!",
@@ -1415,32 +1710,6 @@
     "base_cost": "160"
   },
   {
-    "skill_id": "S_Masterful_Gambit",
-    "name": "Masterful Gambit",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly move up in preparation to close the gap late-race.\n\n\n(End Closer)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "180"
-  },
-  {
-    "skill_id": "S_Productive_Plan",
-    "name": "Productive Plan",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly widen the margin when in the lead early-race.\n\n\n(Mile)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
     "skill_id": "S_Up-Tempo",
     "name": "Up-Tempo",
     "tier": "S",
@@ -1452,47 +1721,8 @@
     "description": "Slightly increase positioning ability when positioned toward the front mid-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
-  },
-  {
-    "skill_id": "S_Unyielding_Spirit",
-    "name": "Unyielding Spirit",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly increase passing ability.\n\n\n(Mile)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "120"
-  },
-  {
-    "skill_id": "S_Pressure",
-    "name": "Pressure",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly increase velocity when passing another runner late-race.\n\n\n(Long)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
-  },
-  {
-    "skill_id": "S_Strategist",
-    "name": "Strategist",
-    "tier": "S",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly widen field of view when positioned toward the back late-race.\n\n\n(End Closer)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "110"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "S_Triple_7s",
@@ -1530,8 +1760,8 @@
     "description": "Intimidate runners behind when positioned towards the front early-race.\n\n\n(Sprint)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Sprint",
-    "base_cost": "170"
+    "base_cost": "170",
+    "distance": "Sprint"
   },
   {
     "skill_id": "S_Intimidate",
@@ -1545,8 +1775,8 @@
     "description": "Moderately intimidate runners behind when positioned toward the front early-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "170"
+    "base_cost": "170",
+    "distance": "Sprint"
   },
   {
     "skill_id": "S_Stamina_Eater",
@@ -1558,8 +1788,8 @@
     "description": "Very slightly steal endurance from runners ahead when positioned toward the back mid-race.\n\n\n(Long)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "S_Intense_Gaze",
@@ -1571,151 +1801,151 @@
     "description": "Slightly unnerve runners in focus late-race.\n\n\n(End Closer)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "End Closer"
   },
   {
+    "skill_id": "S_Hesitant_Front_Runners",
     "name": "Hesitant Front Runners",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly decrease velocity of front runners late-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Hesitant_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
-    "name": "Hesitant End Closers",
-    "description": "Slightly decrease velocity of end closers late-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Hesitant_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "130"
-  },
-  {
+    "skill_id": "S_Hesitant_Pace_Chasers",
     "name": "Hesitant Pace Chasers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly decrease velocity of pace chasers late-race",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Hesitant_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
+    "skill_id": "S_Hesitant_Late_Surgers",
     "name": "Hesitant Late Surgers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly decrease velocity of late surgers late-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Hesitant_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
-    "name": "Flustered Front Runners",
-    "description": "Slightly increase fatigue for front runners mid-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
+    "skill_id": "S_Hesitant_End_Closers",
+    "name": "Hesitant End Closers",
     "tier": "S",
-    "skill_id": "S_Flustered_Running_Style",
-    "prerequisites": [],
+    "skill_type": "Debuff",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly decrease velocity of end closers late-race.",
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
-    "name": "Flustered End Closers",
-    "description": "Slightly increase fatigue for end closers mid-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Flustered_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "130"
-  },
-  {
-    "name": "Flustered Pace Chasers",
-    "description": "Slightly increase fatigue for pace chasers mid-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Flustered_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "130"
-  },
-  {
-    "name": "Flustered Late Surgers",
-    "description": "Slightly increase fatigue for late surgers mid-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Flustered_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "130"
-  },
-  {
+    "skill_id": "S_Subdued_Front_Runners",
     "name": "Subdued Front Runners",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
     "description": "Slightly increase fatigue for front runners early-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Subdued_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
-    "name": "Subdued End Closers",
-    "description": "Slightly increase fatigue for end closers early-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Subdued_Running_Style",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "130"
-  },
-  {
+    "skill_id": "S_Subdued_Pace_Chasers",
     "name": "Subdued Pace Chasers",
-    "description": "Slightly increase fatigue for pace chasers early-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
     "tier": "S",
-    "skill_id": "S_Subdued_Running_Style",
-    "prerequisites": [],
+    "skill_type": "Debuff",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for pace chasers early-race.",
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
+    "skill_id": "S_Subdued_Late_Surgers",
     "name": "Subdued Late Surgers",
-    "description": "Slightly increase fatigue for late surgers early-race.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
     "tier": "S",
-    "skill_id": "S_Subdued_Running_Style",
-    "prerequisites": [],
+    "skill_type": "Debuff",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for late surgers early-race.",
     "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "S_Subdued_End_Closers",
+    "name": "Subdued End Closers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for end closers early-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "S_Flustered_Front_Runners",
+    "name": "Flustered Front Runners",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for front runners mid-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "S_Flustered_Pace_Chasers",
+    "name": "Flustered Pace Chasers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for pace chasers mid-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "S_Flustered_Late_Surgers",
+    "name": "Flustered Late Surgers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for late surgers mid-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "S_Flustered_End_Closers",
+    "name": "Flustered End Closers",
+    "tier": "S",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase fatigue for end closers mid-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "130"
   },
   {
@@ -1779,6 +2009,90 @@
     "base_cost": "90"
   },
   {
+    "skill_id": "S_Burning_Spirit_STA",
+    "name": "Burning Spirit STA",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Burning_Spirit_PWR",
+    "name": "Burning Spirit PWR",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "S_Burning_Spirit_GUTS",
+    "name": "Burning Spirit GUTS",
+    "tier": "S",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_You_and_Me!_One-on-One!",
+    "name": "You and Me! One-on-One!",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_Bountiful_Harvest",
+    "name": "Bountiful Harvest",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_Eternal_Moments",
+    "name": "Eternal Moments",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_KEEP_IT_REAL.",
+    "name": "KEEP IT REAL.",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
     "skill_id": "A_Blazing_Pride",
     "name": "Blazing Pride",
     "tier": "A",
@@ -1789,8 +2103,9 @@
     ],
     "description": "Greatly increase velocity with the stride of an empress when passing another runner toward the back on the final corner.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Empress's Pride",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Empress's Pride"
   },
   {
     "skill_id": "A_Empress's_Pride",
@@ -1804,11 +2119,11 @@
     "description": "Moderately increase velocity with the stride of an empress when passing another runner toward the back on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Air Groove (Empress Road)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Air Groove (Empress Road)"
   },
   {
-    "skill_id": "A_thereforewin_Q.E.D.",
+    "skill_id": "A_∴win_Q.E.D.",
     "name": "∴win Q.E.D.",
     "tier": "A",
     "skill_type": "Unique",
@@ -1817,11 +2132,11 @@
     "description": "Increase velocity by deriving the winning equation when passing another runner toward the front on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Biwa Hayahide (pf. Winning Equation...)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Biwa Hayahide (pf. Winning Equation...)"
   },
   {
-    "skill_id": "A_hashLookatCurren",
+    "skill_id": "A_#LookatCurren",
     "name": "#LookatCurren",
     "tier": "A",
     "skill_type": "Unique",
@@ -1830,8 +2145,8 @@
     "description": "Gain momentum and begin to advance when passing another runner while well-positioned around halfway through the race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Curren Chan (Fille Éclair)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Curren Chan (Fille Éclair)"
   },
   {
     "skill_id": "A_FlashystarLanding",
@@ -1844,8 +2159,9 @@
     ],
     "description": "Greatly increase ability to break out of the pack on the straight after engaging in a challenge toward the front on the final corner.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of 1st Place Kiss☆",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of 1st Place Kiss☆"
   },
   {
     "skill_id": "A_1st_Place_Kissstar",
@@ -1859,11 +2175,23 @@
     "description": "Slightly increase ability to break out of the pack on the straight after engaging in a challenge toward the front on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Mayano Top Gun (Scramble Zone)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Mayano Top Gun (Scramble Zone)"
   },
   {
-    "skill_id": "A_G00_1st._Finfinity",
+    "skill_id": "A_Schwarzes_Schwert",
+    "name": "Schwarzes Schwert",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_G00_1st._F∞;",
     "name": "G00 1st. F∞;",
     "tier": "A",
     "skill_type": "Unique",
@@ -1872,8 +2200,8 @@
     "description": "Increase velocity when positioned toward the front after making it to the final straight without faltering.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Mihono Bourbon (MB-19890425)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Mihono Bourbon (MB-19890425)"
   },
   {
     "skill_id": "A_Where_There's_a_Will,_There's_a_Way",
@@ -1886,8 +2214,9 @@
     ],
     "description": "Greatly increase velocity with a strong turn of foot when passing another runner toward the back on the final straight.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Focused Mind",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Focused Mind"
   },
   {
     "skill_id": "A_Focused_Mind",
@@ -1901,8 +2230,8 @@
     "description": "Moderately increase veolicty with a strong turn of foot when passing another runner toward the back on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Grass Wonder (Stone-Piercing Blue)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Grass Wonder (Stone-Piercing Blue)"
   },
   {
     "skill_id": "A_Speed_Star",
@@ -1916,8 +2245,8 @@
     "description": "Increase the ability to break out of the pack on the final corner.\n\n\n(Pace Chaser)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "A_Prepared_to_Pass",
@@ -1931,8 +2260,145 @@
     "description": "Slightly increase ability to break out of the pack on the final corner.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Corner_Connoisseur",
+    "name": "Corner Connoisseur",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Corner Acceleration ◯"
+    ],
+    "description": "Increase acceleration on a corner with masterful turning.",
+    "purchase_option": "Both",
+    "rarity": "Rare",
     "base_cost": "180"
+  },
+  {
+    "skill_id": "A_Corner_Acceleration_O",
+    "name": "Corner Acceleration ◯",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "Corner Connoisseur"
+    ],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration on a corner with masterful turning.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180"
+  },
+  {
+    "skill_id": "A_Hard_Worker",
+    "name": "Hard Worker",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase passing ability.\n\n\n(Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "base_cost": "120",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Fighter",
+    "name": "Fighter",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase passing ability.\n\n\n(Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "120",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Sturm_und_Drang",
+    "name": "Sturm und Drang",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_Masterful_Gambit",
+    "name": "Masterful Gambit",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly move up in preparation to close the gap late-race.\n\n\n(End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_The_Coast_Is_Clear!",
+    "name": "The Coast Is Clear!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "I Can See Right Through You"
+    ],
+    "description": "Moderately widen field of view with situational awareness when moving sideways.\n\n\n(End Closer)",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "110",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_I_Can_See_Right_Through_You",
+    "name": "I Can See Right Through You",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "The Coast Is Clear!"
+    ],
+    "prerequisites": [],
+    "description": "Slightly widen field of view with situational awareness when moving sideways.\n\n\n(End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Lane_Legerdemain",
+    "name": "Lane Legerdemain",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Go with the Flow"
+    ],
+    "description": "Increase navigation late-race.",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "120"
+  },
+  {
+    "skill_id": "A_Go_with_the_Flow",
+    "name": "Go with the Flow",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "Lane Legerdemain"
+    ],
+    "prerequisites": [],
+    "description": "Moderately increase navigation late-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "120"
   },
   {
     "skill_id": "A_The_Bigger_Picture",
@@ -1946,8 +2412,8 @@
     "description": "Widen field of view with heightened observation mid-race.\n\n\n(Late Surger)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Late Surger",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "A_Studious",
@@ -1961,7 +2427,35 @@
     "description": "Slightly widen field of view with heightened observation mid-race.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
+    "base_cost": "120",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Center_Stage",
+    "name": "Center Stage",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Prudent Positioning"
+    ],
+    "description": "Increase navigation early-race.",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "120"
+  },
+  {
+    "skill_id": "A_Prudent_Positioning",
+    "name": "Prudent Positioning",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "Center Stage"
+    ],
+    "prerequisites": [],
+    "description": "Moderately increase navigation early-race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "120"
   },
   {
@@ -1976,8 +2470,8 @@
     "description": "Increase ability to maintain the lead when leading by a large margin mid-race.\n\n\n(Sprint)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Sprint",
-    "base_cost": "170"
+    "base_cost": "170",
+    "distance": "Sprint"
   },
   {
     "skill_id": "A_Huge_Lead",
@@ -1991,8 +2485,8 @@
     "description": "Slightlyincrease ability to maintain the lead when leading by a large margin mid-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "170"
+    "base_cost": "170",
+    "distance": "Sprint"
   },
   {
     "skill_id": "A_Killer_Tunes",
@@ -2006,8 +2500,23 @@
     "description": "Increase positioning ability when positioned toward the front mid-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Up-Tempo",
+    "name": "Up-Tempo",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "Killer Tunes"
+    ],
+    "prerequisites": [],
+    "description": "Slightly increase positioning ability when positioned toward the front mid-race.\n\n\n(Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "A_Blinding_Flash",
@@ -2021,8 +2530,8 @@
     "description": "Increase spurting ability when positioned toward the back late-race.\n\n\n(Sprint)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "A_Gap_Closer",
@@ -2036,38 +2545,33 @@
     "description": "Slightly increase spurting ability when positioned toward the back late-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
-    "skill_id": "A_Restless",
-    "name": "Restless",
+    "skill_id": "A_Relax",
+    "name": "Relax",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_A_Small_Breather",
+    "name": "A Small Breather",
     "tier": "A",
     "skill_type": "Recovery",
     "prerequisite_of": [],
-    "prerequisites": [
-      "Moxie"
-    ],
-    "description": "Reduce fatigue on an uphill.\n\n\n(Front Runner)",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "strategy": "Front Runner",
-    "base_cost": "180"
-  },
-  {
-    "skill_id": "A_Moxie",
-    "name": "Moxie",
-    "tier": "A",
-    "skill_type": "Recovery",
-    "prerequisite_of": [
-      "Restless"
-    ],
     "prerequisites": [],
-    "description": "Slightly reduce fatigue on an uphill.\n\n\n(Front Runner)",
+    "description": "Slightly recover endurance late-race.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Front Runner",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "A_Trackblazer",
@@ -2081,8 +2585,8 @@
     "description": "Decrease fatigue when in the lead mid-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "A_Rosy_Outlook",
@@ -2096,8 +2600,88 @@
     "description": "Slightly decrease fatigue when in the lead mid-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Calm_and_Collected",
+    "name": "Calm and Collected",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [
+      "Stamina to Spare"
+    ],
+    "description": "Decrease fatigue early-race.\n\n\n(Pace Chaser)",
+    "purchase_option": "Both",
+    "rarity": "Rare",
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Stamina_to_Spare",
+    "name": "Stamina to Spare",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [
+      "Calm and Collected"
+    ],
+    "prerequisites": [],
+    "description": "Slightly decrease fatigue early-race.\n\n\n(Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Big-Sisterly",
+    "name": "Big-Sisterly",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_Unyielding_Spirit",
+    "name": "Unyielding Spirit",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase passing ability.\n\n\n(Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "120",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Crusader",
+    "name": "Crusader",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "A_Strategist",
+    "name": "Strategist",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly widen field of view when positioned toward the back late-race.\n\n\n(End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "End Closer"
   },
   {
     "skill_id": "A_Meticulous_Measures",
@@ -2109,23 +2693,8 @@
     "description": "Moderately prepare to make for the finish line mid-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "140"
-  },
-  {
-    "skill_id": "A_Keeping_the_Lead",
-    "name": "Keeping the Lead",
-    "tier": "A",
-    "skill_type": "Speed",
-    "prerequisite_of": [
-      "Vanguard Spirit"
-    ],
-    "prerequisites": [],
-    "description": "Slightly increase ability to maintain the lead when leading by a large margin mid-race.\n\n\n(Long)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "140",
+    "distance": "Sprint"
   },
   {
     "skill_id": "A_1,500,000_CC",
@@ -2137,8 +2706,8 @@
     "description": "Slightly increase velocity on an uphill.\n\n\n(Late Surger)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Late Surger"
   },
   {
     "skill_id": "A_Highlander",
@@ -2162,8 +2731,8 @@
     "description": "Slightly avoid being passed early-race.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Front Runner",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "A_Wait-and-See",
@@ -2175,21 +2744,8 @@
     "description": "Slightly decrease fatigue when positioned toward the back mid-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "160"
-  },
-  {
-    "skill_id": "A_A_Small_Breather",
-    "name": "A Small Breather",
-    "tier": "A",
-    "skill_type": "Recovery",
-    "prerequisite_of": [],
-    "prerequisites": [],
-    "description": "Slightly recover endurance late-race.\n\n\n(Late Surger)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "strategy": "Late Surger",
-    "base_cost": "180"
+    "base_cost": "160",
+    "distance": "Sprint"
   },
   {
     "skill_id": "A_Dazzling_Disorientation",
@@ -2203,8 +2759,8 @@
     "description": "Moderately narrow the field of view for runners behind when positioned toward the front late-race.\n\n\n(Pace Chaser)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "110"
+    "base_cost": "110",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "A_Disorient",
@@ -2218,11 +2774,11 @@
     "description": "Slighty narrow the field of view for runners behind when positioned toward the front late-race.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "110"
+    "base_cost": "110",
+    "strategy": "Pace Chaser"
   },
   {
-    "skill_id": "A_Trick_Front",
+    "skill_id": "A_Trick_(Front)",
     "name": "Trick (Front)",
     "tier": "A",
     "skill_type": "Debuff",
@@ -2234,7 +2790,7 @@
     "base_cost": "140"
   },
   {
-    "skill_id": "A_Trick_Rear",
+    "skill_id": "A_Trick_(Rear)",
     "name": "Trick (Rear)",
     "tier": "A",
     "skill_type": "Debuff",
@@ -2244,6 +2800,54 @@
     "purchase_option": "Direct",
     "rarity": "Normal",
     "base_cost": "140"
+  },
+  {
+    "skill_id": "A_Frenzied_Front_Runners",
+    "name": "Frenzied Front Runners",
+    "tier": "A",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase time needed for front runners to calm down when they become rushed.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "A_Frenzied_Pace_Chasers",
+    "name": "Frenzied Pace Chasers",
+    "tier": "A",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase time needed for pace chasers to calm down when they become rushed.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "A_Frenzied_Late_Surgers",
+    "name": "Frenzied Late Surgers",
+    "tier": "A",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase time needed for late surgers to calm down when they become rushed.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
+  },
+  {
+    "skill_id": "A_Frenzied_End_Closers",
+    "name": "Frenzied End Closers",
+    "tier": "A",
+    "skill_type": "Debuff",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase time needed for end closers to calm down when they become rushed.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "130"
   },
   {
     "skill_id": "A_Standard_Distance_O",
@@ -2294,6 +2898,70 @@
     "base_cost": "90"
   },
   {
+    "skill_id": "A_Front_Runner_Savvy_O",
+    "name": "Front Runner Savvy ◯",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase ability to get into a good position.\n\n\n(Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Pace_Chaser_Savvy_O",
+    "name": "Pace Chaser Savvy ◯",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase ability to get into a good position.\n\n\n(Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Late_Surger_Savvy_O",
+    "name": "Late Surger Savvy ◯",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase ability to get into a good position.\n\n\n(Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_End_Closer_Savvy_O",
+    "name": "End Closer Savvy ◯",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase ability to get into a good position.\n\n\n(End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "110",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Burning_Spirit_SPD",
+    "name": "Burning Spirit SPD",
+    "tier": "A",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
     "skill_id": "B_This_Dance_Is_for_Vittoria!",
     "name": "This Dance Is for Vittoria!",
     "tier": "B",
@@ -2303,12 +2971,12 @@
     "description": "Increase velocity with royal brilliance when engaged in a challenge toward the front on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "T.M. Opera O (O Sole Suo!)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "T.M. Opera O (O Sole Suo!)"
   },
   {
-    "skill_id": "B_Just_a_Little_Farther",
-    "name": "Just a Little Farther",
+    "skill_id": "B_Just_a_Little_Farther!",
+    "name": "Just a Little Farther!",
     "tier": "B",
     "skill_type": "Advanced",
     "prerequisite_of": [],
@@ -2317,8 +2985,9 @@
     ],
     "description": "Greatly increase velocity with an arousal of fighting spirit when positioned 3rd and about to lose late-race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of I Can Win Sometimes, Right?",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of I Can Win Sometimes, Right?"
   },
   {
     "skill_id": "B_I_Can_Win_Sometimes,_Right?",
@@ -2332,8 +3001,8 @@
     "description": "Moderately increaase velocity with an arousal of fighting spirit when positioned 3rd and about to lose late-race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Nice Nature (Poinsettia Ribbon)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Nice Nature (Poinsettia Ribbon)"
   },
   {
     "skill_id": "B_Prideful_King",
@@ -2346,8 +3015,9 @@
     ],
     "description": "Greatly increase velocity in a true display of skill with 200m remaining after racing calmly.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Call Me King",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Call Me King"
   },
   {
     "skill_id": "B_Call_Me_King",
@@ -2361,8 +3031,8 @@
     "description": "Increase velocity in a true display of skill with 200m remaining after racing calmly.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "King Halo (King of Emeralds)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "King Halo (King of Emeralds)"
   },
   {
     "skill_id": "B_I_See_Victory_in_My_Future!",
@@ -2375,8 +3045,9 @@
     ],
     "description": "Greatly clear a path forward with the power of divination when the way ahead is jammed late-race.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Luck Be with Me!",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Luck Be with Me!"
   },
   {
     "skill_id": "B_Luck_Be_with_Me!",
@@ -2390,8 +3061,8 @@
     "description": "Moderately clear a path forward with the power of divination when the way ahead is jammed late-race.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Matikane Fukukitaru (Rising Fortune)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Matikane Fukukitaru (Rising Fortune)"
   },
   {
     "skill_id": "B_Legacy_of_the_Strong",
@@ -2403,8 +3074,8 @@
     "description": "Increase velocity when pressured by another runner and running out of energy toward the front on the final corner or later.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Mejiro McQueen (End of the Skies)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Mejiro McQueen (End of the Skies)"
   },
   {
     "skill_id": "B_Our_Ticket_to_Win!",
@@ -2417,8 +3088,9 @@
     ],
     "description": "Refuse to back down from a challenge, greatly increasing velocity on the final straight.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of V Is for Victory!",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of V Is for Victory!"
   },
   {
     "skill_id": "B_V_Is_for_Victory!",
@@ -2432,8 +3104,8 @@
     "description": "Refuse to back down from a challenge, moderately increasing velocity on the final straight.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Winning Ticket (Get to Winning!)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Winning Ticket (Get to Winning!)"
   },
   {
     "skill_id": "B_Super-Duper_Climax",
@@ -2446,8 +3118,9 @@
     ],
     "description": "Greatly recover endurance with a glance at nearby runners when positioned toward the back on the final corner.",
     "purchase_option": "Both",
-    "enhancement_note": "Enhanced version of Super-Duper Stoked",
-    "base_cost": "200"
+    "rarity": null,
+    "base_cost": "200",
+    "enhancement_note": "Enhanced version of Super-Duper Stoked"
   },
   {
     "skill_id": "B_Super-Duper_Stoked",
@@ -2461,8 +3134,8 @@
     "description": "Moderately recover endurance with a glance at nearby runners when positioned toward the back on the final corner.",
     "purchase_option": "Direct",
     "rarity": "Unique",
-    "character": "Haru Urara (Bestest Prize)",
-    "base_cost": "200"
+    "base_cost": "200",
+    "character": "Haru Urara (Bestest Prize)"
   },
   {
     "skill_id": "B_Vanguard_Spirit",
@@ -2476,8 +3149,23 @@
     "description": "Increase ability to maintain the lead when leading by a large margin mid-race.\n\n\n(Long)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "B_Keeping_the_Lead",
+    "name": "Keeping the Lead",
+    "tier": "B",
+    "skill_type": "Speed",
+    "prerequisite_of": [
+      "Vanguard Spirit"
+    ],
+    "prerequisites": [],
+    "description": "Slightly increase ability to maintain the lead when leading by a large margin mid-race.\n\n\n(Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "B_Unyielding",
@@ -2491,8 +3179,8 @@
     "description": "Increase ability to fight back when passed by another runner on the final corner.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "120"
+    "base_cost": "120",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Steadfast",
@@ -2506,8 +3194,8 @@
     "description": "Slightly increase ability to fight back when passed by another runner on the final corner.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Determined_Descent",
@@ -2521,8 +3209,8 @@
     "description": "Moderately improve running on a downhill.\n\n\n(Pace Chaser)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "B_Straight_Descent",
@@ -2536,8 +3224,8 @@
     "description": "Slightly improve running on a downhill.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "B_Technician",
@@ -2551,8 +3239,8 @@
     "description": "Moderately increase ability to navigate smoothly.\n\n\n(Pace Chaser)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "B_Shrewd_Step",
@@ -2566,8 +3254,8 @@
     "description": "Slightly increase ability to navigate smoothly.\n\n\n(Pace Chaser)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "120"
+    "base_cost": "120",
+    "strategy": "Pace Chaser"
   },
   {
     "skill_id": "B_Lightning_Step",
@@ -2581,8 +3269,8 @@
     "description": "Avoid becoming surrounded when positioned toward the back mid-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "140"
+    "base_cost": "140",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Thunderbolt_Step",
@@ -2596,36 +3284,8 @@
     "description": "Moderately avoid becoming surrounded when positioned toward the back mid-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "140"
-  },
-  {
-    "skill_id": "B_Center_Stage",
-    "name": "Center Stage",
-    "tier": "B",
-    "skill_type": "Speed",
-    "prerequisite_of": [],
-    "prerequisites": [
-      "Prudent Positioning"
-    ],
-    "description": "Increase navigation early-race.",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "base_cost": "120"
-  },
-  {
-    "skill_id": "B_Prudent_Positioning",
-    "name": "Prudent Positioning",
-    "tier": "B",
-    "skill_type": "Speed",
-    "prerequisite_of": [
-      "Center Stage"
-    ],
-    "prerequisites": [],
-    "description": "Moderately increase navigation early-race.",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "base_cost": "120"
+    "base_cost": "140",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Clairvoyance",
@@ -2639,8 +3299,8 @@
     "description": "Widen field of view with heightened observation early-race.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "110"
+    "base_cost": "110",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Hawkeye",
@@ -2654,8 +3314,8 @@
     "description": "Moderately widen field of view with heigthened observation early-race.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "110"
+    "base_cost": "110",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Adrenaline_Rush",
@@ -2669,8 +3329,8 @@
     "description": "Regain the energy to run after exhausting strength.\n\n\n(Long)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "B_Extra_Tank",
@@ -2684,8 +3344,8 @@
     "description": "Slightly regain the energy to run after exhausting strength.\n\n\n(Long)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Long"
   },
   {
     "skill_id": "B_Keen_Eye",
@@ -2699,8 +3359,8 @@
     "description": "Decrease fatigue when positioned toward the back early-race.\n\n\n(Mile)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Mile",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "B_Watchful_Eye",
@@ -2714,38 +3374,8 @@
     "description": "Slightly decrease fatigue when positioned toward the back early-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
-    "skill_id": "B_Calm_and_Collected",
-    "name": "Calm and Collected",
-    "tier": "B",
-    "skill_type": "Recovery",
-    "prerequisite_of": [],
-    "prerequisites": [
-      "Stamina to Spare"
-    ],
-    "description": "Decrease fatigue early-race.\n\n\n(Pace Chaser)",
-    "purchase_option": "Both",
-    "rarity": "Rare",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
-  },
-  {
-    "skill_id": "B_Stamina_to_Spare",
-    "name": "Stamina to Spare",
-    "tier": "B",
-    "skill_type": "Recovery",
-    "prerequisite_of": [
-      "Calm and Collected"
-    ],
-    "prerequisites": [],
-    "description": "Slightly decrease fatigue early-race.\n\n\n(Pace Chaser)",
-    "purchase_option": "Direct",
-    "rarity": "Normal",
-    "strategy": "Pace Chaser",
-    "base_cost": "180"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "B_Iron_Will",
@@ -2843,8 +3473,8 @@
     "description": "Decrease fatigue when moving sideways.\n\n\n(Medium)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Soft_Step",
@@ -2858,8 +3488,8 @@
     "description": "Slightly decrease fatigue when moving sideways.\n\n\n(Medium)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Medium",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Medium"
   },
   {
     "skill_id": "B_Uma_Stan",
@@ -2874,6 +3504,44 @@
     "base_cost": "160"
   },
   {
+    "skill_id": "B_Shatterproof",
+    "name": "Shatterproof",
+    "tier": "B",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
+  },
+  {
+    "skill_id": "B_Tactical_Tweak",
+    "name": "Tactical Tweak",
+    "tier": "B",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration when positioned toward the back mid-race.\n\n\n(Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "120",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "B_Second_Wind",
+    "name": "Second Wind",
+    "tier": "B",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration when positioned toward the back mid-race.\n\n\n(Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "180",
+    "strategy": "Front Runner"
+  },
+  {
     "skill_id": "B_Dodging_Danger",
     "name": "Dodging Danger",
     "tier": "B",
@@ -2883,8 +3551,8 @@
     "description": "Moderately avoid becoming surrounded early-race.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Front Runner",
-    "base_cost": "110"
+    "base_cost": "110",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "B_Levelheaded",
@@ -2896,8 +3564,8 @@
     "description": "Slightly regain composure by calming down when the way ahead is jammed.\n\n\n(End Closer)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "End Closer",
-    "base_cost": "180"
+    "base_cost": "180",
+    "strategy": "End Closer"
   },
   {
     "skill_id": "B_Illusionist",
@@ -2911,8 +3579,8 @@
     "description": "Narrow the field of view for runners ahead of late-race.\n\n\n(Long)",
     "purchase_option": "Both",
     "rarity": "Rare",
-    "distance": "Long",
-    "base_cost": "110"
+    "base_cost": "110",
+    "distance": "Long"
   },
   {
     "skill_id": "B_Smoke_Screen",
@@ -2926,8 +3594,8 @@
     "description": "Moderately narrow the field of view for runner ahead late-race.\n\n\n(Long)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Long",
-    "base_cost": "110"
+    "base_cost": "110",
+    "distance": "Long"
   },
   {
     "skill_id": "B_Stop_Right_There!",
@@ -2939,8 +3607,8 @@
     "description": "Slightly cause panic in runners ahead when positioned toward the back early-race.\n\n\n(Sprint)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Sprint",
-    "base_cost": "170"
+    "base_cost": "170",
+    "distance": "Sprint"
   },
   {
     "skill_id": "B_Restart",
@@ -2952,8 +3620,8 @@
     "description": "Slightly startle runners ahead when failing to get a lead early-race.\n\n\n(Front Runner)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "strategy": "Front Runner",
-    "base_cost": "130"
+    "base_cost": "130",
+    "strategy": "Front Runner"
   },
   {
     "skill_id": "B_Opening_Gambit",
@@ -2965,8 +3633,8 @@
     "description": "Slightly dull movement for runners ahead when positioned toward the back early-race.\n\n\n(Mile)",
     "purchase_option": "Direct",
     "rarity": "Normal",
-    "distance": "Mile",
-    "base_cost": "160"
+    "base_cost": "160",
+    "distance": "Mile"
   },
   {
     "skill_id": "B_Super_Lucky_Seven",
@@ -2978,6 +3646,18 @@
     "description": "Good things may happen when in bracket 7.",
     "purchase_option": "Direct",
     "rarity": "Rare",
+    "base_cost": "110"
+  },
+  {
+    "skill_id": "B_Lucky_Seven",
+    "name": "Lucky Seven",
+    "tier": "B",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately good things may happen when in bracket 7.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "110"
   },
   {
@@ -3041,405 +3721,123 @@
     "base_cost": "90"
   },
   {
-    "name": "Tokyo Racecourse ◯",
-    "description": "Moderately increase performance at Tokyo Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "90"
-  },
-  {
-    "name": "Hanshin Racecourse ◯",
-    "description": "Moderately increase performance at Hanshin Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "90"
-  },
-  {
-    "name": "Nakayama Racecourse ◯",
-    "description": "Moderately increase performance at Nakayama Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "90"
-  },
-  {
-    "name": "Sapporo Racecourse ◯",
-    "description": "Moderately increase performance at Sapporo Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "70"
-  },
-  {
-    "name": "Oi Racecourse ◯",
-    "description": "Moderately increase performance at Oi Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "90"
-  },
-  {
-    "name": "Hakodate Racecourse ◯",
-    "description": "Moderately increase performance at Hakodate Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "70"
-  },
-  {
-    "name": "Kyoto Racecourse ◯",
-    "description": "Moderately increase performance at Kyoto Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
-    "prerequisite_of": [],
-    "purchase_option": "Direct",
-    "base_cost": "90"
-  },
-  {
+    "skill_id": "B_Kokura_Racecourse_O",
     "name": "Kokura Racecourse ◯",
-    "description": "Moderately increase performance at Kokura Racecourse.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
     "tier": "B",
-    "skill_id": "B_Racecourse_O_Skills",
-    "prerequisites": [],
+    "skill_type": "Passive",
     "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Kokura Racecourse.",
     "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "70"
   },
   {
-    "name": "Final Push",
-    "description": "Slightly increase ability to keep the lead on the final corner.\n\n\n(Front Runner)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Final_Push",
-    "strategy": "Front Runner",
-    "base_cost": "180"
-  },
-  {
-    "name": "Updrafters",
-    "description": "Slightly increase passing ability when positioned toward the back late-race.\n\n\n(Mile)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Updrafters",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
-    "name": "Straightaway Acceleration",
-    "description": "Slightly increase acceleration on a straight.",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Straightaway_Acceleration",
-    "base_cost": "170"
-  },
-  {
-    "name": "Mile Straightaway ◯",
-    "description": "Slightly increase velocity on a straight.\n\n\n(Mile)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Mile_Straightaway_O",
-    "distance": "Mile",
-    "base_cost": "100"
-  },
-  {
-    "name": "Early Lead",
-    "description": "Slightly increase ability to go to the front early-race.\n\n\n(Front Runner)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Early_Lead",
-    "strategy": "Front Runner",
-    "base_cost": "120"
-  },
-  {
-    "name": "Fighter",
-    "description": "Slightly increase passing ability.\n\n\n(Late Surger)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Fighter",
-    "strategy": "Late Surger",
-    "base_cost": "120"
-  },
-  {
-    "name": "Second Wind",
-    "description": "Slightly increase acceleration when positioned toward the back mid-race.\n\n\n(Front Runner)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Second_Wind",
-    "strategy": "Front Runner",
-    "base_cost": "180"
-  },
-  {
-    "name": "Tactical Tweak",
-    "description": "Slightly increase acceleration when positioned toward the back mid-race.\n\n\n(Pace Chaser)",
-    "rarity": "Normal",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Tactical_Tweak",
-    "strategy": "Pace Chaser",
-    "base_cost": "120"
-  },
-  {
-    "name": "Spring Runner ◯",
-    "description": "Moderatey increase performance in spring.",
-    "rarity": "Normal",
+    "skill_id": "B_Hanshin_Racecourse_O",
+    "name": "Hanshin Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Spring_Runner_O",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Hanshin Racecourse.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "90"
   },
   {
-    "name": "Cloudy Days ◯",
-    "description": "Moderately increase performance in cloudy weather.",
-    "rarity": "Normal",
+    "skill_id": "B_Tokyo_Racecourse_O",
+    "name": "Tokyo Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Cloudy_Days_O",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Tokyo Racecourse.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "90"
   },
   {
-    "name": "Pace Chaser Savvy ◯",
-    "description": "Moderately increase ability to get into a good position.\n\n\n(Pace Chaser)",
-    "rarity": "Normal",
+    "skill_id": "B_Nakayama_Racecourse_O",
+    "name": "Nakayama Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Pace_Chaser_Savvy_O",
-    "strategy": "Pace Chaser",
-    "base_cost": "110"
-  },
-  {
-    "name": "Rainy Days ◯",
-    "description": "Moderately increase performance in rainy weather.",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Nakayama Racecourse.",
+    "purchase_option": "Direct",
     "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Rainy_Days_O",
     "base_cost": "90"
   },
   {
-    "name": "Lucky Seven",
-    "description": "Moderately good things may happen when in bracket 7.",
-    "rarity": "Normal",
+    "skill_id": "B_Sapporo_Racecourse_O",
+    "name": "Sapporo Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Lucky_Seven",
-    "base_cost": "110"
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Sapporo Racecourse.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "70"
   },
   {
-    "name": "Late Surger Savvy ◯",
-    "description": "Moderately increase ability to get into a good position.\n\n\n(Late Surger)",
-    "rarity": "Normal",
+    "skill_id": "B_Oi_Racecourse_O",
+    "name": "Oi Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Late_Surger_Savvy_O",
-    "strategy": "Late Surger",
-    "base_cost": "110"
-  },
-  {
-    "name": "Front Runner Savvy ◯",
-    "description": "Moderately increase ability to get into a good position.\n\n\n(Front Runner)",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Oi Racecourse.",
+    "purchase_option": "Direct",
     "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Front_Runner_Savvy_O",
-    "strategy": "Front Runner",
-    "base_cost": "110"
-  },
-  {
-    "name": "End Closer Savvy ◯",
-    "description": "Moderately increase ability to get into a good position.\n\n\n(End Closer)",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_End_Closer_Savvy_O",
-    "strategy": "End Closer",
-    "base_cost": "110"
-  },
-  {
-    "name": "Sunny Days ◯",
-    "description": "Moderately increase performance in sunny weather.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Sunny_Days_O",
     "base_cost": "90"
   },
   {
-    "name": "Fall Runner ◯",
-    "description": "Moderately increase performance in fall.",
-    "rarity": "Normal",
+    "skill_id": "B_Hakodate_Racecourse_O",
+    "name": "Hakodate Racecourse ◯",
+    "tier": "B",
     "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Fall_Runner_O",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Hakodate Racecourse.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "base_cost": "70"
+  },
+  {
+    "skill_id": "B_Kyoto_Racecourse_O",
+    "name": "Kyoto Racecourse ◯",
+    "tier": "B",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase performance at Kyoto Racecourse.",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
     "base_cost": "90"
   },
   {
-    "name": "Summer Runner ◯",
-    "description": "Moderately increase performance in summer.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Summer_Runner_O",
-    "base_cost": "90"
+    "skill_id": "B_Story",
+    "name": "Story",
+    "tier": "B",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
   },
   {
-    "name": "Snowy Days ◯",
-    "description": "Moderately increase performance in snowy weather.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Snowy_Days_O",
-    "base_cost": "90"
-  },
-  {
-    "name": "Winter Runner ◯",
-    "description": "Moderately incrase performance in winter.",
-    "rarity": "Normal",
-    "skill_type": "Passive",
-    "tier": "S",
-    "skill_id": "S_Winter_Runner_O",
-    "base_cost": "90"
-  },
-  {
-    "name": "Standing By",
-    "description": "Slightly decrease fatigue mid-race.\n\n\n(End Closer)",
-    "rarity": "Normal",
-    "skill_type": "Recovery",
-    "tier": "S",
-    "skill_id": "S_Standing_By",
-    "strategy": "End Closer",
-    "base_cost": "180"
-  },
-  {
-    "name": "Frenzied Pace Chasers",
-    "description": "Increase time needed for pace chasers to calm down when they become rushed.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Frenzied_Pace_Chasers",
-    "base_cost": "130"
-  },
-  {
-    "name": "Frenzied Late Surgers",
-    "description": "Increase time needed for late surgers to calm down when they become rushed.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Frenzied_Late_Surgers",
-    "base_cost": "130"
-  },
-  {
-    "name": "Speed Eater",
-    "description": "Slightly steal velocity from runners behind when in lead mid-race.\n\n\n(Mile)",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Speed_Eater",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
-    "name": "Frenzied Front Runners",
-    "description": "Increase time needed for front runners to calm down when they become rushed.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Frenzied_Front_Runners",
-    "base_cost": "130"
-  },
-  {
-    "name": "Frenzied End Closers",
-    "description": "Increase time needed for end closers to calm down when they become rushed.",
-    "rarity": "Normal",
-    "skill_type": "Debuff",
-    "tier": "S",
-    "skill_id": "S_Frenzied_End_Closers",
-    "base_cost": "130"
-  },
-  {
-    "name": "Unrestrained",
-    "description": "Increase abilty to keep the lead on the final corner.\n\n\n(Front Runner)",
-    "rarity": "Rare",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Unrestrained",
-    "strategy": "Front Runner",
-    "base_cost": "180"
-  },
-  {
-    "name": "Furious Feat",
-    "description": "Increase passing ability when positioned toward the back late-race.\n\n\n(Mile)",
-    "rarity": "Rare",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Furious_Feat",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
-    "name": "Mile Maven",
-    "description": "Widen the margin when in the lead early-race.\n\n\n(Mile)",
-    "rarity": "Rare",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Mile_Maven",
-    "distance": "Mile",
-    "base_cost": "160"
-  },
-  {
-    "name": "Taking the Lead",
-    "description": "Increase ability to go to the front early-race.\n\n\n(Front Runner)",
-    "rarity": "Rare",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Taking_the_Lead",
-    "strategy": "Front Runner",
-    "base_cost": "120"
-  },
-  {
-    "name": "Hard Worker",
-    "description": "Moderately increase passing ability.\n\n\n(Late Surger)",
-    "rarity": "Rare",
-    "skill_type": "Speed",
-    "tier": "S",
-    "skill_id": "S_Hard_Worker",
-    "strategy": "Late Surger",
-    "base_cost": "120"
+    "skill_id": "B_Burning_Spirit_WIT",
+    "name": "Burning Spirit WIT",
+    "tier": "B",
+    "skill_type": null,
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": null,
+    "purchase_option": "Direct",
+    "rarity": null,
+    "base_cost": null
   }
 ]

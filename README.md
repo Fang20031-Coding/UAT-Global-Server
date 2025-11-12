@@ -210,7 +210,7 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## Changelogs
 - **10/12/2025**   
-"Use last selected parents" Option added in webui.
+"Use last selected parents" Option added in webui.  
 support for team trials quick mode
 
 - **10/11/2025 (Game Updated)**  

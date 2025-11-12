@@ -37,6 +37,7 @@ RULES_BY_MODE = {
         {"type": "image", "ref": REF_TEAM_TRIALS, "action": lambda ctx: ctx.ctrl.click(106, 812, "team trials resume2")},
         {"type": "image", "ref": REF_TEAM_RACE, "action": lambda ctx: ctx.ctrl.click(351, 839, "team trials resume3")},
         {"type": "image", "ref": REF_SELECT_OPP, "action": lambda ctx: ctx.ctrl.click(73, 278, "team trials resume4")},
+        {"type": "image", "ref": REF_TT_SEE_ALL, "action": lambda ctx: ctx.ctrl.click(359, 1200, "team trials resume5")},
         {"type": "image", "ref": REF_NEXT, "action": lambda ctx: double_click(ctx, (354, 1077, "team trials next 1"), (365, 1142, "team trials next 1"), key="next")},
         {"type": "title", "ref": "Items Selected", "action": lambda ctx: ctx.ctrl.click(610, 908, "tt6")},
         {"type": "title", "ref": "Daily Sale", "action": lambda ctx: ctx.ctrl.click(0, 0, "daily sale")},

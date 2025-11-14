@@ -210,7 +210,8 @@ Something Something this is for educational purposes only. Please do not misuse 
 - **10/14/2025**  
 updated skill list  
 Fixed getting stuck in support card selection
-Stat cap score calc hard cap  
+Stat cap score calc hard cap
+default target attributes changed  
 
 - **10/12/2025**   
 "Use last selected parents" Option added in webui.  

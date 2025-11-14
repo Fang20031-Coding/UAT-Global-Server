@@ -1,4 +1,4 @@
-yeah i think im done with aoharu/unity cup, its like 90% complete but ehh diminishing returns. I'm just gonna not deal with team names
+Due to recent ui changes please report any races that fails to get detected so i can update their images
 
 # UMAMUSUME AUTO TRAINER
 

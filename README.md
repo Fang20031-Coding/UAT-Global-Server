@@ -207,9 +207,9 @@ Something Something this is for educational purposes only. Please do not misuse 
 ![alt text](docs/topcunt.gif)
 
 ## Changelogs
-- **10/15/2025**
+- **10/15/2025**  
 updated some support card names  
-aoharu team name selection works now
+aoharu (unity cup) team name selection works now
 
 - **10/14/2025**  
 updated skill list  

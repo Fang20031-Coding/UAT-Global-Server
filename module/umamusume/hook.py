@@ -33,7 +33,16 @@ def double_click(ctx: UmamusumeContext, first: tuple[int, int, str], second: tup
 
 def tt_next_sequence(ctx: UmamusumeContext):
     try:
-        ctx.ctrl.click(354, 1077, "team trials next 1")
+        img_gray = ctx.ctrl.get_screen(to_gray=True)
+        res = image_match(img_gray, REF_NEXT)
+        if getattr(res, "find_match", False):
+            x1, y1 = res.matched_area[0]
+            x2, y2 = res.matched_area[1]
+            cx = int((x1 + x2) / 2)
+            cy = int((y1 + y2) / 2)
+            ctx.ctrl.click(cx, cy, "team trials next 1")
+        else:
+            ctx.ctrl.click(354, 1077, "team trials next 1")
         time.sleep(0.7)
         ctx.ctrl.click(508, 896, "team trials next 2")
     except Exception:

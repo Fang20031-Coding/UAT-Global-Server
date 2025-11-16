@@ -528,16 +528,6 @@ if __name__ == '__main__':
             scheduler.start()
     except Exception:
         pass
-    try:
-        if not scheduler.active:
-            pending_exists = any(
-                getattr(t, "task_status", None) == TaskStatus.TASK_STATUS_PENDING
-                for t in scheduler.get_task_list() or []
-            )
-            if pending_exists:
-                scheduler.start()
-    except Exception:
-        pass
     print("🚀 UAT running on http://127.0.0.1:8071")
     if os.environ.get("UAT_AUTORESTART", "0") != "1":
         threading.Thread(target=lambda: (time.sleep(1), __import__('webbrowser').open("http://127.0.0.1:8071")), daemon=True).start()

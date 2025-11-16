@@ -208,7 +208,7 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## Changelogs
 - **10/16/2025**  
-Attempted to fix some crashes
+Attempted to fix some crashes   
 patched up team trials execution mode  
 
 - **10/15/2025**  

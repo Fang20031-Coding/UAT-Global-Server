@@ -754,7 +754,19 @@ def script_cultivate_final_check(ctx: UmamusumeContext):
 
 def script_cultivate_event(ctx: UmamusumeContext):
     img = ctx.ctrl.get_screen()
-    event_name_img = img[237:283, 111:480]
+    if img is None or getattr(img, 'size', 0) == 0:
+        for _ in range(3):
+            time.sleep(0.2)
+            img = ctx.ctrl.get_screen()
+            if img is not None and getattr(img, 'size', 0) > 0:
+                break
+    if img is None or getattr(img, 'size', 0) == 0:
+        return
+    h, w = img.shape[:2]
+    y1, y2, x1, x2 = 237, 283, 111, 480
+    y1 = max(0, min(h, y1)); y2 = max(y1, min(h, y2))
+    x1 = max(0, min(w, x1)); x2 = max(x1, min(w, x2))
+    event_name_img = img[y1:y2, x1:x2]
     event_name = ocr_line(event_name_img, lang="en")
     force_choice_index = None
     try:

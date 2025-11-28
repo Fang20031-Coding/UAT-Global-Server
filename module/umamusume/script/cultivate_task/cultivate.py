@@ -768,10 +768,20 @@ def script_cultivate_event(ctx: UmamusumeContext):
     x1 = max(0, min(w, x1)); x2 = max(x1, min(w, x2))
     event_name_img = img[y1:y2, x1:x2]
     event_name = ocr_line(event_name_img, lang="en")
+    try:
+        from bot.recog.ocr import find_similar_text
+        event_blacklist = [
+            "Team Support",
+        ]
+        if isinstance(event_name, str) and event_name.strip():
+            if find_similar_text(event_name, event_blacklist, 0.9):
+                log.info(f"{event_name} blacklisted. Skipping")
+                return
+    except Exception:
+        pass
     force_choice_index = None
     try:
         if isinstance(event_name, str) and 'team at last' in event_name.lower():
-            log.info("Routing to Aoharu handler")
             from module.umamusume.script.cultivate_task.event.scenario_event import aoharuhai_team_name_event
             res = aoharuhai_team_name_event(ctx)
             if isinstance(res, int) and res > 0:

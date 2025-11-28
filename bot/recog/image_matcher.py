@@ -77,6 +77,7 @@ def template_match(target, template, accuracy: float = 0.86) -> ImageMatchResult
             result = cv2.matchTemplate(target, arr, cv2.TM_CCOEFF_NORMED)
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
             match_result = ImageMatchResult()
+            match_result.score = float(max_val)
             if max_val > accuracy:
                 match_result.find_match = True
                 match_result.center_point = (int(max_loc[0] + tw / 2), int(max_loc[1] + th / 2))

@@ -1,5 +1,5 @@
 import cv2
-import importlib, sys
+import importlib, sys, threading
 paddleocr = None
 from difflib import SequenceMatcher
 import bot.base.log as logger
@@ -10,6 +10,7 @@ os.environ['FLAGS_fraction_of_cpu_memory_to_use'] = '0.27'
 
 
 log = logger.get_logger(__name__)
+_paddleocr_import_lock = threading.RLock()
 
 
 
@@ -29,8 +30,16 @@ OCR_EN = None
 def ensure_paddleocr():
     global paddleocr
     try:
-        if paddleocr is None or 'paddleocr' not in sys.modules:
-            paddleocr = importlib.import_module('paddleocr')
+        # If already imported, nothing to do
+        if paddleocr is not None and 'paddleocr' in sys.modules:
+            return
+        # Avoid importing during interpreter shutdown to prevent atexit registration errors
+        if hasattr(sys, "is_finalizing") and sys.is_finalizing():
+            raise RuntimeError("Interpreter finalizing; skip paddleocr import")
+        # Prevent concurrent imports from multiple threads
+        with _paddleocr_import_lock:
+            if paddleocr is None or 'paddleocr' not in sys.modules:
+                paddleocr = importlib.import_module('paddleocr')
     except Exception as e:
         log.error(f"Failed to import paddleocr: {e}")
         raise
@@ -100,19 +109,20 @@ def reset_ocr():
         except Exception:
             pass
         try:
-            import paddle as _paddle
-            try:
-                if hasattr(_paddle, "device") and hasattr(_paddle.device, "cuda") and hasattr(_paddle.device.cuda, "empty_cache"):
-                    _paddle.device.cuda.empty_cache()
-            except Exception:
-                pass
-            try:
-                if hasattr(_paddle, "framework") and hasattr(_paddle.framework, "core"):
-                    core = _paddle.framework.core
-                    if hasattr(core, 'set_flags'):
-                        core.set_flags({})
-            except Exception:
-                pass
+            _paddle = sys.modules.get("paddle")
+            if _paddle is not None:
+                try:
+                    if hasattr(_paddle, "device") and hasattr(_paddle.device, "cuda") and hasattr(_paddle.device.cuda, "empty_cache"):
+                        _paddle.device.cuda.empty_cache()
+                except Exception:
+                    pass
+                try:
+                    if hasattr(_paddle, "framework") and hasattr(_paddle.framework, "core"):
+                        core = _paddle.framework.core
+                        if hasattr(core, 'set_flags'):
+                            core.set_flags({})
+                except Exception:
+                    pass
         except Exception:
             pass
         paddleocr = None

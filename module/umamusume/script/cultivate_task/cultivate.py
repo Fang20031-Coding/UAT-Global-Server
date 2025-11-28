@@ -1270,7 +1270,6 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
             
         img = ctx.ctrl.get_screen()
         current_screen_skill_list = get_skill_list(img, learn_skill_list,learn_skill_blacklist)
-        # Avoid duplicate counting (will occur when page turning is incomplete at page end)
         for i in current_screen_skill_list:
             if i not in skill_list:
                 skill_list.append(i)
@@ -1346,7 +1345,10 @@ def script_cultivate_learn_skill(ctx: UmamusumeContext):
                 continue
             
         # Find all skills at this priority level
-        priority_skills = [skill for skill in skill_list if skill["priority"] == priority_level and skill["available"] is True]
+        priority_skills = sorted(
+            [skill for skill in skill_list if skill["priority"] == priority_level and skill["available"] is True],
+            key=lambda s: -int(s.get("hint_level", 0))
+        )
         log.debug(f"🔍 Found {len(priority_skills)} skills at priority {priority_level}")
         
         for skill in priority_skills:

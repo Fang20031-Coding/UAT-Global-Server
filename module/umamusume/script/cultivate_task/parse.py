@@ -879,6 +879,39 @@ def find_skill(ctx: UmamusumeContext, img, skill: list[str], learn_any_skill: bo
                     detected_text = ocr_en(skill_name_img)
                     matched_skill = get_canonical_skill_name(detected_text)
                     name_for_match = matched_skill if matched_skill != "" else detected_text
+                    hint_level = 0
+                    try:
+                        origin_img = ctx.ctrl.get_screen()
+                        buy_x = match_result.center_point[0] + 128
+                        buy_y = match_result.center_point[1]
+                        probe_x = buy_x
+                        probe_y = buy_y - 46
+                        h0, w0 = origin_img.shape[:2]
+                        if 0 <= probe_x < w0 and 0 <= probe_y < h0:
+                            b, g, r = origin_img[probe_y, probe_x]
+                            log.debug(f"hint rgb probe at ({probe_x},{probe_y}) bgr=({int(b)},{int(g)},{int(r)})")
+                            if abs(int(r) - 255) <= 8 and abs(int(g) - 145) <= 8 and abs(int(b) - 28) <= 8:
+                                rx1, ry1 = buy_x - 62, buy_y - 71
+                                rx2, ry2 = buy_x - 6, buy_y - 50
+                                rx1 = max(0, min(w0, rx1)); rx2 = max(rx1, min(w0, rx2))
+                                ry1 = max(0, min(h0, ry1)); ry2 = max(ry1, min(h0, ry2))
+                                roi = origin_img[ry1:ry2, rx1:rx2]
+                                if roi is not None and getattr(roi, 'size', 0) > 0:
+                                    roi_gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+                                    best_lvl = 0
+                                    best_score = 0.0
+                                    for i, tpl in enumerate(REF_HINT_LEVELS):
+                                        try:
+                                            mr = image_match(roi_gray, tpl)
+                                            log.debug(f"hint tpl L{i+1} match={mr.find_match} score={getattr(mr,'score',0)}")
+                                            if mr.find_match and getattr(mr, 'score', 0) > best_score:
+                                                best_score = float(getattr(mr, 'score', 0))
+                                                best_lvl = i + 1
+                                        except Exception:
+                                            continue
+                                    hint_level = best_lvl
+                    except Exception as e:
+                        log.debug(f"hint level error: {e}")
                     log.info(f"detected text='{detected_text}' matched skill='{matched_skill}'")
                     target_match = None
                     for target in skill:
@@ -974,7 +1007,38 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                 priority = 99
                 matched_skill = get_canonical_skill_name(detected_text)
                 name_for_match = matched_skill if matched_skill != "" else detected_text
-                log.info(f"detected text='{detected_text}' matched skill='{matched_skill}'")
+                hint_level = 0
+                try:
+                    buy_x = pos_center[0] + 128
+                    buy_y = pos_center[1]
+                    probe_x = buy_x
+                    probe_y = buy_y - 46
+                    h0, w0 = origin_img.shape[:2]
+                    if 0 <= probe_x < w0 and 0 <= probe_y < h0:
+                        b, g, r = origin_img[probe_y, probe_x]
+                        log.debug(f"hint rgb probe at ({probe_x},{probe_y}) bgr=({int(b)},{int(g)},{int(r)})")
+                        if abs(int(r) - 255) <= 8 and abs(int(g) - 145) <= 8 and abs(int(b) - 28) <= 8:
+                            rx1, ry1 = buy_x - 62, buy_y - 71
+                            rx2, ry2 = buy_x - 6, buy_y - 50
+                            rx1 = max(0, min(w0, rx1)); rx2 = max(rx1, min(w0, rx2))
+                            ry1 = max(0, min(h0, ry1)); ry2 = max(ry1, min(h0, ry2))
+                            roi = origin_img[ry1:ry2, rx1:rx2]
+                            if roi is not None and getattr(roi, 'size', 0) > 0:
+                                roi_gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+                                lvl = 0
+                                for i, tpl in enumerate(REF_HINT_LEVELS):
+                                    try:
+                                        mr = image_match(roi_gray, tpl)
+                                        log.debug(f"hint tpl L{i+1} match={mr.find_match}")
+                                        if mr.find_match:
+                                            lvl = i + 1
+                                            break
+                                    except Exception:
+                                        continue
+                                hint_level = lvl
+                except Exception as e:
+                    log.debug(f"hint level error: {e}")
+                log.info(f"detected text='{detected_text}' matched skill='{matched_skill}' Hint: lv {hint_level}")
                 normalized_name = normalize_text_for_match(name_for_match)
                 in_blacklist = any(normalized_name == normalize_text_for_match(b) for b in skill_blacklist)
                 
@@ -1002,6 +1066,7 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                                 "gold": is_gold,
                                 "subsequent_skill": "",
                                 "available": available,
+                                "hint_level": int(hint_level),
                                 "y_pos": int(pos_center[1])})
             img[match_result.matched_area[0][1]:match_result.matched_area[1][1],
                 match_result.matched_area[0][0]:match_result.matched_area[1][0]] = 0

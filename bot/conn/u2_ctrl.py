@@ -131,7 +131,7 @@ class U2AndroidController(AndroidController):
             self.repetitive_click_count += 1
         else:
             self.repetitive_other_clicks += 1
-            if self.repetitive_other_clicks >= 5:
+            if self.repetitive_other_clicks >= 2:
                 self.repetitive_click_name = click_key
                 self.repetitive_click_count = 1
                 self.repetitive_other_clicks = 0

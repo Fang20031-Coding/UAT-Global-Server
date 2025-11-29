@@ -961,10 +961,12 @@
                           placeholder="Search by skill name or description" />
                       </div>
                       <div class="col-md-4 d-flex align-items-end">
-                        <button type="button" class="btn btn-outline-secondary btn-sm ml-auto"
-                          @click="clearSkillFilters">
-                          <i class="fas fa-times"></i> Clear Filters
-                        </button>
+                        <div class="skill-filter-actions ml-auto">
+                          <button type="button" class="btn btn--outline" @click="onSelectAllFiltered">Select All</button>
+                          <button type="button" class="btn btn--outline" @click="onBlacklistAllFiltered">Blacklist All</button>
+                          <button type="button" class="btn btn--outline" @click="onClearAllFiltered">Clear All</button>
+                          <button type="button" class="btn btn--outline" @click="onUnblacklistAllFiltered">Unblacklist All</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1210,6 +1212,17 @@
 .blacklist-box.drop-hover {
   outline: 2px dashed var(--accent);
   background: rgba(255,45,163,0.06);
+}
+
+#category-skill .skill-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  width: 100%;
+}
+#category-skill .skill-filter-actions .btn {
+  white-space: nowrap;
 }
 
 </style>
@@ -1717,6 +1730,80 @@ export default {
     }
   },
     methods: {
+      getFilteredNames() {
+        const names = [];
+        Object.keys(this.filteredSkillsByType).forEach(type => {
+          (this.filteredSkillsByType[type] || []).forEach(s => names.push(s.name));
+        });
+        return names;
+      },
+      onSelectAllFiltered() {
+        const targetPriority = Math.max(...this.activePriorities);
+        this.getFilteredNames().forEach(name => {
+          const bi = this.blacklistedSkills.indexOf(name);
+          if (bi > -1) this.blacklistedSkills.splice(bi, 1);
+          if (!this.selectedSkills.includes(name)) this.selectedSkills.push(name);
+          this.$set ? this.$set(this.skillAssignments, name, targetPriority) : (this.skillAssignments[name] = targetPriority);
+        });
+      },
+      onBlacklistAllFiltered() {
+        this.getFilteredNames().forEach(name => {
+          const si = this.selectedSkills.indexOf(name);
+          if (si > -1) this.selectedSkills.splice(si, 1);
+          if (this.skillAssignments[name] !== undefined) delete this.skillAssignments[name];
+          if (!this.blacklistedSkills.includes(name)) this.blacklistedSkills.push(name);
+        });
+      },
+      onClearAllFiltered() {
+        const set = new Set(this.getFilteredNames());
+        this.selectedSkills = this.selectedSkills.filter(name => {
+          if (set.has(name)) {
+            if (this.skillAssignments[name] !== undefined) delete this.skillAssignments[name];
+            return false;
+          }
+          return true;
+        });
+      },
+      onUnblacklistAllFiltered() {
+        const set = new Set(this.getFilteredNames());
+        this.blacklistedSkills = this.blacklistedSkills.filter(name => !set.has(name));
+      },
+      selectAllFilteredToCurrentPriority() {
+        const targetPriority = Math.max(...this.activePriorities);
+        const names = [];
+        Object.keys(this.filteredSkillsByType).forEach(type => {
+          this.filteredSkillsByType[type].forEach(s => names.push(s.name));
+        });
+        names.forEach(name => {
+          const bi = this.blacklistedSkills.indexOf(name);
+          if (bi > -1) this.blacklistedSkills.splice(bi, 1);
+          if (!this.selectedSkills.includes(name)) this.selectedSkills.push(name);
+          this.$set ? this.$set(this.skillAssignments, name, targetPriority) : (this.skillAssignments[name] = targetPriority);
+        });
+      },
+      blacklistAllFiltered() {
+        const names = [];
+        Object.keys(this.filteredSkillsByType).forEach(type => {
+          this.filteredSkillsByType[type].forEach(s => names.push(s.name));
+        });
+        names.forEach(name => {
+          const si = this.selectedSkills.indexOf(name);
+          if (si > -1) this.selectedSkills.splice(si, 1);
+          if (this.skillAssignments[name] !== undefined) delete this.skillAssignments[name];
+          if (!this.blacklistedSkills.includes(name)) this.blacklistedSkills.push(name);
+        });
+      },
+      clearCurrentPriority() {
+        const targetPriority = Math.max(...this.activePriorities);
+        this.selectedSkills = this.selectedSkills.filter(name => {
+          const keep = (this.skillAssignments[name] ?? 0) !== targetPriority;
+          if (!keep) delete this.skillAssignments[name];
+          return keep;
+        });
+      },
+      clearBlacklist() {
+        this.blacklistedSkills = [];
+      },
             getSelectedSkillsForPriority(priority) {
         return this.selectedSkills.filter(name => (this.skillAssignments[name] ?? 0) === priority);
       },

@@ -411,6 +411,16 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         except Exception:
             pass
 
+        from bot.conn.fetch import read_energy
+        try:
+            current_energy = int(read_energy())
+        except Exception:
+            current_energy = None
+        try:
+            rest_threshold = int(getattr(ctx.cultivate_detail, 'rest_treshold', getattr(ctx.cultivate_detail, 'fast_path_energy_limit', 48)))
+        except Exception:
+            rest_threshold = 48
+
         for idx in range(5):
             til = ctx.cultivate_detail.turn_info.training_info_list[idx]
             target_type = type_map[idx]
@@ -435,10 +445,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     score += 0.05
                     continue
                 if ctype == SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN:
-                    # Do not count or score unknowns
                     continue
                 if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
-                    # Skip if favor cannot be determined
                     continue
                 is_rb = False
                 if hasattr(sc, "is_rainbow"):
@@ -447,7 +455,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     is_rb = True
                 if is_rb:
                     rbc += 1
-                    score += w_rainbow
+                    if idx == 4 and current_energy is not None and current_energy > 85:
+                        log.info("energy >85, wit rainbow=0")
+                    else:
+                        score += w_rainbow
                     continue
                 if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
                     lv1c += 1
@@ -504,7 +515,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 is_aoharu = False
             if is_aoharu and idx == 4 and se_w != 0.0 and spirit_counts[idx] > 0:
                 try:
-                    from bot.conn.fetch import read_energy
                     energy = int(read_energy())
                 except Exception:
                     energy = None
@@ -543,6 +553,21 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         score *= mult_fr
             except Exception:
                 pass
+
+            if idx == 4 and current_energy is not None:
+                if current_energy > rest_threshold:
+                    score *= 0.90
+                    log.info("energy > rest threshold, -10% to wit score")
+                elif 60 <= current_energy <= (rest_threshold + 10):
+                    if rbc > 0:
+                        log.info("60 > energy < rest threshold with rainbows +16% to wit score")
+                        score *= 1.16
+                    else:
+                        log.info("60 > energy < rest threshold, +10% to wit score")
+                        score *= 1.10
+                elif current_energy > 85:
+                    pass
+
             try:
                 expect_attr = ctx.cultivate_detail.expect_attribute
                 if isinstance(expect_attr, list) and len(expect_attr) == 5:

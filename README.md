@@ -210,10 +210,14 @@ Something Something this is for educational purposes only. Please do not misuse 
 ![alt text](docs/topcunt.gif)
 
 ## Changelogs
-- **28/12/2025**   
+- **5/12/2025**   
+Added a overwrite for event "Training" to click the 5th choice if 5 choices are detected (apparently people are still getting stuck there somehow)
+Training tweaks. Energy management should be more effecient now  
+
+- **30/11/2025**   
 added -10% score penalty to the highest stat in senior year to hopefully balance stats out (experimental might remove).  
 
-- **28/12/2025**   
+- **29/11/2025**   
 Fixed getting stuck at aoharu tutorial event sometimes  
 Updated event list    
 Added Select/Deselect all skills blacklist/priority based on whats being searched  

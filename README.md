@@ -209,6 +209,9 @@ Something Something this is for educational purposes only. Please do not misuse 
 ![alt text](docs/topcunt.gif)
 
 ## Changelogs
+- **8/13/2025**  
+Pal Cards are good to go  
+
 - **8/12/2025**  
 Updated event list  
 Added custom card names  

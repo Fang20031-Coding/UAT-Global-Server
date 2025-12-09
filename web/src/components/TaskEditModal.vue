@@ -375,6 +375,53 @@
                     </div>
                   </div>
                 </div>
+                
+
+                <div class="pal-card-config-section mt-3">
+                  <div class="pal-card-config-header">
+                    <i class="fas fa-star"></i>
+                    Pal Card Config
+                  </div>
+                  <div class="pal-card-config-content">
+                    <div class="config-row">
+                      <label class="config-label">Pal Friendship Score</label>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="pal-blue-score">Blue</label>
+                            <input type="number" step="0.001" v-model.number="palFriendshipScore[0]" class="form-control form-control-sm" id="pal-blue-score" min="0" max="1">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="pal-green-score">Green</label>
+                            <input type="number" step="0.001" v-model.number="palFriendshipScore[1]" class="form-control form-control-sm" id="pal-green-score" min="0" max="1">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="pal-maxed-score">Maxed</label>
+                            <input type="number" step="0.001" v-model.number="palFriendshipScore[2]" class="form-control form-control-sm" id="pal-maxed-score" min="0" max="1">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="config-row mt-3">
+                      <label class="config-label">Pal Card Multi (0-100%)</label>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <div class="input-group input-group-sm">
+                              <input type="number" step="0.01" v-model.number="palCardMultiplier" class="form-control" id="pal-card-multi" min="0" max="1">
+                              <span class="input-group-text">{{ (palCardMultiplier * 100).toFixed(0) }}%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <div class="form-group">
@@ -1271,6 +1318,45 @@
   overflow: hidden;
 }
 
+.pal-card-config-section {
+  border: 1px solid rgba(255, 45, 163, 0.3);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+}
+
+.pal-card-config-header {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.pal-card-config-header i {
+  margin-right: 8px;
+}
+
+.pal-card-config-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.config-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.config-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
 .pal-config-header {
   display: flex;
   justify-content: space-between;
@@ -1603,6 +1689,9 @@ export default {
       showPalConfigPanel: true,
       palCardStore: {},
       palSelected: "",
+      // Pal card scoring configuration
+      palFriendshipScore: [0.08, 0.057, 0.018],
+      palCardMultiplier: 0.1,
 
       // URA配置
       skillEventWeight: [0, 0, 0],
@@ -2555,10 +2644,14 @@ export default {
         payload.attachment_data.prioritize_recreation = true;
         payload.attachment_data.pal_name = this.palSelected;
         payload.attachment_data.pal_thresholds = this.palCardStore[this.palSelected];
+        payload.attachment_data.pal_friendship_score = [...this.palFriendshipScore];
+        payload.attachment_data.pal_card_multiplier = this.palCardMultiplier;
       } else {
         payload.attachment_data.prioritize_recreation = false;
         payload.attachment_data.pal_name = "";
         payload.attachment_data.pal_thresholds = [];
+        payload.attachment_data.pal_friendship_score = [0.08, 0.057, 0.018];
+        payload.attachment_data.pal_card_multiplier = 0.1;
       }
 
       this.axios.post("/task", payload).then(
@@ -2599,6 +2692,17 @@ export default {
       }
       if ('pal_card_store' in this.presetsUse && this.presetsUse.pal_card_store) {
         Object.assign(this.palCardStore, this.presetsUse.pal_card_store)
+      }
+
+      if ('pal_friendship_score' in this.presetsUse && Array.isArray(this.presetsUse.pal_friendship_score)) {
+        this.palFriendshipScore = [...this.presetsUse.pal_friendship_score]
+      } else {
+        this.palFriendshipScore = [0.08, 0.057, 0.018]
+      }
+      if ('pal_card_multiplier' in this.presetsUse) {
+        this.palCardMultiplier = this.presetsUse.pal_card_multiplier
+      } else {
+        this.palCardMultiplier = 0.1
       }
       if ('event_overrides' in this.presetsUse && this.presetsUse.event_overrides) {
         this.eventChoicesSelected = { ...this.presetsUse.event_overrides }
@@ -2808,7 +2912,10 @@ export default {
 
         pal_selected: this.palSelected,
         pal_card_store: JSON.parse(JSON.stringify(this.palCardStore)),
-        // New skill system data
+
+        pal_friendship_score: [...this.palFriendshipScore],
+        pal_card_multiplier: this.palCardMultiplier,
+
         selectedSkills: [...this.selectedSkills],
         blacklistedSkills: [...this.blacklistedSkills],
         skillAssignments: { ...this.skillAssignments },

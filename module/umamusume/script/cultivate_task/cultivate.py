@@ -171,7 +171,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 ctx.ctrl.click_by_point(CULTIVATE_TRIP)
         else:
             log.warning("forced going to training")
-            ctx.cultivate_detail.turn_info.turn_operation = None
+            ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRAINING
             ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
         return
 
@@ -485,6 +485,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             lv2c = 0
             rbc = 0
             npc = 0
+            pal_count = 0
             score = 0.0
             for sc in (getattr(til, "support_card_info_list", []) or []):
                 favor = getattr(sc, "favor", SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN)
@@ -505,6 +506,17 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     continue
                 if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
                     continue
+
+                if ctype == SupportCardType.SUPPORT_CARD_TYPE_FRIEND:
+                    pal_count += 1
+                    pal_scores = ctx.cultivate_detail.pal_friendship_score
+                    if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
+                        score += pal_scores[0]
+                    elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
+                        score += pal_scores[1]
+                    elif favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4):
+                        score += pal_scores[2]
+                    continue
                 is_rb = False
                 if hasattr(sc, "is_rainbow"):
                     is_rb = bool(getattr(sc, "is_rainbow")) and (ctype == target_type)
@@ -523,6 +535,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
                     lv2c += 1
                     score += w_lv2
+            
             log.info(f"{names[idx]}:")
             try:
                 fr = int(getattr(til, 'failure_rate', -1))
@@ -535,6 +548,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             log.info(f"  Rainbows: {rbc}")
             if npc:
                 log.info(f"  NPCs: {npc}")
+            if pal_count:
+                log.info(f"  Pal cards: {pal_count}")
             try:
                 if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
                     log.info(f"  special training: {special_counts[idx]}")
@@ -600,6 +615,13 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 se_bonus = se_w * float(se_lane) * mult
                 log.info(f"  Spirit explosion bonus: +{se_bonus:.3f}")
                 score += se_bonus
+
+            if pal_count > 0:
+                base_score = score
+                clamped_multiplier = max(0.0, min(1.0, ctx.cultivate_detail.pal_card_multiplier))
+                multiplier = 1.0 + clamped_multiplier
+                score *= multiplier
+                log.info(f"  Pal card multiplier: x{multiplier:.2f} (Base: {base_score:.3f} -> Final: {score:.3f})")
             try:
                 if getattr(ctx.cultivate_detail, 'compensate_failure', True):
                     fr_val = int(getattr(til, 'failure_rate', -1))

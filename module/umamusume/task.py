@@ -30,6 +30,8 @@ class TaskDetail:
     prioritize_recreation: bool
     pal_name: str
     pal_thresholds: list
+    pal_friendship_score: list[float]
+    pal_card_multiplier: float
     score_value: list
     compensate_failure: bool
     # 剧本相关配置
@@ -91,6 +93,9 @@ def build_task(task_execute_mode: TaskExecuteMode, task_type: int,
     td.prioritize_recreation = attachment_data.get('prioritize_recreation', False)
     td.pal_name = attachment_data.get('pal_name', "")
     td.pal_thresholds = attachment_data.get('pal_thresholds', [])
+
+    td.pal_friendship_score = attachment_data.get('pal_friendship_score', [0.08, 0.057, 0.018])
+    td.pal_card_multiplier = attachment_data.get('pal_card_multiplier', 0.1)
 
     td.score_value = attachment_data.get('score_value', [
         [0.11, 0.10, 0.01, 0.09],

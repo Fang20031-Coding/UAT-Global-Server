@@ -35,6 +35,8 @@ class CultivateContextDetail:
     use_last_parents: bool
     pal_event_stage: int
     pal_name: str
+    pal_friendship_score: list[float]
+    pal_card_multiplier: float
 
     def __init__(self):
         self.expect_attribute = None
@@ -60,6 +62,8 @@ class CultivateContextDetail:
         self.use_last_parents = False
         self.pal_event_stage = 0
         self.pal_name = ""
+        self.pal_friendship_score = [0.08, 0.057, 0.018]
+        self.pal_card_multiplier = 0.1
 
     def reset_skill_learn(self):
         self.learn_skill_done = False
@@ -119,6 +123,9 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         detail.prioritize_recreation = getattr(task.detail, 'prioritize_recreation', False)
         detail.pal_name = getattr(task.detail, 'pal_name', "")
         detail.pal_thresholds = list(getattr(task.detail, 'pal_thresholds', []))
+
+        detail.pal_friendship_score = list(getattr(task.detail, 'pal_friendship_score', [0.08, 0.057, 0.018]))
+        detail.pal_card_multiplier = float(getattr(task.detail, 'pal_card_multiplier', 0.1))
 
         detail.score_value = getattr(task.detail, 'score_value', [
             [0.11, 0.10, 0.01, 0.09],

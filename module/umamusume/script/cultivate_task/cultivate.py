@@ -941,6 +941,7 @@ def script_cultivate_event(ctx: UmamusumeContext):
     try:
         from bot.recog.ocr import find_similar_text
         event_blacklist = [
+            "", 
             "Team Support",
         ]
         if isinstance(event_name, str) and event_name.strip():

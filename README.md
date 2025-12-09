@@ -210,7 +210,7 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## Changelogs
 - **8/13/2025**  
-Pal Cards are good to go
+Pal Cards are good to go  
 Fixed yesterday's infinite loop fuck up  
 
 - **8/12/2025**  

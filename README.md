@@ -1,6 +1,7 @@
 
 # UMAMUSUME AUTO TRAINER
 ## sorry about causing a inf loop yesterday should be fixed now
+## PAL CARDS ARE DONE 
 
 ![UAT](docs/main.png)
 

@@ -101,7 +101,8 @@ def build_task(task_execute_mode: TaskExecuteMode, task_type: int,
         [0.11, 0.10, 0.01, 0.09],
         [0.11, 0.10, 0.09, 0.09],
         [0.11, 0.10, 0.12, 0.09],
-        [0.03, 0.05, 0.15, 0.09]
+        [0.03, 0.05, 0.15, 0.09],
+        [0, 0, 0.15, 0, 0]
     ])
     
     td.cultivate_result = {}

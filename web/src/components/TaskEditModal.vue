@@ -596,6 +596,33 @@
                     </div>
                   </div>
                 </div>
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <label>Finale</label>
+                    <div class="row">
+                      <div class="col-md-2 col-6">
+                        <div class="form-group mb-1"><small>Blue Friendship</small></div>
+                        <input type="number" step="0.01" v-model.number="scoreValueFinale[0]" class="form-control">
+                      </div>
+                      <div class="col-md-2 col-6">
+                        <div class="form-group mb-1"><small>Green Friendship</small></div>
+                        <input type="number" step="0.01" v-model.number="scoreValueFinale[1]" class="form-control">
+                      </div>
+                      <div class="col-md-2 col-6">
+                        <div class="form-group mb-1"><small>Rainbow</small></div>
+                        <input type="number" step="0.01" v-model.number="scoreValueFinale[2]" class="form-control">
+                      </div>
+                      <div class="col-md-2 col-6">
+                        <div class="form-group mb-1"><small>Hint</small></div>
+                        <input type="number" step="0.01" v-model.number="scoreValueFinale[3]" class="form-control">
+                      </div>
+                      <div class="col-md-2 col-6" v-if="selectedScenario === 2">
+                        <div class="form-group mb-1"><small>Special Training</small></div>
+                        <input type="number" step="0.01" v-model.number="specialFinale" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -1747,10 +1774,12 @@ export default {
       scoreValueClassic: [0.11, 0.10, 0.09, 0.09],
       scoreValueSenior: [0.11, 0.10, 0.12, 0.09],
       scoreValueSeniorAfterSummer: [0.03, 0.05, 0.15, 0.09],
+      scoreValueFinale: [0, 0, 0.27, 0],
       specialJunior: 0.095,
       specialClassic: 0.095,
       specialSenior: 0.095,
       specialSeniorAfterSummer: 0.095,
+      specialFinale: 0,
           }
   },
   mounted() {
@@ -2018,6 +2047,11 @@ export default {
       if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
         this.scoreValueSeniorAfterSummer = [...val, ...Array(5 - val.length).fill(0.07)]
       }
+    },
+    scoreValueFinale(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueFinale = [...val, ...Array(5 - val.length).fill(0)]
+      }
     }
   },
     methods: {
@@ -2259,6 +2293,7 @@ export default {
         setDefault(this.scoreValueClassic)
         setDefault(this.scoreValueSenior)
         setDefault(this.scoreValueSeniorAfterSummer)
+        setDefault(this.scoreValueFinale)
       }
     },
         normalizeScoreArrays(targetLen) {
@@ -2270,6 +2305,7 @@ export default {
       ensureLen(this.scoreValueClassic, 0.12)
       ensureLen(this.scoreValueSenior, 0.09)
       ensureLen(this.scoreValueSeniorAfterSummer, 0.07)
+      ensureLen(this.scoreValueFinale, 0)
     },
     togglePresetMenu() {
       this.showPresetMenu = !this.showPresetMenu;
@@ -2609,7 +2645,8 @@ export default {
             (this.selectedScenario === 2 ? this.scoreValueJunior.slice(0,5) : this.scoreValueJunior.slice(0,4)),
             (this.selectedScenario === 2 ? this.scoreValueClassic.slice(0,5) : this.scoreValueClassic.slice(0,4)),
             (this.selectedScenario === 2 ? this.scoreValueSenior.slice(0,5) : this.scoreValueSenior.slice(0,4)),
-            (this.selectedScenario === 2 ? this.scoreValueSeniorAfterSummer.slice(0,5) : this.scoreValueSeniorAfterSummer.slice(0,4))
+            (this.selectedScenario === 2 ? this.scoreValueSeniorAfterSummer.slice(0,5) : this.scoreValueSeniorAfterSummer.slice(0,4)),
+            (this.selectedScenario === 2 ? this.scoreValueFinale.slice(0,5) : this.scoreValueFinale.slice(0,4))
           ],
           // Motivation thresholds for trip decisions
           "motivation_threshold_year1": this.motivationThresholdYear1,
@@ -2715,9 +2752,12 @@ export default {
         this.scoreValueClassic = [...this.presetsUse.scoreValue[1]]
         this.scoreValueSenior = [...this.presetsUse.scoreValue[2]]
         this.scoreValueSeniorAfterSummer = [...this.presetsUse.scoreValue[3]]
+        if (this.presetsUse.scoreValue.length >= 5) {
+          this.scoreValueFinale = [...this.presetsUse.scoreValue[4]]
+        }
         const targetLen = (this.selectedScenario === 2) ? 5 : 4;
-        const specials = [0.15, 0.12, 0.09, 0.07]
-        const arrs = [this.scoreValueJunior, this.scoreValueClassic, this.scoreValueSenior, this.scoreValueSeniorAfterSummer]
+        const specials = [0.15, 0.12, 0.09, 0.07, 0]
+        const arrs = [this.scoreValueJunior, this.scoreValueClassic, this.scoreValueSenior, this.scoreValueSeniorAfterSummer, this.scoreValueFinale]
         arrs.forEach((arr, i) => {
           if (arr.length > targetLen) arr.splice(targetLen)
           while (arr.length < targetLen) arr.push(targetLen === 5 ? specials[i] : 0.09)
@@ -2902,7 +2942,8 @@ export default {
           this.scoreValueJunior,
           this.scoreValueClassic,
           this.scoreValueSenior,
-          this.scoreValueSeniorAfterSummer
+          this.scoreValueSeniorAfterSummer,
+          this.scoreValueFinale
         ],
         // Motivation thresholds for trip decisions
         motivation_threshold_year1: this.motivationThresholdYear1,

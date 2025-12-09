@@ -131,7 +131,8 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
             [0.11, 0.10, 0.01, 0.09],
             [0.11, 0.10, 0.09, 0.09],
             [0.11, 0.10, 0.12, 0.09],
-            [0.03, 0.05, 0.15, 0.09]
+            [0.03, 0.05, 0.15, 0.09],
+            [0, 0, 0.27, 0, 0]
         ])
         detail.compensate_failure = getattr(task.detail, 'compensate_failure', True)
         detail.use_last_parents = getattr(task.detail, 'use_last_parents', False)

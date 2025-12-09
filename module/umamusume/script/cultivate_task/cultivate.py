@@ -409,7 +409,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             [0.11, 0.10, 0.01, 0.09],
             [0.11, 0.10, 0.09, 0.09],
             [0.11, 0.10, 0.12, 0.09],
-            [0.03, 0.05, 0.15, 0.09]
+            [0.03, 0.05, 0.15, 0.09],
+            [0, 0, 0.15, 0, 0]
         ])
         def resolve_weights(sv_list, idx):
             try:
@@ -421,7 +422,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             base = list(arr[:4])
             if len(base) < 4:
                 base += [0.09] * (4 - len(base))
-            special_defaults = [0.15, 0.12, 0.09, 0.07]
+            special_defaults = [0.15, 0.12, 0.09, 0.07, 0]
             try:
                 special = arr[4]
             except Exception:
@@ -433,8 +434,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             w_lv1, w_lv2, w_rainbow, w_hint, w_special = resolve_weights(sv, 1)
         elif 48 < date <= 60:
             w_lv1, w_lv2, w_rainbow, w_hint, w_special = resolve_weights(sv, 2)
-        else:
+        elif 60 < date <= 72:
             w_lv1, w_lv2, w_rainbow, w_hint, w_special = resolve_weights(sv, 3)
+        else:
+            w_lv1, w_lv2, w_rainbow, w_hint, w_special = resolve_weights(sv, 4)
         try:
             se_weights = getattr(getattr(ctx, 'task', None), 'detail', None)
             se_weights = getattr(se_weights, 'spirit_explosion', None)

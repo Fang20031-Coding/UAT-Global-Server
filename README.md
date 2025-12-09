@@ -295,6 +295,4 @@ Maybe fix card selection breaking
 
 ## Planned/In progress (In order from top to bottom)
 
-- Customizable trigger criteria for every stage of Pal card outing events; Max mood, energy and training score.  
-
 - Customizable minimum training score to dictate conservation of energy 2 turns before summer.  

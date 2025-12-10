@@ -304,4 +304,4 @@ Maybe fix card selection breaking
 
 ## Planned/In progress (In order from top to bottom)
 
-- Customizable minimum training score to dictate conservation of energy 2 turns before summer.  
+- im going to uma my musumes 

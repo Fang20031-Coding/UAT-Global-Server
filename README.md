@@ -14,7 +14,7 @@
 - ✅ **Completely hands off**: Recover tp, Starting runs, finding the right guest card are all automated.
   - **Everything is 100% automated you can just afk for **DAYS** until legacy umas are full**
   - **Handles everything from disconnections to the game crashing. The show will go on as long as there isn't a new update. (it handles that too now lol)**
-  - **Supports background play via emulators. (You can play another game while this runs)**
+  - **Supports background play as this runs on mobile emulators not the steam release. (You can play another game while this runs)**
 
 - ✅ **Able to play every part of every Senario (As of writing this; URA and Unity)**
   - Is able to perform every action a human would take. From comparing skill hint levels to playing the claw machine and even deciding whether to conserve energy before summer or not. Everything you normally do this bot probably does it.

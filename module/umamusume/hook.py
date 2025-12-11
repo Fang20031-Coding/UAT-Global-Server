@@ -209,6 +209,8 @@ def after_hook(ctx: UmamusumeContext):
                 ctx.ctrl.click(355, 1082, 'select opp2')
                 time.sleep(0.5)
                 ctx.ctrl.click(522, 930, 'select opp2 cont')
+                time.sleep(0.17)
+                ctx.ctrl.click(522, 930, 'select opp2 cont')
                 return
             if image_match(img[1204:1219, 476:597], REF_ALL_RES).find_match:
                 ctx.ctrl.click(536, 1211, 'all res')

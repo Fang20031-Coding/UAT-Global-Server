@@ -14,7 +14,7 @@
 - ✅ **Completely hands off**: Recover tp, Starting runs, finding the right guest card are all automated.
   - **Everything is 100% automated you can just afk for **DAYS** until legacy umas are full**
   - **Handles everything from disconnections to the game crashing. The show will go on as long as there isn't a new update. (it handles that too now lol)**
-  - **Supports background play via emulators. (You can play another game while this runs)**
+  - **Supports background play as this runs on mobile emulators not the steam release. (You can play another game while this runs)**
 
 - ✅ **Able to play every part of every Senario (As of writing this; URA and Unity)**
   - Is able to perform every action a human would take. From comparing skill hint levels to playing the claw machine and even deciding whether to conserve energy before summer or not. Everything you normally do this bot probably does it.
@@ -22,7 +22,8 @@
 - ✅ **Supports every single uma and deckType**:
  -Every Aspect of training is customizable, If you're willing to spend time in the settings any playstyle becomes possible. For a quick overview please watch the video below as to what you can edit.
 
-<video src="docs/demo.mp4" controls width="700"></video>
+[demo.webm](https://github.com/user-attachments/assets/40a5c402-d154-4b02-8a61-96ba07e29319)
+
 
 - I'd say its about 80% as competent as a actual player. This makes the bot not just a fan/parent farmer but it's more than capable of producing ACES  
   ## [Showcase of 3 runs in a row (loop until canceled)](https://www.youtube.com/watch?v=vboSuUZyeU0)

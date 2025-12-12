@@ -1,4 +1,3 @@
-just realized recreation logic is broken if u select pal and theres no pal notif lol
 ![uma musume](docs/umabike.gif)
 # UMAMUSUME AUTO TRAINER
 [![Discord](https://img.shields.io/badge/Discord-join-green?logo=discord&logoColor=white)](https://discord.gg/8nwNZdxd72)  
@@ -147,9 +146,11 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 
 ## Changelogs
+- **12/12/2025**  
+Fixed recreation breaking training (forcing wit) when pal outing is configured with no pal notification  
+
 - **11/12/2025**  
 bug fixes I'm not gonna bother listing.   
-
 
 - **9/12/2025**  
 Fixed outing not having priority over rest  

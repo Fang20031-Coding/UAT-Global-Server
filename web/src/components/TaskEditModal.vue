@@ -623,6 +623,25 @@
                     </div>
                   </div>
                 </div>
+
+                <hr style="border-color: var(--accent); opacity: 0.5; margin: 12px 0;">
+                <div class="form-group" style="margin-top: 16px;">
+                  <div style="color: var(--accent);">Training Thresholds</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 col-6">
+                    <div class="form-group">
+                      <label for="inputSummerScoreThreshold">Summer Score Threshold</label>
+                      <input v-model.number="summerScoreThreshold" type="number" step="0.01" min="0" max="1" class="form-control" id="inputSummerScoreThreshold">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-6">
+                    <div class="form-group">
+                      <label for="inputWitFallbackThreshold">Wit Fallback Threshold</label>
+                      <input v-model.number="witFallbackThreshold" type="number" step="0.01" min="0" max="1" class="form-control" id="inputWitFallbackThreshold">
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -1705,6 +1724,8 @@ export default {
       clockUseLimit: 99,
       restTreshold: 48,
       compensateFailure: true,
+      summerScoreThreshold: 0.34,
+      witFallbackThreshold: 0.01,
       learnSkillThreshold: 888,
       cureAsapConditions: 'Migraine,Night Owl,Skin Outbreak,Slacker,Slow Metabolism,(Practice poor isn\'t worth a turn to cure)',
       recoverTP: 0,
@@ -2650,6 +2671,8 @@ export default {
           "allow_recover_tp": this.recoverTP,
           "rest_treshold": this.restTreshold,
           "compensate_failure": this.compensateFailure,
+          "summer_score_threshold": this.summerScoreThreshold,
+          "wit_fallback_threshold": this.witFallbackThreshold,
           "use_last_parents": this.useLastParents,
           "learn_skill_only_user_provided": this.learnSkillOnlyUserProvided,
           "extra_weight": [this.extraWeight1, this.extraWeight2, this.extraWeight3, this.extraWeightSummer],
@@ -2724,6 +2747,8 @@ export default {
         this.supportCardLevel = this.presetsUse.follow_support_card_level,
         this.clockUseLimit = this.presetsUse.clock_use_limit,
         this.restTreshold = (this.presetsUse.rest_treshold || this.presetsUse.fast_path_energy_limit || 48),
+        this.summerScoreThreshold = (this.presetsUse.summer_score_threshold !== undefined ? this.presetsUse.summer_score_threshold : 0.34),
+        this.witFallbackThreshold = (this.presetsUse.wit_fallback_threshold !== undefined ? this.presetsUse.wit_fallback_threshold : 0.01),
       this.compensateFailure = (this.presetsUse.compensate_failure !== false)
       this.useLastParents = (this.presetsUse.use_last_parents === true)
       this.overrideInsufficientFansForcedRaces = (this.presetsUse.override_insufficient_fans_forced_races === true)
@@ -2943,6 +2968,8 @@ export default {
         follow_support_card_level: this.supportCardLevel,
         clock_use_limit: this.clockUseLimit,
         rest_treshold: this.restTreshold,
+        summer_score_threshold: this.summerScoreThreshold,
+        wit_fallback_threshold: this.witFallbackThreshold,
         learn_skill_threshold: this.learnSkillThreshold,
         race_tactic_1: this.selectedRaceTactic1,
         race_tactic_2: this.selectedRaceTactic2,

@@ -408,8 +408,9 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 best_score = training_score[best_idx] if len(training_score) == 5 else 0.0
             except Exception:
                 best_score = 0.0
-            if best_score < 0.337:
-                log.info("Low training score before summer, conserving energy (score < 0.34)")
+            summer_threshold = getattr(ctx.cultivate_detail, 'summer_score_threshold', 0.34)
+            if best_score < summer_threshold:
+                log.info(f"Low training score before summer, conserving energy (score < {summer_threshold:.2f})")
                 if energy < SUMMER_CONSERVE_ENERGY:
                     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 else:

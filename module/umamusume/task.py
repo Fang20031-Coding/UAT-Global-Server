@@ -88,7 +88,9 @@ def build_task(task_execute_mode: TaskExecuteMode, task_type: int,
     td.use_last_parents = attachment_data.get('use_last_parents', False)
     td.cure_asap_conditions = attachment_data.get("cure_asap_conditions", "")
     td.rest_treshold = attachment_data.get('rest_treshold', attachment_data.get('fast_path_energy_limit', 48))
-    # Load motivation thresholds (with defaults)
+    td.summer_score_threshold = attachment_data.get('summer_score_threshold', 0.34)
+    td.wit_fallback_threshold = attachment_data.get('wit_fallback_threshold', 0.01)
+    
     td.motivation_threshold_year1 = attachment_data.get('motivation_threshold_year1', 3)
     td.motivation_threshold_year2 = attachment_data.get('motivation_threshold_year2', 4)
     td.motivation_threshold_year3 = attachment_data.get('motivation_threshold_year3', 4)

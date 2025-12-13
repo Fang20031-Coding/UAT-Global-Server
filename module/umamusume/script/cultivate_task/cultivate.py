@@ -790,9 +790,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
 
         max_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
         eps = 1e-9
-        relevant_counts = [getattr(ctx.cultivate_detail.turn_info.training_info_list[i], 'relevant_count', 0) for i in range(5)]
-        if all(s < 0.01 for s in computed_scores):
-            log.info("no good training option. umamusume is a wit game")
+        # relevant_counts = [getattr(ctx.cultivate_detail.turn_info.training_info_list[i], 'relevant_count', 0) for i in range(5)]
+        wit_fallback_threshold = getattr(ctx.cultivate_detail, 'wit_fallback_threshold', 0.01)
+        if all(s < wit_fallback_threshold for s in computed_scores):
+            log.info(f"no good training option (all scores < {wit_fallback_threshold:.2f}). umamusume is a wit game")
             chosen_idx = 4
         elif date >= 61 and sum(rbc_counts) == 0:
             chosen_idx = 4
@@ -800,8 +801,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             if date in (35, 36, 59, 60):
                 best_idx_tmp = int(np.argmax(computed_scores))
                 best_score_tmp = computed_scores[best_idx_tmp]
-                if best_score_tmp < 0.37:
-                    log.info("Low training score before summer, conserving energy (score < 0.37)")
+                summer_threshold = getattr(ctx.cultivate_detail, 'summer_score_threshold', 0.34)
+                if best_score_tmp < summer_threshold:
+                    log.info(f"Low training score before summer, conserving energy (score < {summer_threshold:.2f})")
                     chosen_idx = 4
                 else:
                     ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]

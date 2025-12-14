@@ -146,7 +146,7 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 
 ## Changelogs
-- **13/12/2025**  
+- **14/12/2025**  
 Having 2+ rainbow now applies a 7.5% multiplier for every additional rainbow above 1.   
 
 - **13/12/2025**  

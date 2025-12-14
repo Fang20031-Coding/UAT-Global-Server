@@ -147,7 +147,8 @@ Something Something this is for educational purposes only. Please do not misuse 
 
 ## Changelogs
 - **14/12/2025**  
-Having 2+ rainbow now applies a 7.5% multiplier for every additional rainbow above 1.   
+Having 2+ rainbow now applies a 7.5% multiplier for every additional rainbow above 1.    
+Fixed spirit explosions and special training not respecting user inputs.   
 
 - **13/12/2025**  
 Minimum score before conserving energy before summer and minimum score before forcing wit training are now customizable.   

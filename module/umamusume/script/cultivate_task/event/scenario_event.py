@@ -92,9 +92,10 @@ def aoharuhai_team_name_event(ctx: UmamusumeContext) -> int:
         try:
             ctx.ctrl.click(int(gx), int(gy), "Select Aoharu team by name")
             ctx.cultivate_detail.event_cooldown_until = time.time() + 2.5
+            return 0
         except Exception:
             pass
         return 0
 
-    log.info(f"No match for configured Youth Cup team name within ROI; selecting Default <Carrot> (last option)")
-    return len(event_selector_list) if len(event_selector_list) > 0 else 4
+    log.info("No match for configured Youth Cup team name")
+    return 0

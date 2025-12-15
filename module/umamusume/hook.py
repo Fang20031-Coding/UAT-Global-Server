@@ -171,6 +171,27 @@ def after_hook(ctx: UmamusumeContext):
         if scv == ScenarioType.SCENARIO_TYPE_AOHARUHAI.value:
             if image_match(img[984:1025, 297:365], REF_AOHARU_RACE).find_match:
                 try:
+                    cd = getattr(getattr(ctx, 'cultivate_detail', None), 'event_cooldown_until', 0)
+                    if isinstance(cd, (int, float)) and time.time() < cd:
+                        return
+                except Exception:
+                    pass
+                
+                    h, w = img.shape[:2]
+                    team_roi_x1, team_roi_y1, team_roi_x2, team_roi_y2 = 70, 315, 162, 811
+                    team_roi_x1 = max(0, min(w, team_roi_x1)); team_roi_x2 = max(team_roi_x1, min(w, team_roi_x2))
+                    team_roi_y1 = max(0, min(h, team_roi_y1)); team_roi_y2 = max(team_roi_y1, min(h, team_roi_y2))
+                    team_roi = img[team_roi_y1:team_roi_y2, team_roi_x1:team_roi_x2]
+                    
+                    for team_tpl in [REF_AOHARUHAI_TEAM_NAME_0, REF_AOHARUHAI_TEAM_NAME_1, 
+                                     REF_AOHARUHAI_TEAM_NAME_2, REF_AOHARUHAI_TEAM_NAME_3]:
+                        if image_match(team_roi, team_tpl).find_match:
+                            log.info("Team name selection screen detected, skipping auto-click")
+                            return
+                except Exception:
+                    pass
+                
+                try:
                     ti = getattr(getattr(ctx, 'cultivate_detail', None), 'turn_info', None)
                     roi = img[343:389, 443:485]
                     refs = [REF_ROUND_1, REF_ROUND_2, REF_ROUND_3, REF_ROUND_4]

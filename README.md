@@ -273,6 +273,5 @@ Maybe fix card selection breaking
 
 - **This project is a detached fork of**: [UmamusumeAutoTrainer-Global](https://github.com/BrayAlter/UAT-Global-Server) by [BrayAlter](https://github.com/BrayAlter) who first ported the orginal to the global server
 
-Stop shilling this shit on /vg/ and using the retarded forced meme ur making me look bad
-
+Stop shilling this shit on /vg/ with the retarded forced me ur making me look bad
 

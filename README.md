@@ -1,7 +1,7 @@
 ![uma musume](docs/umabike.gif)
 # UMAMUSUME AUTO TRAINER
 [![Discord](https://img.shields.io/badge/Discord-join-green?logo=discord&logoColor=white)](https://discord.gg/8nwNZdxd72)  
-**Discord that im not in I dont own and will never look at (you guys can go hang out ig but dont try contacting me there)**
+
 
 
 ![UAT](docs/main.png)
@@ -16,13 +16,13 @@
   - **Handles everything from disconnections to the game crashing. The show will go on as long as there isn't a new update. (it handles that too now lol)**
   - **Supports background play as this runs on mobile emulators not the steam release. (You can play another game while this runs)**
 
-- ✅ **Able to play every part of every Senario (As of writing this; URA and Unity)**
+- ✅ **Able to play every part of every Scenario (As of writing this; URA and Unity)**
   - Is able to perform every action a human would take. From comparing skill hint levels to playing the claw machine and even deciding whether to conserve energy before summer or not. Everything you normally do this bot probably does it.
 
 - ✅ **Supports every single uma and deckType**:
  -Every Aspect of training is customizable, If you're willing to spend time in the settings any playstyle becomes possible. For a quick overview please watch the video below as to what you can edit.      
   
-(Video is outdated look at changelog or use the github search feature too check if something u want is there)
+(Video is outdated look at changelog or use the GitHub search feature too check if something u want is there)
 
 [demo.webm](https://github.com/user-attachments/assets/40a5c402-d154-4b02-8a61-96ba07e29319)
 
@@ -54,7 +54,7 @@ you can edit the start and end time in `main.py` (24 hours format) to dictate wh
 Just cd into any folder and run 
 
 ```bash
-git clone https://github.com/oofmatoes/UAT-Global-Server
+git clone https://github.com/TomerGamerTV/UAT-Global-Server
 ```
 
 Then ensure python 3.10 is installed:
@@ -194,7 +194,7 @@ Added custom thresholds to go outing for pal event chains (DO NOT USE PAL CARDS 
 
 - **5/12/2025**   
 Added a overwrite for event "Training" to click the 5th choice if 5 choices are detected (apparently people are still getting stuck there somehow)
-Training tweaks. Energy management should be more effecient now  
+Training tweaks. Energy management should be more efficient now  
 
 - **30/11/2025**   
 added -10% score penalty to the highest stat in senior year to hopefully balance stats out (experimental might remove).  
